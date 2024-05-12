@@ -1,12 +1,223 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "E:\\PigRunner\\pigrunnerbackground\\PigRunner.WebApi\\",
-  "Documents": [],
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{25DA3CC9-5D5F-4C84-8237-E99248A08051}|PigRunner.WebApi\\PigRunner.WebApi.csproj|e:\\pigrunner\\pigrunnerbackground\\pigrunner.webapi\\pigrunner.webapi\\commons\\attributes\\authorizationfilter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{25DA3CC9-5D5F-4C84-8237-E99248A08051}|PigRunner.WebApi\\PigRunner.WebApi.csproj|solutionrelative:pigrunner.webapi\\commons\\attributes\\authorizationfilter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{25DA3CC9-5D5F-4C84-8237-E99248A08051}|PigRunner.WebApi\\PigRunner.WebApi.csproj|e:\\pigrunner\\pigrunnerbackground\\pigrunner.webapi\\pigrunner.webapi\\controllers\\valuescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{25DA3CC9-5D5F-4C84-8237-E99248A08051}|PigRunner.WebApi\\PigRunner.WebApi.csproj|solutionrelative:pigrunner.webapi\\controllers\\valuescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{25DA3CC9-5D5F-4C84-8237-E99248A08051}|PigRunner.WebApi\\PigRunner.WebApi.csproj|e:\\pigrunner\\pigrunnerbackground\\pigrunner.webapi\\pigrunner.webapi\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{25DA3CC9-5D5F-4C84-8237-E99248A08051}|PigRunner.WebApi\\PigRunner.WebApi.csproj|solutionrelative:pigrunner.webapi\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{25DA3CC9-5D5F-4C84-8237-E99248A08051}|PigRunner.WebApi\\PigRunner.WebApi.csproj|e:\\pigrunner\\pigrunnerbackground\\pigrunner.webapi\\pigrunner.webapi\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{25DA3CC9-5D5F-4C84-8237-E99248A08051}|PigRunner.WebApi\\PigRunner.WebApi.csproj|solutionrelative:pigrunner.webapi\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{25DA3CC9-5D5F-4C84-8237-E99248A08051}|PigRunner.WebApi\\PigRunner.WebApi.csproj|e:\\pigrunner\\pigrunnerbackground\\pigrunner.webapi\\pigrunner.webapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{25DA3CC9-5D5F-4C84-8237-E99248A08051}|PigRunner.WebApi\\PigRunner.WebApi.csproj|solutionrelative:pigrunner.webapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{25DA3CC9-5D5F-4C84-8237-E99248A08051}|PigRunner.WebApi\\PigRunner.WebApi.csproj|e:\\pigrunner\\pigrunnerbackground\\pigrunner.webapi\\pigrunner.webapi\\commons\\helpers\\confighelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{25DA3CC9-5D5F-4C84-8237-E99248A08051}|PigRunner.WebApi\\PigRunner.WebApi.csproj|solutionrelative:pigrunner.webapi\\commons\\helpers\\confighelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{25DA3CC9-5D5F-4C84-8237-E99248A08051}|PigRunner.WebApi\\PigRunner.WebApi.csproj|e:\\pigrunner\\pigrunnerbackground\\pigrunner.webapi\\pigrunner.webapi\\pigrunner.webapi.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|",
+      "RelativeMoniker": "D:0:0:{25DA3CC9-5D5F-4C84-8237-E99248A08051}|PigRunner.WebApi\\PigRunner.WebApi.csproj|solutionrelative:pigrunner.webapi\\pigrunner.webapi.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{25DA3CC9-5D5F-4C84-8237-E99248A08051}|PigRunner.WebApi\\PigRunner.WebApi.csproj|e:\\pigrunner\\pigrunnerbackground\\pigrunner.webapi\\pigrunner.webapi\\appsettings.production.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{25DA3CC9-5D5F-4C84-8237-E99248A08051}|PigRunner.WebApi\\PigRunner.WebApi.csproj|solutionrelative:pigrunner.webapi\\appsettings.production.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{25DA3CC9-5D5F-4C84-8237-E99248A08051}|PigRunner.WebApi\\PigRunner.WebApi.csproj|e:\\pigrunner\\pigrunnerbackground\\pigrunner.webapi\\pigrunner.webapi\\appsettings.staging.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{25DA3CC9-5D5F-4C84-8237-E99248A08051}|PigRunner.WebApi\\PigRunner.WebApi.csproj|solutionrelative:pigrunner.webapi\\appsettings.staging.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{25DA3CC9-5D5F-4C84-8237-E99248A08051}|PigRunner.WebApi\\PigRunner.WebApi.csproj|e:\\pigrunner\\pigrunnerbackground\\pigrunner.webapi\\pigrunner.webapi\\commons\\helpers\\iochelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{25DA3CC9-5D5F-4C84-8237-E99248A08051}|PigRunner.WebApi\\PigRunner.WebApi.csproj|solutionrelative:pigrunner.webapi\\commons\\helpers\\iochelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{25DA3CC9-5D5F-4C84-8237-E99248A08051}|PigRunner.WebApi\\PigRunner.WebApi.csproj|e:\\pigrunner\\pigrunnerbackground\\pigrunner.webapi\\pigrunner.webapi\\commons\\helpers\\loggerhelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{25DA3CC9-5D5F-4C84-8237-E99248A08051}|PigRunner.WebApi\\PigRunner.WebApi.csproj|solutionrelative:pigrunner.webapi\\commons\\helpers\\loggerhelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{25DA3CC9-5D5F-4C84-8237-E99248A08051}|PigRunner.WebApi\\PigRunner.WebApi.csproj|e:\\pigrunner\\pigrunnerbackground\\pigrunner.webapi\\pigrunner.webapi\\views\\config\\jwtconfig.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{25DA3CC9-5D5F-4C84-8237-E99248A08051}|PigRunner.WebApi\\PigRunner.WebApi.csproj|solutionrelative:pigrunner.webapi\\views\\config\\jwtconfig.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
-      "DocumentGroups": []
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 5,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "appsettings.Development.json",
+              "DocumentMoniker": "E:\\PigRunner\\pigrunnerbackground\\PigRunner.WebApi\\PigRunner.WebApi\\appsettings.Development.json",
+              "RelativeDocumentMoniker": "PigRunner.WebApi\\appsettings.Development.json",
+              "ToolTip": "E:\\PigRunner\\pigrunnerbackground\\PigRunner.WebApi\\PigRunner.WebApi\\appsettings.Development.json",
+              "RelativeToolTip": "PigRunner.WebApi\\appsettings.Development.json",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA8AAAApAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2024-05-12T14:02:25.888Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "appsettings.Production.json",
+              "DocumentMoniker": "E:\\PigRunner\\pigrunnerbackground\\PigRunner.WebApi\\PigRunner.WebApi\\appsettings.Production.json",
+              "RelativeDocumentMoniker": "PigRunner.WebApi\\appsettings.Production.json",
+              "ToolTip": "E:\\PigRunner\\pigrunnerbackground\\PigRunner.WebApi\\PigRunner.WebApi\\appsettings.Production.json",
+              "RelativeToolTip": "PigRunner.WebApi\\appsettings.Production.json",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA8AAAAhAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2024-05-12T14:01:46.137Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "ConfigHelper.cs",
+              "DocumentMoniker": "E:\\PigRunner\\pigrunnerbackground\\PigRunner.WebApi\\PigRunner.WebApi\\Commons\\Helpers\\ConfigHelper.cs",
+              "RelativeDocumentMoniker": "PigRunner.WebApi\\Commons\\Helpers\\ConfigHelper.cs",
+              "ToolTip": "E:\\PigRunner\\pigrunnerbackground\\PigRunner.WebApi\\PigRunner.WebApi\\Commons\\Helpers\\ConfigHelper.cs",
+              "RelativeToolTip": "PigRunner.WebApi\\Commons\\Helpers\\ConfigHelper.cs",
+              "ViewState": "AQIAADMAAAAAAAAAAAAQwEIAAAAPAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-05-12T13:45:45.375Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Program.cs",
+              "DocumentMoniker": "E:\\PigRunner\\pigrunnerbackground\\PigRunner.WebApi\\PigRunner.WebApi\\Program.cs",
+              "RelativeDocumentMoniker": "PigRunner.WebApi\\Program.cs",
+              "ToolTip": "E:\\PigRunner\\pigrunnerbackground\\PigRunner.WebApi\\PigRunner.WebApi\\Program.cs",
+              "RelativeToolTip": "PigRunner.WebApi\\Program.cs",
+              "ViewState": "AQIAADoAAAAAAAAAAAA0wEwAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-05-12T13:27:29.692Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "appsettings.Staging.json",
+              "DocumentMoniker": "E:\\PigRunner\\pigrunnerbackground\\PigRunner.WebApi\\PigRunner.WebApi\\appsettings.Staging.json",
+              "RelativeDocumentMoniker": "PigRunner.WebApi\\appsettings.Staging.json",
+              "ToolTip": "E:\\PigRunner\\pigrunnerbackground\\PigRunner.WebApi\\PigRunner.WebApi\\appsettings.Staging.json",
+              "RelativeToolTip": "PigRunner.WebApi\\appsettings.Staging.json",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAEAAAACAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2024-05-12T14:02:05.566Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "AuthorizationFilter.cs",
+              "DocumentMoniker": "E:\\PigRunner\\pigrunnerbackground\\PigRunner.WebApi\\PigRunner.WebApi\\Commons\\Attributes\\AuthorizationFilter.cs",
+              "RelativeDocumentMoniker": "PigRunner.WebApi\\Commons\\Attributes\\AuthorizationFilter.cs",
+              "ToolTip": "E:\\PigRunner\\pigrunnerbackground\\PigRunner.WebApi\\PigRunner.WebApi\\Commons\\Attributes\\AuthorizationFilter.cs",
+              "RelativeToolTip": "PigRunner.WebApi\\Commons\\Attributes\\AuthorizationFilter.cs",
+              "ViewState": "AQIAACAAAAAAAAAAAAAQwDkAAAApAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-05-12T13:43:24.975Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "PigRunner.WebApi",
+              "DocumentMoniker": "E:\\PigRunner\\pigrunnerbackground\\PigRunner.WebApi\\PigRunner.WebApi\\PigRunner.WebApi.csproj",
+              "RelativeDocumentMoniker": "PigRunner.WebApi\\PigRunner.WebApi.csproj",
+              "ToolTip": "E:\\PigRunner\\pigrunnerbackground\\PigRunner.WebApi\\PigRunner.WebApi\\PigRunner.WebApi.csproj",
+              "RelativeToolTip": "PigRunner.WebApi\\PigRunner.WebApi.csproj",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2024-05-12T14:03:18.387Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ValuesController.cs",
+              "DocumentMoniker": "E:\\PigRunner\\pigrunnerbackground\\PigRunner.WebApi\\PigRunner.WebApi\\Controllers\\ValuesController.cs",
+              "RelativeDocumentMoniker": "PigRunner.WebApi\\Controllers\\ValuesController.cs",
+              "ToolTip": "E:\\PigRunner\\pigrunnerbackground\\PigRunner.WebApi\\PigRunner.WebApi\\Controllers\\ValuesController.cs",
+              "RelativeToolTip": "PigRunner.WebApi\\Controllers\\ValuesController.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABIAAAAXAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-05-12T14:06:04.401Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "launchSettings.json",
+              "DocumentMoniker": "E:\\PigRunner\\pigrunnerbackground\\PigRunner.WebApi\\PigRunner.WebApi\\Properties\\launchSettings.json",
+              "RelativeDocumentMoniker": "PigRunner.WebApi\\Properties\\launchSettings.json",
+              "ToolTip": "E:\\PigRunner\\pigrunnerbackground\\PigRunner.WebApi\\PigRunner.WebApi\\Properties\\launchSettings.json",
+              "RelativeToolTip": "PigRunner.WebApi\\Properties\\launchSettings.json",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAoAAAAPAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2024-05-12T14:09:55.329Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "IOCHelper.cs",
+              "DocumentMoniker": "E:\\PigRunner\\pigrunnerbackground\\PigRunner.WebApi\\PigRunner.WebApi\\Commons\\Helpers\\IOCHelper.cs",
+              "RelativeDocumentMoniker": "PigRunner.WebApi\\Commons\\Helpers\\IOCHelper.cs",
+              "ToolTip": "E:\\PigRunner\\pigrunnerbackground\\PigRunner.WebApi\\PigRunner.WebApi\\Commons\\Helpers\\IOCHelper.cs",
+              "RelativeToolTip": "PigRunner.WebApi\\Commons\\Helpers\\IOCHelper.cs",
+              "ViewState": "AQIAAAYAAAAAAAAAAAAAAD4AAAASAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-05-12T13:55:46.039Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "JWTConfig.cs",
+              "DocumentMoniker": "E:\\PigRunner\\pigrunnerbackground\\PigRunner.WebApi\\PigRunner.WebApi\\Views\\Config\\JWTConfig.cs",
+              "RelativeDocumentMoniker": "PigRunner.WebApi\\Views\\Config\\JWTConfig.cs",
+              "ToolTip": "E:\\PigRunner\\pigrunnerbackground\\PigRunner.WebApi\\PigRunner.WebApi\\Views\\Config\\JWTConfig.cs",
+              "RelativeToolTip": "PigRunner.WebApi\\Views\\Config\\JWTConfig.cs",
+              "ViewState": "AQIAAAUAAAAAAAAAAAA1wA0AAAAWAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-05-12T13:53:07.713Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "LoggerHelper.cs",
+              "DocumentMoniker": "E:\\PigRunner\\pigrunnerbackground\\PigRunner.WebApi\\PigRunner.WebApi\\Commons\\Helpers\\LoggerHelper.cs",
+              "RelativeDocumentMoniker": "PigRunner.WebApi\\Commons\\Helpers\\LoggerHelper.cs",
+              "ToolTip": "E:\\PigRunner\\pigrunnerbackground\\PigRunner.WebApi\\PigRunner.WebApi\\Commons\\Helpers\\LoggerHelper.cs",
+              "RelativeToolTip": "PigRunner.WebApi\\Commons\\Helpers\\LoggerHelper.cs",
+              "ViewState": "AQIAAAkAAAAAAAAAAAAAABMAAABiAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-05-12T13:38:58.815Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
     }
   ]
 }
