@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using PigRunner.Services.System.IServices;
 
 namespace PigRunner.WebApi.Controllers
 {
@@ -11,6 +12,16 @@ namespace PigRunner.WebApi.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
+        private IUserService userService;
+        /// <summary>
+        /// 服务注册
+        /// </summary>
+        /// <param name="_userService"></param>
+        public ValuesController(IUserService _userService) { 
+           this.userService = _userService;
+        }
+
+
         /// <summary>
         /// 获取数据
         /// </summary>

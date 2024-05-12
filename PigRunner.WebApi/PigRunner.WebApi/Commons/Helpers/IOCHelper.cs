@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using PigRunner.Public.Interface;
+using System.Reflection;
 
 namespace PigRunner.WebApi.Commons.Helpers
 {
@@ -58,16 +59,4 @@ namespace PigRunner.WebApi.Commons.Helpers
             }
         }
     }
-    /// <summary>
-    /// 区域服务接口
-    /// </summary>
-    public interface IScopedService { }
-    /// <summary>
-    /// 瞬时接口
-    /// </summary>
-    public interface ITransientService { }
-    /// <summary>
-    /// 单例接口
-    /// </summary>
-    public interface ISingletonService { }
 }

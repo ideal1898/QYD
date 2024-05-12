@@ -16,11 +16,12 @@
     <PackageReference Include="MiniExcel" Version="1.32.0" />
     <PackageReference Include="MiniWord" Version="0.8.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="SqlSugar.IOC" Version="2.0.0" />
-    <PackageReference Include="SqlSugarCore" Version="5.1.4.154" />
     <PackageReference Include="StackExchange.Redis" Version="2.7.33" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
-    <PackageReference Include="Yitter.IdGenerator" Version="1.0.14" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PigRunner.Services\PigRunner.Services.csproj" />
   </ItemGroup>
 
 </Project>

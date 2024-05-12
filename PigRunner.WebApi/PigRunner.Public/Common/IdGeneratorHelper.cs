@@ -1,6 +1,6 @@
 ﻿using Yitter.IdGenerator;
 
-namespace PigRunner.WebApi.Commons.Helpers
+namespace PigRunner.Public.Common
 {
     /// <summary>
     /// ID 生成器
