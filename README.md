@@ -3,6 +3,7 @@
 #### 介绍
 集成了JWT，SqlSugar，Redis等框架的完整.net 6 webapi项目。内置了很多帮助类，可以直接当作项目使用。
 
+
 环境配置
 开发工具：visual studio 2022
 目标框架：.NET 6.0
@@ -10,7 +11,7 @@
 版本管理
    git
 远程仓库地址：
-   
+   git clone https://gitee.com/desperadas/pigrunnerbackground.git
 
 使用说明
   修改appsettings.json中Development.json环境，配置数据库连接（自行加密）。
