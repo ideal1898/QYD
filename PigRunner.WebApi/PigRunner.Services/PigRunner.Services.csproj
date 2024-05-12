@@ -4,10 +4,12 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+	 <EnableDynamicLoading>true</EnableDynamicLoading>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PigRunner.Repository\PigRunner.Repository.csproj" />
+    <ProjectReference Include="..\PigRunner.Entitys\PigRunner.Entitys.csproj" />
+    <ProjectReference Include="..\PigRunner.Public\PigRunner.Public.csproj" />
   </ItemGroup>
 
 </Project>

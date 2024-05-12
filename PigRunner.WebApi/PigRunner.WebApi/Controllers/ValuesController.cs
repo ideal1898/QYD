@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using PigRunner.Services.System.IServices;
+using PigRunner.Entitys.System;
+using PigRunner.Services.System;
 
 namespace PigRunner.WebApi.Controllers
 {
@@ -30,6 +31,9 @@ namespace PigRunner.WebApi.Controllers
         [AllowAnonymous]
         public JsonResult get()
         {
+            SysUser user = new SysUser();
+            userService.Save(user);
+
             var json = new
             {
                 id = 10,

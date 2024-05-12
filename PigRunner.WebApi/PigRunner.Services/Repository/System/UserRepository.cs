@@ -6,13 +6,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PigRunner.Services.System
+namespace PigRunner.Repository.System
 {
     /// <summary>
-    /// 用户服务接口
+    /// 用户存储库
     /// </summary>
-    public interface IUserService: IScopedService
+    public class UserRepository:BaseRepository<SysUser>, IScopedService
     {
-        void Save(SysUser sysUser);
+        public string Save(SysUser sysUser) {
+
+            return "保存成功";
+        }
     }
 }
