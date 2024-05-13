@@ -22,7 +22,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PigRunner.Services\PigRunner.Services.csproj" />
+    <ProjectReference Include="..\PigRunner.Services\PigRunner.Services.csproj">
+      <Private>True</Private>
+    </ProjectReference>
   </ItemGroup>
 
 </Project>
