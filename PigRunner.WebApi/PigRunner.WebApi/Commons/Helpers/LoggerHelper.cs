@@ -17,7 +17,7 @@ namespace PigRunner.WebApi.Commons.Helpers
         /// </summary>
         /// <param name="repositoryName"></param>
         /// <param name="configFile"></param>
-        public static void Configure(string repositoryName = "WebApi", string configFile = "Config/Log4net.config")
+        public static void Configure(string repositoryName = "PigRunner.WebApi", string configFile = "Config/Log4net.config")
         {
             repository = LogManager.CreateRepository(repositoryName);
             XmlConfigurator.Configure(repository, new FileInfo(configFile));
