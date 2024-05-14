@@ -9,6 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using SqlSugar.IOC;
 using System.Text;
 using Microsoft.Extensions.FileProviders;
+using PigRunner.Public.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 //»’÷æ

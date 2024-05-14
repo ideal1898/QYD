@@ -1,4 +1,4 @@
-﻿namespace PigRunner.WebApi.Views.Config
+﻿namespace PigRunner.Public.Common.Views
 {
     /// <summary>
     /// JWT配置文件

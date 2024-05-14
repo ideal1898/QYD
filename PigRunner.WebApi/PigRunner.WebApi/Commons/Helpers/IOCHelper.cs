@@ -31,6 +31,7 @@ namespace PigRunner.WebApi.Commons.Helpers
                 StaticRegister(typeof(ISingletonService), assemblies, services);
             }
         }
+        
         private static void StaticRegister(Type type, Assembly[] assemblies, IServiceCollection services)
         {
             var allTypes = assemblies.SelectMany(p => p.DefinedTypes).Select(p => p.AsType()).Where(p => p != type && type.IsAssignableFrom(p));
@@ -70,8 +71,9 @@ namespace PigRunner.WebApi.Commons.Helpers
                     }
                 }
             }
-
         }
+
+        #region 停用
 
         private static void LoadByReferencedAssemblies(this IServiceCollection services)
         {
@@ -183,5 +185,6 @@ namespace PigRunner.WebApi.Commons.Helpers
                 }
             }
         }
+        #endregion
     }
 }

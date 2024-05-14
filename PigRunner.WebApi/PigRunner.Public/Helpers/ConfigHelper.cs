@@ -1,4 +1,6 @@
-﻿using PigRunner.WebApi.Views.Config;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
+using PigRunner.Public.Common.Views;
 
 namespace PigRunner.WebApi.Commons.Helpers
 {
@@ -9,7 +11,7 @@ namespace PigRunner.WebApi.Commons.Helpers
     {
         private static readonly IConfiguration Configuration;
 
-        private static readonly string Env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? Environments.Development;
+        private static readonly string Env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ??Environments.Development;
 
         static ConfigHelper()
         {

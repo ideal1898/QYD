@@ -25,6 +25,7 @@
 
 
 
+using PigRunner.Entitys.System;
 using PigRunner.Public.Common.Views;
 using System;
 using System.Collections.Generic;
@@ -43,6 +44,28 @@ namespace PigRunner.Services.System
         /// <param name="password">密码</param>
         /// <returns></returns>
         LoginResponse Login(string username, string password);
-
+        /// <summary>
+        /// 查询登录信息
+        /// </summary>
+        /// <param name="id">登录信息表ID</param>
+        /// <returns></returns>
+        SysLogin GetSysLogingById(long id);
+        /// <summary>
+        /// 更新登录信息
+        /// </summary>
+        /// <param name="sysLogin"></param>
+        /// <returns></returns>
+        bool UpdateSysLogin(SysLogin sysLogin);
+        /// <summary>
+        /// 登出系统
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
+        bool LoginOut(string username);
+        /// <summary>
+        /// 更新令牌过期时间
+        /// </summary>
+        /// <returns></returns>
+        bool UpdateExpireTime(long id, DateTime ExpireTime);
     }
 }

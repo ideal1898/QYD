@@ -71,16 +71,42 @@ namespace PigRunner.Services.System.Services
                 return LoginResponse.Error("密码不能为空");
 
             var pwd = CommonHelper.GetMD5Password(username, password);
-            var userInfo = userRepository.GetSysUser(username, pwd);
-            if (userInfo == null)
-            {
+            var sysUser = userRepository.GetSysUser(username, pwd);
+            if (sysUser == null)
                 return LoginResponse.Error("用户名或密码不正确");
-            }
+            
 
 
             return loginResponse;
         }
+        /// <summary>
+        /// 根据ID获取登录信息
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public SysLogin GetSysLogingById(long id)
+        {
+           return loginRepository.GetSysLogingById(id);
+        }
+        /// <summary>
+        /// 登出系统
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public bool LoginOut(string username)
+        {
+            return loginRepository.LoginOut(username);
+        }
 
-     
+        public bool UpdateExpireTime(long id, DateTime ExpireTime)
+        {
+            return loginRepository.UpdateExpireTime(id, ExpireTime);
+        }
+
+       public  bool UpdateSysLogin(SysLogin sysLogin)
+        {
+            return loginRepository.UpdateSysLogin(sysLogin);
+        }
     }
 }
