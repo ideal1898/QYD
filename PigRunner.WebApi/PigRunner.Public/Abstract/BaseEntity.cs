@@ -1,4 +1,5 @@
 ﻿using PigRunner.Public.Helpers;
+using SqlSugar;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,16 @@ namespace PigRunner.Public.Abstract
     /// </summary>
     public class BaseEntity<T>
     {
-
+        [SugarColumn(IsPrimaryKey = true, ColumnName = "id")]
+        public long id { get; set; }
+        /// <summary>
+        /// 创建日期
+        /// </summary>
+        public DateTime? createdDate { get; set; }
+        /// <summary>
+        /// 创建人
+        /// </summary>
+        public string? createdBy { get; set; }
         public static T Create()
         {
             T instance = Activator.CreateInstance<T>();

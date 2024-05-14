@@ -1,4 +1,4 @@
-﻿namespace PigRunner.WebApi.Commons.Helpers
+﻿namespace PigRunner.Public.Helpers
 {
     /// <summary>
     /// 类型转换帮助类

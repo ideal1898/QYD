@@ -13,6 +13,11 @@ namespace PigRunner.Repository.System
     /// </summary>
     public class UserRepository:BaseRepository<SysUser>, IScopedService
     {
+
+        public SysUser GetSysUser(string username,string pwd) {
+            return GetFirst(user => user.UserName == username && user.Password == pwd&&user.IsEnable==1);      
+        }
+
         public string Save(SysUser sysUser) {
 
             return "保存成功";

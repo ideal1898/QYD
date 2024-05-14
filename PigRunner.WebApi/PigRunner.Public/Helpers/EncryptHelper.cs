@@ -1,7 +1,7 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 
-namespace PigRunner.WebApi.Commons.Helpers
+namespace PigRunner.Public.Helpers
 {
     /// <summary>
     /// 加密帮助类

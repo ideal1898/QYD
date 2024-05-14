@@ -2,7 +2,7 @@
 using log4net.Repository;
 using log4net;
 
-namespace PigRunner.WebApi.Commons.Helpers
+namespace PigRunner.Public.Helpers
 {
     /// <summary>
     /// 日志帮助类

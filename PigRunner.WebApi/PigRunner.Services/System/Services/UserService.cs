@@ -17,6 +17,12 @@ namespace PigRunner.Services.System
         public UserService(UserRepository repository) {
         this._repository = repository;
         }
+
+        public SysUser GetSysUser(string username, string pwd)
+        {
+            return _repository.GetSysUser(username,pwd);
+        }
+
         public void Save(SysUser sysUser)
         {
             _repository.Save(sysUser);

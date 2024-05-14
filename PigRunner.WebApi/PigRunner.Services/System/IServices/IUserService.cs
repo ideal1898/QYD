@@ -13,6 +13,13 @@ namespace PigRunner.Services.System
     /// </summary>
     public interface IUserService: IScopedService
     {
+        /// <summary>
+        /// 获取用户信息
+        /// </summary>
+        /// <param name="username">用户名</param>
+        /// <param name="pwd">MD5加过密的密码</param>
+        /// <returns></returns>
+        SysUser GetSysUser(string username,string pwd);
         void Save(SysUser sysUser);
     }
 }
