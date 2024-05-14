@@ -48,7 +48,7 @@ namespace PigRunner.Public.Common.Views
         /// <summary>
         /// 管理员
         /// </summary>
-        public bool IsAdmin { get; set; } = false;
+        public string? IsAdmin { get; set; }
         /// <summary>
         /// 角色
         /// </summary>

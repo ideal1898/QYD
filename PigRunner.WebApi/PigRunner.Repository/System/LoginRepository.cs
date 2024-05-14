@@ -18,9 +18,9 @@ namespace PigRunner.Repository.System
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public SysLogin GetSysLogingById(long id) {
+        public SysLogin GetSysLogingByUser(long Account) {
 
-            return GetFirst(sysLogin=>sysLogin.id==id);
+            return GetFirst(sysLogin=>sysLogin.Account== Account);
         }
         /// <summary>
         /// 更新登录信息
@@ -30,7 +30,7 @@ namespace PigRunner.Repository.System
         public bool UpdateSysLogin(SysLogin sysLogin)
         {
             return AsUpdateable(sysLogin).UpdateColumns(p => new { p.Token, p.Expiretime
-            }).Where(p => p.id == sysLogin.id).ExecuteCommand() > 0;
+            }).Where(p => p.ID == sysLogin.ID).ExecuteCommand() > 0;
         }
         /// <summary>
         /// 按用户名注销
@@ -45,7 +45,7 @@ namespace PigRunner.Repository.System
         /// </summary>
         /// <returns></returns>
         public bool UpdateExpireTime(long id,DateTime ExpireTime) {
-            return AsUpdateable().SetColumns(p => p.Expiretime == ExpireTime).Where(p => p.id == id).ExecuteCommand()>0;
+            return AsUpdateable().SetColumns(p => p.Expiretime == ExpireTime).Where(p => p.ID == id).ExecuteCommand()>0;
         }
     }
 }

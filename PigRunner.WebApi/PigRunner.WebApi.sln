@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PigRunner.Entitys", "PigRun
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PigRunner.Public", "PigRunner.Public\PigRunner.Public.csproj", "{7E9ACAAD-48A0-4638-820B-51D3DC563D2B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PigRunner.Repository", "PigRunner.Repository\PigRunner.Repository.csproj", "{328A1EEC-2234-4211-8B73-E1902D1D81AC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PigRunner.Repository", "PigRunner.Repository\PigRunner.Repository.csproj", "{328A1EEC-2234-4211-8B73-E1902D1D81AC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Business", "Business", "{DEA6557B-B894-43C8-87ED-58B6FAA6A942}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,6 +44,12 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{043209D0-442C-43E5-8F91-52994FB24D17} = {DEA6557B-B894-43C8-87ED-58B6FAA6A942}
+		{4EA76710-A9EE-417D-B3CE-ED95287FCAFD} = {DEA6557B-B894-43C8-87ED-58B6FAA6A942}
+		{7E9ACAAD-48A0-4638-820B-51D3DC563D2B} = {DEA6557B-B894-43C8-87ED-58B6FAA6A942}
+		{328A1EEC-2234-4211-8B73-E1902D1D81AC} = {DEA6557B-B894-43C8-87ED-58B6FAA6A942}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {498B414A-64E5-4DBF-8457-ABB1773DD200}

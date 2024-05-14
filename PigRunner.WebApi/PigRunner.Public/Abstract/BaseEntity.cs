@@ -14,20 +14,24 @@ namespace PigRunner.Public.Abstract
     /// </summary>
     public class BaseEntity<T>
     {
-        [SugarColumn(IsPrimaryKey = true, ColumnName = "id")]
-        public long id { get; set; }
+        [SugarColumn(IsPrimaryKey = true, ColumnName = "ID")]
+        public long ID { get; set; }
         /// <summary>
         /// 创建日期
         /// </summary>
-        public DateTime? createdDate { get; set; }
+        public DateTime? CreatedTime { get; set; }
         /// <summary>
         /// 创建人
         /// </summary>
-        public string? createdBy { get; set; }
+        public string? CreatedBy { get; set; }
+        /// <summary>
+        /// 版本
+        /// </summary>
+        public long SysVersion { get; set; }
         public static T Create()
         {
             T instance = Activator.CreateInstance<T>();
-            PropertyInfo? idInfo = typeof(T).GetProperty("Id");
+            PropertyInfo? idInfo = typeof(T).GetProperty("ID");
             idInfo?.SetValue(instance, IdGeneratorHelper.GetNextId());
 
             PropertyInfo? ctime = typeof(T).GetProperty("CreatedTime");

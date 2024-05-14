@@ -27,6 +27,7 @@
 
 using PigRunner.Entitys.System;
 using PigRunner.Public.Common.Views;
+using PigRunner.Public.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,7 +36,7 @@ using System.Threading.Tasks;
 
 namespace PigRunner.Services.System
 {
-    public interface ILoginServices
+    public interface ILoginService: IScopedService
     {
         /// <summary>
         /// 登录
@@ -49,7 +50,7 @@ namespace PigRunner.Services.System
         /// </summary>
         /// <param name="id">登录信息表ID</param>
         /// <returns></returns>
-        SysLogin GetSysLogingById(long id);
+        SysLogin GetSysLogingByUser(long id);
         /// <summary>
         /// 更新登录信息
         /// </summary>
