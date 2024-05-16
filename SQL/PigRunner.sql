@@ -63,5 +63,6 @@ CREATE TABLE Base_Sys_Menu(
 	IsHide BIT,--显示
 	IsFull BIT,--全屏
 	IsAffix BIT,--
-	IsKeepAlive BIT--缓存
+	IsKeepAlive BIT,--缓存
+	Parent BIGINT --父节点
 )
