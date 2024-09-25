@@ -74,7 +74,7 @@ namespace PigRunner.Services.System.Services
             var pwd = CommonHelper.GetMD5Password(username, password);
             var sysUser = userRepository.GetSysUser(username, pwd);
             if (sysUser == null)
-                return LoginResponse.Error("用户名或密码不正确");
+                return LoginResponse.Error("用户名或密码不正确"+pwd);
 
             //创建Token
             var loginUser = new LoginUserVo()
