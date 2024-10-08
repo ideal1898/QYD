@@ -16,12 +16,12 @@ namespace PigRunner.Public.Common.Views
         /// <summary>
         /// 料品
         /// </summary>
-        public long ItemMaster { get; set; } = 0;
+        public string ItemMaster { get; set; } = string.Empty;
 
         /// <summary>
         /// 组织
         /// </summary>
-        public long Org { get; set; } = 0;
+        public string Org { get; set; } = string.Empty;
 
         /// <summary>
         /// 生效日期
@@ -46,12 +46,17 @@ namespace PigRunner.Public.Common.Views
         /// <summary>
         /// 自动编码
         /// </summary>
-        public long AutoCode { get; set; } = 0;
+        public string AutoCode { get; set; } = string.Empty;
 
 
         /// <summary>
         /// 备注
         /// </summary>
         public string Memo { get; set; } = string.Empty;
+
+        /// <summary>
+        /// 操作类型：0：新增；1：删除；2：查询
+        /// </summary>
+        public int OptType { get; set; } = 0;
     }
 }

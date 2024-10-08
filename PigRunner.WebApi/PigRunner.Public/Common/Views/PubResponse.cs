@@ -24,11 +24,18 @@ namespace PigRunner.Public.Common.Views
         /// 单号/编码
         /// </summary>
         public string Code { get; set; }= string.Empty;
-        
 
-        public static PubResponse Error(string msg)
-        {
-            return new PubResponse { Success = false, Message = msg };
-        }
+
+        /// <summary>
+        /// 单据ID
+        /// </summary>
+        public long ID { get; set; } = 0;
+
+
+        /// <summary>
+        /// 查询返回的数据
+        /// </summary>
+        public object Data { get; set; } = null;
+
     }
 }
