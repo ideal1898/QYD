@@ -15,18 +15,33 @@ namespace PigRunner.Entitys.System
     public class SysLogin:BaseEntity<SysLogin>
     {
         /// <summary>
+        /// 用户ID
+        /// </summary>
+        public long Account { get; set; }
+        /// <summary>
         /// 用户名
         /// </summary>
-        public string? Username { get; set; }
+        public string Username { get; set; } = string.Empty;
+        /// <summary>
+        /// 简称
+        /// </summary>
+        public string NickName { get; set; } = string.Empty;
         /// <summary>
         /// 令牌
         /// </summary>
-        public string? Token { get; set; }
-
+        public string? Token { get; set; }=string.Empty;
         /// <summary>
         /// 令牌失效时间
         /// </summary>
         public DateTime Expiretime { get; set; }
+        /// <summary>
+        /// 管理员
+        /// </summary>
+        public int IsAdmin { get; set; }
+        /// <summary>
+        /// 启用
+        /// </summary>
+        public int IsActive { get; set; }
 
     }
 }

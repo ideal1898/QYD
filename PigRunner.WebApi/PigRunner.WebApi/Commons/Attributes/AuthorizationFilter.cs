@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc;
 using System.IdentityModel.Tokens.Jwt;
+using PigRunner.Public.Helpers;
+using PigRunner.Repository.System;
 
 namespace PigRunner.WebApi.Commons.Attributes
 {
@@ -12,15 +14,15 @@ namespace PigRunner.WebApi.Commons.Attributes
     {
         #region 构造函数
 
-        
+        private LoginRepository loginRepository;
 
         /// <summary>
-        /// 构造函数
+        /// 服务注册
         /// </summary>
-        /// <param name=""></param>
-        public AuthorizationFilter()
+        /// <param name="_loginRepository"></param>
+        public AuthorizationFilter(LoginRepository _loginRepository)
         {
-          
+          this.loginRepository = _loginRepository;
         }
 
         #endregion
@@ -38,27 +40,27 @@ namespace PigRunner.WebApi.Commons.Attributes
                 return;
             }
 
-            //var token = context.HttpContext.Request.Headers["authorization"];
-            //var accountData = JWTHelper.JWTDecode(token);
-            //if (accountData == null)
-            //{
-            //    context.Result = new ContentResult() { StatusCode = StatusCodes.Status401Unauthorized, Content = "账号无效或已过期" };
-            //    return;
-            //}
+            var token = context.HttpContext.Request.Headers["authorization"];
+            var accountData = JWTHelper.JWTDecode(token);
+            if (accountData == null)
+            {
+                context.Result = new ContentResult() { StatusCode = StatusCodes.Status401Unauthorized, Content = "账号无效或已过期" };
+                return;
+            }
 
             //判断是否过期
-            //var sysLogin = loginRepository.GetLogin(accountData.Account);
-            //if (sysLogin == null || string.IsNullOrEmpty(sysLogin.Token) || sysLogin.ExpireTime < DateTime.Now || sysLogin.Token != token.ToString().Split(" ")[1])
-            //{
-            //    context.Result = new ContentResult() { StatusCode = StatusCodes.Status401Unauthorized, Content = "账号无效或已过期" };
-            //    return;
-            //}
+            var sysLogin = loginRepository.GetSysLogingByUser(accountData.Id);
+            if (sysLogin == null || string.IsNullOrEmpty(sysLogin.Token) || sysLogin.Expiretime < DateTime.Now || sysLogin.Token != token.ToString().Split(" ")[1])
+            {
+                context.Result = new ContentResult() { StatusCode = StatusCodes.Status401Unauthorized, Content = "账号无效或已过期" };
+                return;
+            }
 
-            ////过期前15分钟内操作，延迟45分钟过期
-            //if ((sysLogin.ExpireTime - DateTime.Now).TotalMinutes < 30)
-            //{
-            //    loginRepository.UpdateExpireTime(sysLogin.Id, DateTime.Now.AddMinutes(45));
-            //}
+            //过期前15分钟内操作，延迟45分钟过期
+            if ((sysLogin.Expiretime - DateTime.Now).TotalMinutes < 30)
+            {
+                loginRepository.UpdateExpireTime(sysLogin.ID, DateTime.Now.AddMinutes(45));
+            }
         }
 
         private bool HasAllowAnonymous(AuthorizationFilterContext context)

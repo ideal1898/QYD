@@ -28,7 +28,6 @@ namespace PigRunner.WebApi.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [AllowAnonymous]
         public JsonResult get()
         {
             SysUser user = new SysUser();

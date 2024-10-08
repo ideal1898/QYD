@@ -1,4 +1,5 @@
 ﻿using PigRunner.Entitys.System;
+using PigRunner.Repository.System;
 using PigRunner.Services.System;
 using System;
 using System.Collections.Generic;
@@ -10,9 +11,18 @@ namespace PigRunner.Services.System
 {
     public class MenuService : IMenuService
     {
-        public void Save(SysMenu sysMenu)
+        private MenuRepository menuRepository;
+        /// <summary>
+        /// 服务注册
+        /// </summary>
+        /// <param name="_menuRepository"></param>
+        public MenuService(MenuRepository _menuRepository)
         {
-            throw new NotImplementedException();
+            menuRepository = _menuRepository;
+        }
+        public bool Save(SysMenu sysMenu)
+        {
+            return menuRepository.Save(sysMenu);
         }
     }
 }

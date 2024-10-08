@@ -83,7 +83,7 @@ namespace PigRunner.Public.Helpers
                 new Claim("id", user.Id.ToString()),
                 new Claim("UserName", user.UserName.ToString()),
                 new Claim("Nickname", user.Nickname ?? string.Empty),
-                new Claim("IsAdmin", user.IsAdmin?"1":"0")
+                new Claim("IsAdmin", user.IsAdmin)
             };
             return claims;
         }
@@ -101,7 +101,8 @@ namespace PigRunner.Public.Helpers
                     return null;
                 }
                 var auth = token.Split(" ")[1].Split('.');
-                var user = JsonConvert.DeserializeObject<LoginUserVo>(Base64UrlEncoder.Decode(auth[1]));
+                var json = Base64UrlEncoder.Decode(auth[1]);
+                var user = JsonConvert.DeserializeObject<LoginUserVo>(json);
                 return user;
             }
             catch (Exception ex)

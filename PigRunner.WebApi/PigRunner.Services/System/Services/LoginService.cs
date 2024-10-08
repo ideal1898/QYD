@@ -24,6 +24,7 @@
 #endregion << 版 本 注 释 >>
 
 
+using Dm.filter.log;
 using PigRunner.Entitys.System;
 using PigRunner.Public.Common.Views;
 using PigRunner.Public.Helpers;
@@ -40,7 +41,7 @@ namespace PigRunner.Services.System.Services
     /// <summary>
     /// 登录服务
     /// </summary>
-    public class LoginService : ILoginServices
+    public class LoginService : ILoginService
     {
         private LoginRepository loginRepository;
         private UserRepository userRepository;
@@ -73,20 +74,88 @@ namespace PigRunner.Services.System.Services
             var pwd = CommonHelper.GetMD5Password(username, password);
             var sysUser = userRepository.GetSysUser(username, pwd);
             if (sysUser == null)
-                return LoginResponse.Error("用户名或密码不正确");
+                return LoginResponse.Error("用户名或密码不正确"+pwd);
+
+            //创建Token
+            var loginUser = new LoginUserVo()
+            {
+                Id = sysUser.ID,
+                UserName = sysUser.UserName,
+                IsAdmin = sysUser.IsAdmin.ToString(),
+                Nickname = sysUser.NickName
+            };
+            var sysLogin = loginRepository.GetSysLogingByUser(sysUser.ID);
+            var token = IsValidToken(sysLogin) ? sysLogin.Token : JWTHelper.CreateJWTToken(loginUser);
+
+            if (string.IsNullOrEmpty(token))
+                return LoginResponse.Error("登陆失败");
             
 
+            if (!SaveOrUpdateSysLogin(sysLogin, token, sysUser))
+                return LoginResponse.Error("登陆失败");
 
+            loginResponse.LoginUser = loginUser;
+            loginResponse.Success = true;
+            loginResponse.Token = token;
+            loginResponse.Message = "登录成功";
             return loginResponse;
         }
+        /// <summary>
+        /// 校验token有效性
+        /// </summary>
+        /// <param name="sysLogin"></param>
+        /// <returns></returns>
+        private bool IsValidToken(SysLogin sysLogin)
+        {
+            //判断Token是否过期
+            if (sysLogin == null || string.IsNullOrEmpty(sysLogin.Token) || sysLogin.Expiretime < DateTime.Now || JWTHelper.IsExpired(sysLogin.Token))
+            {
+                return false;
+            }
+
+            return true;
+        }
+        /// <summary>
+        /// 新增或者更新登录信息
+        /// </summary>
+        /// <returns></returns>
+        private bool SaveOrUpdateSysLogin(SysLogin sysLogin, string token, SysUser sysUser)
+        {
+            if (sysLogin == null)
+            {
+                sysLogin = SysLogin.Create();
+                sysLogin.CreatedBy = sysUser.NickName;
+                sysLogin.Account = sysUser.ID;
+                sysLogin.CreatedTime = DateTime.Now;
+                sysLogin.Username = sysUser.UserName;
+                sysLogin.NickName = sysUser.NickName;
+                sysLogin.SysVersion = 0;
+                sysLogin.Expiretime = DateTime.Now.AddMinutes(45); //新增，则token有效期为45分钟
+                sysLogin.Token = token;
+                sysLogin.IsActive = sysUser.IsActive;
+                sysLogin.IsAdmin = sysUser.IsAdmin;
+
+                return loginRepository.Insert(sysLogin);
+            }
+            else
+            {
+                sysLogin.Expiretime = DateTime.Now.AddMinutes(45);
+                sysLogin.Token = token;
+                sysLogin.Account = sysUser.ID;
+                return loginRepository.Update(sysLogin);
+            }
+        }
+
+
+
         /// <summary>
         /// 根据ID获取登录信息
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public SysLogin GetSysLogingById(long id)
+        public SysLogin GetSysLogingByUser(long id)
         {
-           return loginRepository.GetSysLogingById(id);
+            return loginRepository.GetSysLogingByUser(id);
         }
         /// <summary>
         /// 登出系统
@@ -104,7 +173,7 @@ namespace PigRunner.Services.System.Services
             return loginRepository.UpdateExpireTime(id, ExpireTime);
         }
 
-       public  bool UpdateSysLogin(SysLogin sysLogin)
+        public bool UpdateSysLogin(SysLogin sysLogin)
         {
             return loginRepository.UpdateSysLogin(sysLogin);
         }
