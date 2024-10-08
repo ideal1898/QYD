@@ -15,11 +15,11 @@ namespace PigRunner.Repository.System
     {
         
         /// <summary>
-        /// 新增批号
+        /// 新增/修改批号
         /// </summary>
         /// <param name="BcLotMaster"></param>
         /// <returns></returns>
-        public bool Insert(BcLotMaster BcLotMaster)
+        public bool SaveLotMaster(BcLotMaster BcLotMaster)
         {
             return InsertOrUpdate(BcLotMaster);
         }
@@ -33,6 +33,11 @@ namespace PigRunner.Repository.System
         {
 
             return GetFirst(q => q.LotCode == LotCode);
+        }
+
+        public bool DelLotMaster(BcLotMaster BcLotMaster)
+        {
+            return Delete(BcLotMaster);
         }
     }
 }
