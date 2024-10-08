@@ -30,9 +30,9 @@ namespace PigRunner.WebApi.Controllers
         /// <returns></returns>
         [AllowAnonymous]
         [HttpPost]
-        public PubResponse InsertLotMaster(LotMasterRequest request)
+        public PubResponse ActionLotMaster(LotMasterRequest request)
         {
-            return loginServices.InsertLotMaster(request.LotCode, request.ItemMaster, request.Org, request.EffectiveDate, request.ValidDate, request.InvalidDate, request.SrcDocNo, request.AutoCode, request.Memo);
+            return loginServices.ActionLotMaster(request.LotCode, request.ItemMaster, request.Org, request.EffectiveDate, request.ValidDate, request.InvalidDate, request.SrcDocNo, request.AutoCode, request.Memo,request.OptType);
         }
     }
 }
