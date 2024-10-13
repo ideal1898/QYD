@@ -48,7 +48,7 @@ namespace PigRunner.Entitys.BarCode
         /// <summary>
         /// 自动编码
         /// </summary>
-        public long AutoCode { get; set; } = 0;
+        public int AutoCode { get; set; } = 0;
 
 
         /// <summary>

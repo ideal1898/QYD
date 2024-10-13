@@ -8,7 +8,7 @@ using PigRunner.Services.System.IServices;
 namespace PigRunner.Services.System.Services
 {
     /// <summary>
-    /// 登录服务
+    /// 批号服务
     /// </summary>
     public class LotMasterService : ILotMasterService
     {
@@ -50,10 +50,11 @@ namespace PigRunner.Services.System.Services
                     if (head == null)
                         head = BcLotMaster.Create();
 
-                    long ItemMasterID = 0, OrgID = 0, AutoCodeID = 0;
+                    long ItemMasterID = 0, OrgID = 0;
+                    int AutoCodeID = 0;
                     long.TryParse(ItemMaster, out ItemMasterID);
                     long.TryParse(Org, out OrgID);
-                    long.TryParse(AutoCode, out AutoCodeID);
+                    int.TryParse(AutoCode, out AutoCodeID);
 
                     head.LotCode = LotCode;
                     head.ItemMaster = ItemMasterID;
