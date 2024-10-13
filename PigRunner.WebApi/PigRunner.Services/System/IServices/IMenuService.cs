@@ -12,8 +12,9 @@ namespace PigRunner.Services.System
 {
     public interface IMenuService : IScopedService
     {
-       bool Save(SysMenu sysMenu);
+        bool Save(SysMenu sysMenu);
 
         PubResponse GetMenu();
+
     }
 }

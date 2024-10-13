@@ -85,20 +85,20 @@ namespace PigRunner.Services.System.Services
                     }
 
                     head.BCLotRuleLines = lines;
-                    response.ID = head.ID;
+                    response.id = head.ID;
 
                     //先插入单头
                     bool flag = repository.SaveLotRule(head);
                     if (!flag)
                         throw new Exception("新增批次规则失败！");
                 }
-                response.Success = true;
-                response.Code = RuleCode;
-                response.Message = "操作成功";
+                response.success = true;
+                response.code = 200;
+                response.msg = "操作成功";
             }
             catch (Exception ex)
             {
-                response.Message = ex.Message;
+                response.msg = ex.Message;
             }
             return response;
         }

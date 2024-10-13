@@ -32,5 +32,7 @@ namespace PigRunner.WebApi.Controllers
         {
             return loginServices.ActionLotMaster(request.LotCode, request.ItemMaster, request.Org, request.EffectiveDate, request.ValidDate, request.InvalidDate, request.SrcDocNo, request.AutoCode, request.Memo,request.OptType);
         }
+
+       
     }
 }
