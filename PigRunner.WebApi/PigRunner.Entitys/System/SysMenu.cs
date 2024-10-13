@@ -11,7 +11,7 @@ namespace PigRunner.Entitys.System
     /// <summary>
     /// 菜单
     /// </summary>
-    [SugarTable("Base_Sys_Menu")]
+    [SugarTable("QYD_Sys_Menu")]
     public class SysMenu : BaseEntity<SysMenu>
     {
         /// <summary>
@@ -67,10 +67,15 @@ namespace PigRunner.Entitys.System
         /// </summary>
         public long? Parent { get; set; }
         /// <summary>
+        /// 子菜单
+        /// </summary>
+        public List<SysMenu> Children { get; set; }=new List<SysMenu>();
+
+        /// <summary>
         /// 关联：一对一
         /// </summary>
         //标准配置 推荐
-        [Navigate(NavigateType.OneToOne, nameof(Parent))]//一对一 Parent是SysMenu类里面的
+        [Navigate(NavigateType.OneToOne, nameof(SysMenu.Parent))]//一对一 Parent是SysMenu类里面的
         public SysMenu? menu { get; set; }
     }
 }

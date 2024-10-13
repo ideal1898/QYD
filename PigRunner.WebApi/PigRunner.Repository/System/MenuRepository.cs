@@ -18,7 +18,10 @@ namespace PigRunner.Repository.System
             return Insert(sysMenu);
         }
         public bool SaveList(List<SysMenu> sysMenus) {
-
+            //主子表
+            var flag=base.Context.InsertNav<SysMenu>(sysMenus).Include(s=>s.Children).ExecuteCommand();
+            //单独档案
+            var flag1 = InsertAsync(null);
             return true;
         
         }

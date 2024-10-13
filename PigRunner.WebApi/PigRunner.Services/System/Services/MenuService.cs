@@ -22,7 +22,10 @@ namespace PigRunner.Services.System
         }
         public bool Save(SysMenu sysMenu)
         {
-            return menuRepository.Save(sysMenu);
+            SysMenu s= SysMenu.Create();
+
+
+            return menuRepository.Save(s);
         }
     }
 }
