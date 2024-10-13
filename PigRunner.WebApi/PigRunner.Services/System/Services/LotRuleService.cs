@@ -26,18 +26,12 @@ namespace PigRunner.Services.System.Services
             this.repository = _repository;
         }
 
-      
+
 
         /// <summary>
         /// 批号规则
         /// </summary>
-        /// <param name="RuleCode"></param>
-        /// <param name="RuleName"></param>
-        /// <param name="Org"></param>
-        /// <param name="RuleDes"></param>
-        /// <param name="Memo"></param>
-        /// <param name="BCLotRuleLines"></param>
-        /// <param name="OptType"></param>
+        /// <param name="request"></param>
         /// <returns></returns>
         public PubResponse ActionLotRule(LotRlueRequest request)
         {

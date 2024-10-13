@@ -24,17 +24,9 @@ namespace PigRunner.Services.System.Services
         }
 
         /// <summary>
-        /// 新增批号服务
+        /// 批号服务
         /// </summary>
-        /// <param name="LotCode"></param>
-        /// <param name="ItemMaster"></param>
-        /// <param name="Org"></param>
-        /// <param name="EffectiveDate"></param>
-        /// <param name="ValidDate"></param>
-        /// <param name="InvalidDate"></param>
-        /// <param name="SrcDocNo"></param>
-        /// <param name="AutoCode"></param>
-        /// <param name="Memo"></param>
+        /// <param name="request"></param>
         /// <returns></returns>
         public PubResponse ActionLotMaster(LotMasterRequest request)
         {
