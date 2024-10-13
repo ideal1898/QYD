@@ -1,4 +1,5 @@
 ﻿using PigRunner.Entitys.System;
+using PigRunner.Public.Common.Views;
 using PigRunner.Public.Interface;
 using SqlSugar;
 using System;
@@ -12,5 +13,7 @@ namespace PigRunner.Services.System
     public interface IMenuService : IScopedService
     {
        bool Save(SysMenu sysMenu);
+
+        PubResponse GetMenu();
     }
 }

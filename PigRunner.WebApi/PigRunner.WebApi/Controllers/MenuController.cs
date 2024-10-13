@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PigRunner.Entitys.System;
+using PigRunner.Public.Common.Views;
 using PigRunner.Services.System;
 
 namespace PigRunner.WebApi.Controllers
@@ -44,5 +45,16 @@ namespace PigRunner.WebApi.Controllers
             sysMenu.Parent = 0;
             return menuService.Save(sysMenu);
         }
+
+        /// <summary>
+        /// 获取
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        public PubResponse GetMenu()
+        {
+            return menuService.GetMenu();
+        }
+
     }
 }

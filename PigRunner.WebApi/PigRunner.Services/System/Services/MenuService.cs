@@ -1,4 +1,5 @@
 ﻿using PigRunner.Entitys.System;
+using PigRunner.Public.Common.Views;
 using PigRunner.Repository.System;
 using PigRunner.Services.System;
 using System;
@@ -27,5 +28,28 @@ namespace PigRunner.Services.System
 
             return menuRepository.Save(s);
         }
+
+
+        public PubResponse GetMenu()
+        {
+            PubResponse rtn = new PubResponse();
+            try
+            {
+                string jsonFilePath = "D:/Wordfolder/Personal/PlatForm/WebServer/menudata.json";
+                string jsonString = File.ReadAllText(jsonFilePath);
+                rtn.Success = true;
+                rtn.Data = jsonString;
+            }
+            catch (Exception ex)
+            {
+                rtn.Message = ex.Message;
+            }
+            
+
+            
+
+            return rtn;
+        }
+
     }
 }
