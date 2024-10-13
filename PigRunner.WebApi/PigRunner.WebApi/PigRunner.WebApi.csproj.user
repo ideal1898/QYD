@@ -3,5 +3,17 @@
   <PropertyGroup>
     <Controller_SelectedScaffolderID>ApiControllerEmptyScaffolder</Controller_SelectedScaffolderID>
     <Controller_SelectedScaffolderCategoryPath>root/Common/Api</Controller_SelectedScaffolderCategoryPath>
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+    <NameOfLastUsedPublishProfile>E:\PigRunner\WebApi\pigrunnerbackground\PigRunner.WebApi\PigRunner.WebApi\Properties\PublishProfiles\FolderProfile.pubxml</NameOfLastUsedPublishProfile>
+=======
+    <ActiveDebugProfile>PigRunner.WebApi</ActiveDebugProfile>
+    <NameOfLastUsedPublishProfile>D:\Wordfolder\Personal\PlatForm\pigrunnerbackground\PigRunner.WebApi\PigRunner.WebApi\Properties\PublishProfiles\FolderProfile.pubxml</NameOfLastUsedPublishProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebuggerFlavor>ProjectDebugger</DebuggerFlavor>
+>>>>>>> 25e02244b76108b84e7351cb515b586280f137b4
+>>>>>>> 59067a2083f3961784fbd69543277f9e8260afea
   </PropertyGroup>
 </Project>
