@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\PigRunner.DTO\PigRunner.DTO.csproj" />
     <ProjectReference Include="..\PigRunner.Repository\PigRunner.Repository.csproj">
       <Private>True</Private>
     </ProjectReference>
