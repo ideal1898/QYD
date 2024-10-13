@@ -14,8 +14,13 @@ namespace PigRunner.Repository.System
     /// </summary>
     public class MenuRepository : BaseRepository<SysMenu>, IScopedService
     {
-        public bool Save(SysMenu sysMenu) {           
+        public bool Save(SysMenu sysMenu) { 
             return Insert(sysMenu);
+        }
+        public bool SaveList(List<SysMenu> sysMenus) {
+
+            return true;
+        
         }
     }
 }

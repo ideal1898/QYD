@@ -12,7 +12,7 @@ namespace PigRunner.Repository
     /// 集成数据仓库
     /// </summary>
      public class BaseRepository<T> : SimpleClient<T> where T : class, new()
-   // public class BaseRepository<T> : SqlSugarClient<T> where T : class, new()
+    //public class BaseRepository<T> : SqlSugarClient<T> where T : class, new()
     {
         /// <summary>
         /// 构造函数注册连接
@@ -29,6 +29,7 @@ namespace PigRunner.Repository
         public void BeginTran()
         {
             AsTenant().BeginTran();
+            
         }
 
         /// <summary>
