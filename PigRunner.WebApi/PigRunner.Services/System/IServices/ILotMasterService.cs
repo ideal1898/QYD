@@ -20,7 +20,7 @@ namespace PigRunner.Services.System.IServices
         /// <param name="Memo">备注</param>
         /// <param name="OptType">操作类型</param>
         /// <returns></returns>
-        PubResponse ActionLotMaster(string LotCode, string ItemMaster, string Org,DateTime EffectiveDate,int ValidDate,DateTime InvalidDate,string SrcDocNo, string AutoCode,string Memo,int OptType);
+        PubResponse ActionLotMaster(LotMasterRequest request);
 
     }
 }

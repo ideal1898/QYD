@@ -36,36 +36,36 @@ namespace PigRunner.Services.System.Services
         /// <param name="AutoCode"></param>
         /// <param name="Memo"></param>
         /// <returns></returns>
-        public PubResponse ActionLotMaster(string LotCode, string ItemMaster, string Org, DateTime EffectiveDate, int ValidDate, DateTime InvalidDate, string SrcDocNo, string AutoCode, string Memo,int OptType)
+        public PubResponse ActionLotMaster(LotMasterRequest request)
         {
             PubResponse response = new PubResponse();
 
             try
             {
-                if (string.IsNullOrEmpty(LotCode))
+                if (string.IsNullOrEmpty(request.LotCode))
                     throw new Exception("批号不能为空！");
 
-                if (OptType == 0)
+                if (request.OptType == 0)
                 {
-                    BcLotMaster head = lotMasterRepository.GetFirst(q => q.LotCode == LotCode);
+                    BcLotMaster head = lotMasterRepository.GetFirst(q => q.LotCode == request.LotCode);
                     if (head == null)
                         head = BcLotMaster.Create();
 
                     long ItemMasterID = 0, OrgID = 0;
                     int AutoCodeID = 0;
-                    long.TryParse(ItemMaster, out ItemMasterID);
-                    long.TryParse(Org, out OrgID);
-                    int.TryParse(AutoCode, out AutoCodeID);
+                    long.TryParse(request.ItemMaster, out ItemMasterID);
+                    long.TryParse(request.Org, out OrgID);
+                    int.TryParse(request.AutoCode, out AutoCodeID);
 
-                    head.LotCode = LotCode;
+                    head.LotCode = request.LotCode;
                     head.ItemMaster = ItemMasterID;
                     head.Org = OrgID;
-                    head.EffectiveDate = EffectiveDate;
-                    head.ValidDate = ValidDate;
-                    head.InvalidDate = InvalidDate;
-                    head.SrcDocNo = SrcDocNo;
+                    head.EffectiveDate = request.EffectiveDate;
+                    head.ValidDate = request.ValidDate;
+                    head.InvalidDate = request.InvalidDate;
+                    head.SrcDocNo = request.SrcDocNo;
                     head.AutoCode = AutoCodeID;
-                    head.Memo = Memo;
+                    head.Memo = request.Memo;
                     response.id = head.ID;
 
                     bool isSuccess = lotMasterRepository.InsertOrUpdate(head);
@@ -73,22 +73,22 @@ namespace PigRunner.Services.System.Services
                         throw new Exception("批号操作失败！");
 
                 }
-                else if (OptType == 1)
+                else if (request.OptType == 1)
                 {
-                    BcLotMaster head = lotMasterRepository.GetFirst(q => q.LotCode == LotCode);
+                    BcLotMaster head = lotMasterRepository.GetFirst(q => q.LotCode == request.LotCode);
                     if (head == null)
-                        throw new Exception(string.Format("编码为【{0}】的批号不存在！",LotCode));
+                        throw new Exception(string.Format("编码为【{0}】的批号不存在！", request.LotCode));
 
                     bool isSuccess = lotMasterRepository.Delete(head);
                     if (!isSuccess)
                         throw new Exception("批号删除失败！");
 
                 }
-                else if (OptType == 2)
+                else if (request.OptType == 2)
                 {
-                    BcLotMaster head = lotMasterRepository.GetFirst(q => q.LotCode == LotCode);
+                    BcLotMaster head = lotMasterRepository.GetFirst(q => q.LotCode == request.LotCode);
                     if (head == null)
-                        throw new Exception(string.Format("编码为【{0}】的批号不存在！", LotCode));
+                        throw new Exception(string.Format("编码为【{0}】的批号不存在！", request.LotCode));
                     response.qryData = head;
                 }
                 response.success = true;

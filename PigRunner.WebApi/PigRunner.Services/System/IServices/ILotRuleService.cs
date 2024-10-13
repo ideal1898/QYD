@@ -21,7 +21,7 @@ namespace PigRunner.Services.System.IServices
         /// <param name="BCLotRuleLines"></param>
         /// <param name="OptType"></param>
         /// <returns></returns>
-        PubResponse ActionLotRule(string RuleCode, string RuleName, string Org, string RuleDes,string Memo, List<BCLotRuleLineDTO> BCLotRuleLines, int OptType);
+        PubResponse ActionLotRule(LotRlueRequest request);
 
     }
 }

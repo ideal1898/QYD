@@ -39,40 +39,40 @@ namespace PigRunner.Services.System.Services
         /// <param name="BCLotRuleLines"></param>
         /// <param name="OptType"></param>
         /// <returns></returns>
-        public PubResponse ActionLotRule(string RuleCode, string RuleName, string Org, string RuleDes, string Memo, List<BCLotRuleLineDTO> BCLotRuleLines, int OptType)
+        public PubResponse ActionLotRule(LotRlueRequest request)
         {
             PubResponse response = new PubResponse();
 
             try
             {
-                if (string.IsNullOrEmpty(RuleCode))
+                if (string.IsNullOrEmpty(request.RuleCode))
                     throw new Exception("规则编码不能为空！");
                 
-                if (OptType == 0)
+                if (request.OptType == 0)
                 {
-                    BCLotRule head = repository.GetBCLotRule(RuleCode);
+                    BCLotRule head = repository.GetBCLotRule(request.RuleCode);
                     if (head != null)
-                        throw new Exception(string.Format("规则编码为【{0}】的批次规则已存在，不能再新增！",RuleCode));
+                        throw new Exception(string.Format("规则编码为【{0}】的批次规则已存在，不能再新增！", request.RuleCode));
 
-                    if (BCLotRuleLines == null || BCLotRuleLines.Count <= 0)
+                    if (request.BCLotRuleLines == null || request.BCLotRuleLines.Count <= 0)
                         throw new Exception("批次规则明细不能为空！");
 
                     head = BCLotRule.Create();
-                    head.RuleCode = RuleCode;
-                    head.RuleName = RuleName;
+                    head.RuleCode = request.RuleCode;
+                    head.RuleName = request.RuleName;
 
                     long OrgID = 0;
-                    long.TryParse(Org, out OrgID);
+                    long.TryParse(request.Org, out OrgID);
                     head.Org = OrgID;
 
-                    head.RuleDes = RuleDes;
-                    head.Memo = Memo;
+                    head.RuleDes = request.RuleDes;
+                    head.Memo = request.Memo;
 
                    
 
                     List<BCLotRuleLine> lines = new List<BCLotRuleLine>();
                     //将单头ID赋值给明细
-                    foreach (var item in BCLotRuleLines)
+                    foreach (var item in request.BCLotRuleLines)
                     {
                         BCLotRuleLine line= BCLotRuleLine.Create();
                         line.LotRule = head.ID;
