@@ -22,7 +22,7 @@ namespace PigRunner.Repository.System
         /// <returns></returns>
         public bool SaveLotRule(BCLotRule BCLotRule)
         {
-            return Context.InsertNav(BCLotRule).Include(s => s.BCLotRuleLines).ExecuteCommand();
+            return base.Context.InsertNav(BCLotRule).Include(s => s.BCLotRuleLines).ExecuteCommand();
         }
 
         /// <summary>

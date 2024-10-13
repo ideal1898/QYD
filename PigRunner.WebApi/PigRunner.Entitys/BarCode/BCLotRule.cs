@@ -37,7 +37,7 @@ namespace PigRunner.Entitys.BarCode
         public string Memo { get; set; } = string.Empty;
 
         // 反向导航属性（可选）  
-        [Navigate(NavigateType.OneToMany, "BCLotRuleLines")] // 如果使用了外键列名，可以指定  
+        [Navigate(NavigateType.OneToMany, nameof(BCLotRuleLine.LotRule))] // 如果使用了外键列名，可以指定  
         public List<BCLotRuleLine>? BCLotRuleLines { get; set; } = null;
     }
 
