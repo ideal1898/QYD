@@ -10,6 +10,7 @@ using SqlSugar.IOC;
 using System.Text;
 using Microsoft.Extensions.FileProviders;
 using PigRunner.Public.Helpers;
+using Newtonsoft.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 //日志
@@ -100,6 +101,22 @@ builder.Services.AddAuthentication(option =>
         ValidateLifetime = true,
         ClockSkew = TimeSpan.Zero
     };
+    token.Events = new JwtBearerEvents {
+        OnChallenge = context => {
+            //此处代码为终止.Net Core默认的返回类型和数据结果，这个很重要哦，必须
+            context.HandleResponse();
+            //自定义自己想要返回的数据结果，我这里要返回的是Json对象，通过引用Newtonsoft.Json库进行转换
+            var payload = JsonConvert.SerializeObject(new { Code = 401, Message = "很抱歉，您无权访问该接口" });
+            //自定义返回的数据类型
+            context.Response.ContentType = "application/json";
+            //自定义返回状态码，默认为401 我这里改成 200
+            context.Response.StatusCode = StatusCodes.Status200OK;
+            //context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+            //输出Json数据结果
+            context.Response.WriteAsync(payload);
+            return Task.FromResult(0);
+        }
+    };
 });
 
 #endregion
@@ -157,11 +174,8 @@ if (app.Environment.IsDevelopment())
 app.UseSwagger();
 app.UseSwaggerUI();
 
-<<<<<<< HEAD
-=======
 app.UseSwagger();
 app.UseSwaggerUI();
->>>>>>> a149554f9ed18021995679a41f34d6e12be7a8fa
 //app.UseHttpsRedirection();
 
 app.UseAuthentication();

@@ -1,12 +1,10 @@
-<<<<<<< HEAD
+
 ﻿using PigRunner.DTO.Basic;
 using PigRunner.DTO.System;
 using PigRunner.Entitys.System;
-=======
 ﻿using Newtonsoft.Json.Linq;
-using PigRunner.Entitys.System;
 using PigRunner.Public.Common.Views;
->>>>>>> a149554f9ed18021995679a41f34d6e12be7a8fa
+
 using PigRunner.Repository.System;
 using PigRunner.Services.System;
 using System;
@@ -36,7 +34,6 @@ namespace PigRunner.Services.System
             else
                 sysMenu=menuRepository.GetById(vo.id);
 
-<<<<<<< HEAD
             sysMenu.Path = vo.path;// 
             sysMenu.Name =vo.name;// 组建名称
             sysMenu.Component = vo.component;//--组件
@@ -51,9 +48,7 @@ namespace PigRunner.Services.System
             sysMenu.IsKeepAlive = vo.isKeepAlive?1:0;//--缓存
             sysMenu.Parent =vo.parent ;
             return menuRepository.InsertOrUpdate(sysMenu);
-=======
-            return menuRepository.Save(s);
->>>>>>> a149554f9ed18021995679a41f34d6e12be7a8fa
+
         }
         public PubResponse GetMenu()
         {
@@ -71,6 +66,11 @@ namespace PigRunner.Services.System
                 rtn.msg = ex.Message;
             }
             return rtn;
+        }
+
+        public bool Save(SysMenu sysMenu)
+        {
+            throw new NotImplementedException();
         }
     }
 }
