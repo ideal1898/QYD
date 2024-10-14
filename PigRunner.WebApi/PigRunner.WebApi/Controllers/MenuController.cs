@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PigRunner.DTO.System;
 using PigRunner.Entitys.System;
+using PigRunner.Public.Common.Views;
 using PigRunner.Services.System;
 
 namespace PigRunner.WebApi.Controllers
@@ -31,5 +33,17 @@ namespace PigRunner.WebApi.Controllers
         {
             return menuService.Save(vo);
         }
+
+        /// <summary>
+        /// 获取
+        /// </summary>
+        /// <returns></returns>
+        [AllowAnonymous]
+        [HttpGet]
+        public PubResponse GetMenu()
+        {
+            return menuService.GetMenu();
+        }
+
     }
 }

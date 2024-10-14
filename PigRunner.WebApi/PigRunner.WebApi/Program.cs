@@ -157,6 +157,11 @@ if (app.Environment.IsDevelopment())
 app.UseSwagger();
 app.UseSwaggerUI();
 
+<<<<<<< HEAD
+=======
+app.UseSwagger();
+app.UseSwaggerUI();
+>>>>>>> a149554f9ed18021995679a41f34d6e12be7a8fa
 //app.UseHttpsRedirection();
 
 app.UseAuthentication();

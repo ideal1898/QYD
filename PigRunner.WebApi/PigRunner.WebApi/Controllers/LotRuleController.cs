@@ -12,14 +12,14 @@ namespace PigRunner.WebApi.Controllers
     [ApiController]
     public class LotRuleController : ControllerBase
     {
-        private ILotRuleService loginServices;
+        private ILotRuleService services;
         /// <summary>
         /// 服务注册
         /// </summary>
         /// <param name="_loginServices"></param>
         public LotRuleController(ILotRuleService _loginServices)
         {
-            this.loginServices = _loginServices;
+            this.services = _loginServices;
         }
         /// <summary>
         /// 批号规则
@@ -30,7 +30,7 @@ namespace PigRunner.WebApi.Controllers
         [HttpPost]
         public PubResponse ActionLotMaster(LotRlueRequest request)
         {
-            return loginServices.ActionLotRule(request.RuleCode, request.RuleName, request.Org, request.RuleDes, request.Memo, request.BCLotRuleLines, request.OptType);
+            return services.ActionLotRule(request);
         }
     }
 }

@@ -11,17 +11,11 @@ namespace PigRunner.Services.System.IServices
     public interface ILotRuleService : IScopedService
     {
         /// <summary>
-        /// 批次规则
+        /// 批号规则
         /// </summary>
-        /// <param name="RuleCode"></param>
-        /// <param name="RuleName"></param>
-        /// <param name="Org"></param>
-        /// <param name="RuleDes"></param>
-        /// <param name="Memo"></param>
-        /// <param name="BCLotRuleLines"></param>
-        /// <param name="OptType"></param>
+        /// <param name="request"></param>
         /// <returns></returns>
-        PubResponse ActionLotRule(string RuleCode, string RuleName, string Org, string RuleDes,string Memo, List<BCLotRuleLineDTO> BCLotRuleLines, int OptType);
+        PubResponse ActionLotRule(LotRlueRequest request);
 
     }
 }

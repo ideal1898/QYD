@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,28 +15,33 @@ namespace PigRunner.Public.Common.Views
         /// <summary>
         /// 是否成功
         /// </summary>
-        public bool Success { get; set; } = false;
+        public bool success { get; set; } = false;
         /// <summary>
         /// 信息
         /// </summary>
-        public string Message { get; set; } = string.Empty;
+        public string msg { get; set; } = string.Empty;
 
         /// <summary>
         /// 单号/编码
         /// </summary>
-        public string Code { get; set; }= string.Empty;
+        public int code { get; set; }= 0;
 
 
         /// <summary>
         /// 单据ID
         /// </summary>
-        public long ID { get; set; } = 0;
+        public long id { get; set; } = 0;
 
 
         /// <summary>
         /// 查询返回的数据
         /// </summary>
-        public object Data { get; set; } = null;
+        public object qryData { get; set; } = null;
+
+        /// <summary>
+        /// 查询返回的数据
+        /// </summary>
+        public JArray data { get; set; } = new JArray();
 
     }
 }

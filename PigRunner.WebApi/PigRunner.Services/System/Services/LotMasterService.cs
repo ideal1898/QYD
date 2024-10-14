@@ -1,4 +1,5 @@
-﻿using PigRunner.Entitys.BarCode;
+﻿using Newtonsoft.Json.Linq;
+using PigRunner.Entitys.BarCode;
 using PigRunner.Entitys.System;
 using PigRunner.Public.Common.Views;
 using PigRunner.Public.Helpers;
@@ -23,83 +24,75 @@ namespace PigRunner.Services.System.Services
         }
 
         /// <summary>
-        /// 新增批号服务
+        /// 批号服务
         /// </summary>
-        /// <param name="LotCode"></param>
-        /// <param name="ItemMaster"></param>
-        /// <param name="Org"></param>
-        /// <param name="EffectiveDate"></param>
-        /// <param name="ValidDate"></param>
-        /// <param name="InvalidDate"></param>
-        /// <param name="SrcDocNo"></param>
-        /// <param name="AutoCode"></param>
-        /// <param name="Memo"></param>
+        /// <param name="request"></param>
         /// <returns></returns>
-        public PubResponse ActionLotMaster(string LotCode, string ItemMaster, string Org, DateTime EffectiveDate, int ValidDate, DateTime InvalidDate, string SrcDocNo, string AutoCode, string Memo,int OptType)
+        public PubResponse ActionLotMaster(LotMasterRequest request)
         {
             PubResponse response = new PubResponse();
 
             try
             {
-                if (string.IsNullOrEmpty(LotCode))
+                if (string.IsNullOrEmpty(request.LotCode))
                     throw new Exception("批号不能为空！");
 
-                if (OptType == 0)
+                if (request.OptType == 0)
                 {
-                    BcLotMaster head = lotMasterRepository.GetBcLotMaster(LotCode);
+                    BcLotMaster head = lotMasterRepository.GetFirst(q => q.LotCode == request.LotCode);
                     if (head == null)
                         head = BcLotMaster.Create();
 
                     long ItemMasterID = 0, OrgID = 0;
                     int AutoCodeID = 0;
-                    long.TryParse(ItemMaster, out ItemMasterID);
-                    long.TryParse(Org, out OrgID);
-                    int.TryParse(AutoCode, out AutoCodeID);
+                    long.TryParse(request.ItemMaster, out ItemMasterID);
+                    long.TryParse(request.Org, out OrgID);
+                    int.TryParse(request.AutoCode, out AutoCodeID);
 
-                    head.LotCode = LotCode;
+                    head.LotCode = request.LotCode;
                     head.ItemMaster = ItemMasterID;
                     head.Org = OrgID;
-                    head.EffectiveDate = EffectiveDate;
-                    head.ValidDate = ValidDate;
-                    head.InvalidDate = InvalidDate;
-                    head.SrcDocNo = SrcDocNo;
+                    head.EffectiveDate = request.EffectiveDate;
+                    head.ValidDate = request.ValidDate;
+                    head.InvalidDate = request.InvalidDate;
+                    head.SrcDocNo = request.SrcDocNo;
                     head.AutoCode = AutoCodeID;
-                    head.Memo = Memo;
-                    response.ID = head.ID;
+                    head.Memo = request.Memo;
+                    response.id = head.ID;
 
-                    bool isSuccess = lotMasterRepository.SaveLotMaster(head);
+                    bool isSuccess = lotMasterRepository.InsertOrUpdate(head);
                     if (!isSuccess)
                         throw new Exception("批号操作失败！");
-                }
-                else if (OptType == 1)
-                {
-                    BcLotMaster head = lotMasterRepository.GetBcLotMaster(LotCode);
-                    if (head == null)
-                        throw new Exception(string.Format("编码为【{0}】的批号不存在！",LotCode));
 
-                    bool isSuccess = lotMasterRepository.DelLotMaster(head);
+                }
+                else if (request.OptType == 1)
+                {
+                    BcLotMaster head = lotMasterRepository.GetFirst(q => q.LotCode == request.LotCode);
+                    if (head == null)
+                        throw new Exception(string.Format("编码为【{0}】的批号不存在！", request.LotCode));
+
+                    bool isSuccess = lotMasterRepository.Delete(head);
                     if (!isSuccess)
                         throw new Exception("批号删除失败！");
 
                 }
-                else if (OptType == 2)
+                else if (request.OptType == 2)
                 {
-                    BcLotMaster head = lotMasterRepository.GetBcLotMaster(LotCode);
+                    BcLotMaster head = lotMasterRepository.GetFirst(q => q.LotCode == request.LotCode);
                     if (head == null)
-                        throw new Exception(string.Format("编码为【{0}】的批号不存在！", LotCode));
-                    response.Data = head;
+                        throw new Exception(string.Format("编码为【{0}】的批号不存在！", request.LotCode));
+                    response.qryData = head;
                 }
-                response.Success = true;
-                response.Code = LotCode;
-                response.Message = "操作成功";
+                response.success = true;
+                response.code = 200;
+                response.msg = "操作成功";
             }
             catch (Exception ex)
             {
-                response.Message = ex.Message;
+                response.msg = ex.Message;
             }
             return response;
         }
-       
 
     }
 }
