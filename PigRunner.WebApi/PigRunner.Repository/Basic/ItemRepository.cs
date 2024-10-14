@@ -45,5 +45,14 @@ namespace PigRunner.Repository.Basic
         public bool Add(Item item) {
             return Insert(item);    
         }
+
+        public void casedate<Item>(Item item) {
+            BeginTran();
+            ///
+
+            CommitTran();
+
+
+        }
     }
 }

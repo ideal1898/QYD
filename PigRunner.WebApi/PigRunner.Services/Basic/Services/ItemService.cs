@@ -47,7 +47,17 @@ namespace PigRunner.Services.Basic.Services
             Item item = Item.Create();
             item.Code = vo.Code;
             item.Name = vo.Name;
+           
             return repository.Add(item);
+        }
+
+        public ItemVo Update(ItemVo vo)
+        {
+           var itemE= repository.GetFirst(item => item.Code == vo.Code);
+            itemE.Name = vo.Name;
+
+            repository.Update(itemE);
+            return vo;
         }
     }
 }

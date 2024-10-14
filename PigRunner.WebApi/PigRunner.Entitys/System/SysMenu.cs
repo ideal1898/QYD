@@ -61,21 +61,10 @@ namespace PigRunner.Entitys.System
         /// <summary>
         /// 缓存
         /// </summary>
-        public string? IsKeepAlive { get; set; } = string.Empty;//--缓存
+        public int IsKeepAlive { get; set; }//--缓存
         /// <summary>
         /// 父类关联ID
         /// </summary>
         public long? Parent { get; set; }
-        /// <summary>
-        /// 子菜单
-        /// </summary>
-        public List<SysMenu> Children { get; set; }=new List<SysMenu>();
-
-        /// <summary>
-        /// 关联：一对一
-        /// </summary>
-        //标准配置 推荐
-        [Navigate(NavigateType.OneToOne, nameof(SysMenu.Parent))]//一对一 Parent是SysMenu类里面的
-        public SysMenu? menu { get; set; }
     }
 }

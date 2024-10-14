@@ -1,4 +1,6 @@
-﻿using PigRunner.Entitys.System;
+﻿using PigRunner.DTO.Basic;
+using PigRunner.DTO.System;
+using PigRunner.Entitys.System;
 using PigRunner.Public.Interface;
 using SqlSugar;
 using System;
@@ -11,6 +13,6 @@ namespace PigRunner.Services.System
 {
     public interface IMenuService : IScopedService
     {
-       bool Save(SysMenu sysMenu);
+       bool Save(MenuVo vo);
     }
 }

@@ -40,5 +40,6 @@ namespace PigRunner.Services.Basic.IServices
      public interface IItemService : IScopedService
     {
        bool Add(ItemVo vo);
+        ItemVo Update(ItemVo vo);
     }
 }
