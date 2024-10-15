@@ -33,15 +33,15 @@ namespace PigRunner.Public.Common.Views
         public long id { get; set; } = 0;
 
 
-        /// <summary>
-        /// 查询返回的数据
-        /// </summary>
-        public object qryData { get; set; } = null;
+        ///// <summary>
+        ///// 查询返回的数据
+        ///// </summary>
+        //public object qryData { get; set; } = null;
 
         /// <summary>
         /// 查询返回的数据
         /// </summary>
-        public JArray data { get; set; } = new JArray();
+        public object data { get; set; } = null;
 
     }
 }

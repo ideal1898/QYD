@@ -1,36 +1,38 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PigRunner.DTO.Basic;
 using PigRunner.Public.Common.Views;
+using PigRunner.Services.Basic.IServices;
 using PigRunner.Services.System.IServices;
 
-namespace PigRunner.WebApi.Controllers
+namespace PigRunner.WebApi.Controllers.Basic
 {
     /// <summary>
-    /// 批号
+    /// 国家/地区
     /// </summary>
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class LotMasterController : ControllerBase
+    public class CountryController : ControllerBase
     {
-        private ILotMasterService loginServices;
+        private ICountryService services;
         /// <summary>
         /// 服务注册
         /// </summary>
-        /// <param name="_loginServices"></param>
-        public LotMasterController(ILotMasterService _loginServices)
+        /// <param name="_services"></param>
+        public CountryController(ICountryService _services)
         {
-            this.loginServices = _loginServices;
+            this.services = _services;
         }
         /// <summary>
-        /// 批号
+        /// 国家地区
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
         [AllowAnonymous]
         [HttpPost]
-        public PubResponse ActionLotMaster(LotMasterRequest request)
+        public PubResponse ActionCountry(CountryVo request)
         {
-            return loginServices.ActionLotMaster(request);
+            return services.ActionCountry(request);
         }
     }
 }
