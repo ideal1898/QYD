@@ -34,7 +34,7 @@ namespace PigRunner.DTO.System
 {
     public class MenuVo
     {
-        public long parent { get; set; } = 0;
+        public long parent { get; set; }
         public long id { get; set; } = 0;
         /// <summary>
         /// 路径
@@ -84,5 +84,9 @@ namespace PigRunner.DTO.System
         /// 是否缓存
         /// </summary>
         public bool isKeepAlive { get; set; }
+        /// <summary>
+        /// 菜单
+        /// </summary>
+        public List<MenuVo> childred { get; set; }=new List<MenuVo> ();
     }
 }

@@ -21,6 +21,7 @@ namespace PigRunner.Services.System
 
         bool Save(SysMenu sysMenu);
 
+        ResponseBody list();
         PubResponse GetMenu();
     }
 }

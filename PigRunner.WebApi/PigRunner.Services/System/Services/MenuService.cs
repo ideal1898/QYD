@@ -50,6 +50,10 @@ namespace PigRunner.Services.System
             return menuRepository.InsertOrUpdate(sysMenu);
 
         }
+
+        
+
+
         public PubResponse GetMenu()
         {
             PubResponse rtn = new PubResponse();
@@ -73,6 +77,14 @@ namespace PigRunner.Services.System
         public bool Save(SysMenu sysMenu)
         {
             throw new NotImplementedException();
+        }
+
+        public ResponseBody list()
+        {
+           ResponseBody response = new ResponseBody();
+
+
+            return response;
         }
     }
 }

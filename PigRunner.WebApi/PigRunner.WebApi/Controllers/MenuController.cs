@@ -44,6 +44,15 @@ namespace PigRunner.WebApi.Controllers
         {
             return menuService.GetMenu();
         }
+        /// <summary>
+        /// 菜单列表
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ResponseBody list()
+        {
+            return menuService.list();
+        }
 
     }
 }

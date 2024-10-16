@@ -19,6 +19,7 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Log4Net.AspNetCore" Version="6.1.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="SqlSugar.IOC" Version="2.0.0" />
     <PackageReference Include="SqlSugarCore" Version="5.1.4.154" />
     <PackageReference Include="Yitter.IdGenerator" Version="1.0.14" />
