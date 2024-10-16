@@ -56,10 +56,12 @@ namespace PigRunner.Services.System
             try
             {
                 string jsonFilePath = "E:/DevTools/WebServer/menudata.json";
+               // jsonFilePath = "D:/Wordfolder/Personal/PlatForm/WebServer/menudata.json";
                 var json = File.ReadAllText(jsonFilePath);
                 rtn.success = true;
                 rtn.code = 200;
-                rtn.data = JArray.Parse(json);
+                JArray array= JArray.Parse(json);
+                rtn.data = array;
             }
             catch (Exception ex)
             {
