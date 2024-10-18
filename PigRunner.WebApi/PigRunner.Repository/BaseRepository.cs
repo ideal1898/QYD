@@ -20,7 +20,7 @@ namespace PigRunner.Repository
         /// <param name="context"></param>
         public BaseRepository(ISqlSugarClient? context = null) : base(context)
         {
-            Context = DbScoped.SugarScope;
+            Context = DbScoped.SugarScope;    
         }
 
         /// <summary>

@@ -52,6 +52,6 @@ namespace PigRunner.Public.Common.Views
         /// <summary>
         /// 角色
         /// </summary>
-        public string Nickname { get; set; }=string.Empty;
+        public string Nickname { get; set; }=string.Empty; 
     }
 }

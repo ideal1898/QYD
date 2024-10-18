@@ -25,6 +25,7 @@
 
 
 using Dm.filter.log;
+using Newtonsoft.Json.Linq;
 using PigRunner.Entitys.System;
 using PigRunner.Public.Common.Views;
 using PigRunner.Public.Helpers;
@@ -95,9 +96,9 @@ namespace PigRunner.Services.System.Services
                 return LoginResponse.Error("登陆失败");
 
             loginResponse.LoginUser = loginUser;
-            loginResponse.Success = true;
-            loginResponse.Token = token;
-            loginResponse.Message = "登录成功";
+            loginResponse.code = 200;
+            loginResponse.data = JObject.FromObject(new { access_token=token });
+            loginResponse.msg = "登录成功";
             return loginResponse;
         }
         /// <summary>

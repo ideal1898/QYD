@@ -9,7 +9,8 @@ namespace PigRunner.WebApi.Controllers
     /// <summary>
     /// 登录
     /// </summary>
-    [Route("api/[controller]/[action]")]
+    //[Route("api/[controller]/[action]")]
+    [Route("api/[action]")]
     [ApiController]
     public class LoginController : ControllerBase
     {

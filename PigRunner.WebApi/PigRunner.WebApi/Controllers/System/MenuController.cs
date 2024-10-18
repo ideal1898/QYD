@@ -6,7 +6,7 @@ using PigRunner.Entitys.System;
 using PigRunner.Public.Common.Views;
 using PigRunner.Services.System;
 
-namespace PigRunner.WebApi.Controllers
+namespace PigRunner.WebApi.Controllers.System
 {
     /// <summary>
     /// 菜单
@@ -48,6 +48,7 @@ namespace PigRunner.WebApi.Controllers
         /// 菜单列表
         /// </summary>
         /// <returns></returns>
+        [AllowAnonymous]
         [HttpGet]
         public ResponseBody list()
         {

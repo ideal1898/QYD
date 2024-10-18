@@ -24,6 +24,7 @@
 #endregion << 版 本 注 释 >>
 
 
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,19 +41,19 @@ namespace PigRunner.Public.Common.Views
         /// <summary>
         /// 是否成功
         /// </summary>
-        public bool Success { get; set; }=false;
+        public int code { get; set; }
         /// <summary>
         /// 信息
         /// </summary>
-        public string Message { get; set; }=string.Empty;
+        public string msg { get; set; }=string.Empty;
         /// <summary>
         /// token（令牌）
         /// </summary>
-        public string Token { get; set; } = string.Empty;
+        public JObject data { get; set; } = new JObject();
         public LoginUserVo LoginUser { get; set; }=new LoginUserVo();
 
         public static LoginResponse Error(string msg) { 
-            return new LoginResponse { Success = false, Message = msg };        
+            return new LoginResponse { code = 401, msg = msg };        
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using PigRunner.Public.Abstract;
+﻿using Newtonsoft.Json;
+using PigRunner.Public.Abstract;
 using SqlSugar;
 using System;
 using System.Collections.Generic;
@@ -17,22 +18,27 @@ namespace PigRunner.Entitys.System
         /// <summary>
         /// 用户组建
         /// </summary>
+        [JsonProperty("path")]
         public string? Path { get; set; }=string.Empty;// 
         /// <summary>
         /// 组建名称
         /// </summary>
+        [JsonProperty("name")]
         public string Name { get; set; } = string.Empty;// 组建名称
         /// <summary>
         /// 组件
         /// </summary>
+        [JsonProperty("component")] 
         public string Component { get; set; } = string.Empty;//--组件
         /// <summary>
         /// 定向
         /// </summary>
+        [JsonProperty("redirect")] 
         public string? Redirect { get; set; } = string.Empty;//定向 
         /// <summary>
         /// 生效
         /// </summary>
+        [JsonProperty("isActive")]
         public int IsActive { get; set; }//--生效
         /// <summary>
         /// 图标
@@ -66,5 +72,7 @@ namespace PigRunner.Entitys.System
         /// 父类关联ID
         /// </summary>
         public long? Parent { get; set; }
+        [SqlSugar.SugarColumn(IsIgnore = true)]
+        public List<SysMenu> Children { get; set; }=new List<SysMenu>();
     }
 }
