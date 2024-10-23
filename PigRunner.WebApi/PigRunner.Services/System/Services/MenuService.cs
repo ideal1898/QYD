@@ -85,22 +85,7 @@ namespace PigRunner.Services.System
 
         public ResponseBody list()
         {
-            ResponseBody response = new ResponseBody();
-            Stopwatch stopwatch = Stopwatch.StartNew();
-            var sysMenus = menuRepository.AsQueryable().ToTree(it => it.Children, it => it.Parent, 0);
-            List<MenuView> list = MenuTree.Convert(sysMenus);
-
-            var menuPath = "menudata.json";
-            var json = File.ReadAllTextAsync(menuPath).Result;
-
-            stopwatch.Stop();
-            response.total = 1;
-            response.code = 200;
-            response.msg = $"查询完成,耗时：{stopwatch.ElapsedMilliseconds} 毫秒";
-            //response.data = JArray.Parse(json);
-            response.data = JArray.FromObject(list);
-
-            return response;
+            return listByFile();
         }
 
         private ResponseBody listByFile()
@@ -128,17 +113,6 @@ namespace PigRunner.Services.System
             response.code = 200;
             response.msg = $"查询完成,耗时：{stopwatch.ElapsedMilliseconds} 毫秒";
             response.data = JArray.FromObject(list);
-            return response;
-        }
-
-        public ResponseBody GetMenuByEntity()
-        {
-            ResponseBody response = new ResponseBody();
-
-            var results = menuRepository.AsQueryable();
-
-
-
             return response;
         }
 
