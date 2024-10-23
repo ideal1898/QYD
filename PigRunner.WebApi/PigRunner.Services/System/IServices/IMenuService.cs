@@ -1,6 +1,5 @@
 
 ﻿using PigRunner.DTO.Basic;
-using PigRunner.DTO.System;
 using PigRunner.Entitys.System;
 using PigRunner.Public.Common.Views;
 
@@ -17,7 +16,7 @@ namespace PigRunner.Services.System
     public interface IMenuService : IScopedService
     {
 
-       bool Save(MenuVo vo);
+       bool Save(MenuView view);
 
         bool Save(SysMenu sysMenu);
 

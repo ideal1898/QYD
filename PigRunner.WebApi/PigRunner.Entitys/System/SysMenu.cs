@@ -19,7 +19,7 @@ namespace PigRunner.Entitys.System
         /// 用户组建
         /// </summary>
         [JsonProperty("path")]
-        public string? Path { get; set; }=string.Empty;// 
+        public string Path { get; set; }=string.Empty;// 
         /// <summary>
         /// 组建名称
         /// </summary>
@@ -51,7 +51,7 @@ namespace PigRunner.Entitys.System
         /// <summary>
         /// 外部连接
         /// </summary>
-        public bool IsLink { get; set; }// 外部连接
+        public string? IsLink { get; set; }// 外部连接
         /// <summary>
         /// 显示
         /// </summary>
@@ -71,7 +71,7 @@ namespace PigRunner.Entitys.System
         /// <summary>
         /// 父类关联ID
         /// </summary>
-        public long? Parent { get; set; }
+        public long Parent { get; set; }
         [SqlSugar.SugarColumn(IsIgnore = true)]
         public List<SysMenu> Children { get; set; }=new List<SysMenu>();
     }

@@ -1,6 +1,5 @@
 
 using PigRunner.DTO.Basic;
-using PigRunner.DTO.System;
 using PigRunner.Entitys.System;
 using Newtonsoft.Json.Linq;
 using PigRunner.Public.Common.Views;
@@ -17,6 +16,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Runtime.CompilerServices;
 using System.Diagnostics;
+using PigRunner.Services.Common;
 
 namespace PigRunner.Services.System
 {
@@ -31,27 +31,27 @@ namespace PigRunner.Services.System
         {
             menuRepository = _menuRepository;
         }
-        public bool Save(MenuVo vo)
+        public bool Save(MenuView view)
         {
             SysMenu sysMenu = null;
-            if (vo.id == 0)
+            if (view.id == 0)
                 sysMenu = SysMenu.Create();
             else
-                sysMenu = menuRepository.GetById(vo.id);
+                sysMenu = menuRepository.GetById(view.id);
 
-            sysMenu.Path = vo.path;// 
-            sysMenu.Name = vo.name;// 组建名称
-            sysMenu.Component = vo.component;//--组件
-            sysMenu.Redirect = vo.redirect;//定向 
-            sysMenu.IsActive = vo.isActive ? 1 : 0;//--生效
-            sysMenu.Icon = vo.icon;//--图标
-            sysMenu.Title = vo.title;// --标题
-            sysMenu.IsLink = vo.isLink;// 外部连接
-            sysMenu.IsHide = vo.isHide ? 1 : 0;//显示
-            sysMenu.IsFull = vo.isFull ? 1 : 0;//全屏
-            sysMenu.IsAffix = vo.isAffix ? 1 : 0;//固钉
-            sysMenu.IsKeepAlive = vo.isKeepAlive ? 1 : 0;//--缓存
-            sysMenu.Parent = vo.parent;
+            sysMenu.Path = view.path;// 
+            sysMenu.Name = view.name;// 组建名称
+            sysMenu.Component = view.component;//--组件
+            sysMenu.Redirect = view.redirect;//定向 
+            sysMenu.IsActive = view.meta.isActive ? 1 : 0;//--生效
+            sysMenu.Icon = view.meta.icon;//--图标
+            sysMenu.Title = view.meta.title;// --标题
+            //sysMenu.IsLink = view.meta.isLink?1:0;// 外部连接
+            sysMenu.IsHide = view.meta.isHide ? 1 : 0;//显示
+            sysMenu.IsFull = view.meta.isFull ? 1 : 0;//全屏
+            sysMenu.IsAffix = view.meta.isAffix ? 1 : 0;//固钉
+            sysMenu.IsKeepAlive = view.meta.isKeepAlive ? 1 : 0;//--缓存
+            sysMenu.Parent = view.parent;
             return menuRepository.InsertOrUpdate(sysMenu);
         }
 
@@ -87,67 +87,60 @@ namespace PigRunner.Services.System
         {
             ResponseBody response = new ResponseBody();
             Stopwatch stopwatch = Stopwatch.StartNew();
+            var sysMenus = menuRepository.AsQueryable().ToTree(it => it.Children, it => it.Parent, 0);
+            List<MenuView> list = MenuTree.Convert(sysMenus);
 
-            /*
-            var results = menuRepository.AsQueryable().ToTree(item => item.Children, item => item.Parent, 0);
-             var Tree=results.Select(s => new
-            {
-                path = s.Path,
-                name = s.Name,
-                component = s.Component,
-                meta = new
-                {
-                    icon = s.Icon,
-                    title = s.Title,
-                    isLink = s.IsLink,
-                    isHide = s.IsHide,
-                    isFull = s.IsFull,
-                    isAffix = s.IsAffix,
-                    isKeepAlive = s.IsKeepAlive
-                },
-                children = s.Children?.Select(child => new
-                {
-                    path = child.Path,
-                    name = child.Name,
-                    component = child.Component,
-                    meta = new
-                    {
-                        icon = child.Icon,
-                        title = child.Title,
-                        isLink = child.IsLink,
-                        isHide = child.IsHide,
-                        isFull = child.IsFull,
-                        isAffix = child.IsAffix,
-                        isKeepAlive = child.IsKeepAlive
-                    },
-                    children = child.Children?.Select(sub =>new {
-                        path = sub.Path,
-                        name = sub.Name,
-                        component = sub.Component,
-                        meta = new
-                        {
-                            icon = sub.Icon,
-                            title = sub.Title,
-                            isLink = sub.IsLink,
-                            isHide = sub.IsHide,
-                            isFull = sub.IsFull,
-                            isAffix = sub.IsAffix,
-                            isKeepAlive = sub.IsKeepAlive
-                        }
-                    })
-                })
-            });
-            */
             var menuPath = "menudata.json";
-            var json= File.ReadAllTextAsync(menuPath).Result;
+            var json = File.ReadAllTextAsync(menuPath).Result;
+
+            stopwatch.Stop();
+            response.total = 1;
+            response.code = 200;
+            response.msg = $"查询完成,耗时：{stopwatch.ElapsedMilliseconds} 毫秒";
+            //response.data = JArray.Parse(json);
+            response.data = JArray.FromObject(list);
+
+            return response;
+        }
+
+        private ResponseBody listByFile()
+        {
+            ResponseBody response = new ResponseBody();
+            Stopwatch stopwatch = Stopwatch.StartNew();
+
+            var menuPath = "menudata.json";
+            var json = File.ReadAllTextAsync(menuPath).Result;
 
             stopwatch.Stop();
             response.total = 1;
             response.code = 200;
             response.msg = $"查询完成,耗时：{stopwatch.ElapsedMilliseconds} 毫秒";
             response.data = JArray.Parse(json);
+          
+            return response;
+        }
+        private ResponseBody listByDB() { 
+            ResponseBody response = new ResponseBody();
+            Stopwatch stopwatch = Stopwatch.StartNew();
+            var sysMenus = menuRepository.AsQueryable().ToTree(it => it.Children, it => it.Parent, 0);
+            List<MenuView> list = MenuTree.Convert(sysMenus);
+            response.total = 1;
+            response.code = 200;
+            response.msg = $"查询完成,耗时：{stopwatch.ElapsedMilliseconds} 毫秒";
+            response.data = JArray.FromObject(list);
+            return response;
+        }
+
+        public ResponseBody GetMenuByEntity()
+        {
+            ResponseBody response = new ResponseBody();
+
+            var results = menuRepository.AsQueryable();
+
+
 
             return response;
         }
+
     }
 }

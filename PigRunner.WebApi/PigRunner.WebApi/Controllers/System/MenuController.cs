@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using PigRunner.DTO.System;
+using Newtonsoft.Json;
 using PigRunner.Entitys.System;
 using PigRunner.Public.Common.Views;
 using PigRunner.Services.System;
 
-namespace PigRunner.WebApi.Controllers.System
+namespace PigRunner.WebApi.Controllers.Sys
 {
     /// <summary>
     /// 菜单
@@ -29,9 +29,9 @@ namespace PigRunner.WebApi.Controllers.System
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public bool Save([FromBody] MenuVo vo)
+        public bool Save([FromBody] MenuView view)
         {
-            return menuService.Save(vo);
+            return menuService.Save(view);
         }
 
         /// <summary>
@@ -54,6 +54,13 @@ namespace PigRunner.WebApi.Controllers.System
         {
             return menuService.list();
         }
+        [AllowAnonymous]
+        [HttpGet]
+        public  ResponseBody list1() {
+            ResponseBody response = new ResponseBody();
+            
 
+            return response;
+        }
     }
 }

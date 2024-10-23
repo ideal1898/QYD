@@ -137,6 +137,24 @@ SugarIocServices.ConfigurationSugar(db =>
     {
         Console.WriteLine(sql);
     };
+    //执行超过1s语句
+    db.Aop.OnLogExecuted = (sql, p) => {
+        if (db.Ado.SqlExecutionTime.TotalSeconds > 1) {
+            var SqlStack = db.Ado.SqlStackTrace;
+            if (SqlStack != null) {
+                //cs文件名
+                var CsFileName = SqlStack.FirstFileName;
+                //cs文件代码行数
+                var CsFileLine=SqlStack.FirstLine;
+                //cs文件方法名
+                var CsFileMethod=SqlStack.FirstMethodName;
+                //将结果输出控制台
+                Console.WriteLine($"{CsFileName}.{CsFileMethod}:{CsFileLine}:{sql}");  
+            }
+        
+        }  
+    };
+
 });
 
 #endregion
