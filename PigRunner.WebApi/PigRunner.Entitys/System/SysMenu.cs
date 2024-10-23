@@ -51,7 +51,7 @@ namespace PigRunner.Entitys.System
         /// <summary>
         /// 外部连接
         /// </summary>
-        public string? IsLink { get; set; } = string.Empty;// 外部连接
+        public bool IsLink { get; set; }// 外部连接
         /// <summary>
         /// 显示
         /// </summary>

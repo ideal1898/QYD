@@ -1,0 +1,1030 @@
+[{
+		"path": "/home/index",
+		"name": "home",
+		"component": "/home/index",
+		"meta": {
+			"icon": "HomeFilled",
+			"title": "首页",
+			"isLink": "",
+			"isHide": false,
+			"isFull": false,
+			"isAffix": true,
+			"isKeepAlive": true
+		}
+	},
+	{
+		"path": "/basic",
+		"name": "basic",
+		"redirect": "",
+		"meta": {
+			"icon": "Lock",
+			"title": "基础设置",
+			"isLink": "",
+			"isHide": false,
+			"isFull": false,
+			"isAffix": false,
+			"isKeepAlive": true
+		},
+		"children": [{
+				"path": "/basic/basicPub",
+				"name": "system",
+				"redirect": "",
+				"meta": {
+					"icon": "Lock",
+					"title": "公共档案",
+					"isLink": "",
+					"isHide": false,
+					"isFull": false,
+					"isAffix": false,
+					"isKeepAlive": true
+				},
+				"children": [{
+						"path": "/basic/basicPub/Country",
+						"name": "Country",
+						"component": "/basic/basicPub/Country/index",
+						"meta": {
+							"icon": "Menu",
+							"title": "国家",
+							"isLink": "",
+							"isHide": false,
+							"isFull": false,
+							"isAffix": false,
+							"isKeepAlive": true
+						}
+					},
+					{
+						"path": "/basic/basicPub/coProvince",
+						"name": "coProvince",
+						"component": "/basic/basicPub/coProvince/index",
+						"meta": {
+							"icon": "Menu",
+							"title": "省份及自治区",
+							"isLink": "",
+							"isHide": false,
+							"isFull": false,
+							"isAffix": false,
+							"isKeepAlive": true
+						}
+					},
+					{
+						"path": "/basic/basicPub/Tax",
+						"name": "Tax",
+						"component": "/basic/basicPub/Tax/index",
+						"meta": {
+							"icon": "Menu",
+							"title": "税率信息",
+							"isLink": "",
+							"isHide": false,
+							"isFull": false,
+							"isAffix": false,
+							"isKeepAlive": true
+						}
+					}
+				]
+			},
+			{
+				"path": "/basic/basicJT",
+				"name": "system",
+				"redirect": "",
+				"meta": {
+					"icon": "Lock",
+					"title": "集团级档案",
+					"isLink": "",
+					"isHide": false,
+					"isFull": false,
+					"isAffix": false,
+					"isKeepAlive": true
+				},
+				"children": [{
+						"path": "/basic/basicJT/organization",
+						"name": "organization",
+						"component": "/basic/basicJT/organization/index",
+						"meta": {
+							"icon": "Menu",
+							"title": "企业机构",
+							"isLink": "",
+							"isHide": false,
+							"isFull": false,
+							"isAffix": false,
+							"isKeepAlive": true
+						}
+					},
+					{
+						"path": "/basic/basicJT/customer",
+						"name": "customer",
+						"component": "/basic/basicJT/customer/index",
+						"meta": {
+							"icon": "Menu",
+							"title": "客户",
+							"isLink": "",
+							"isHide": false,
+							"isFull": false,
+							"isAffix": false,
+							"isKeepAlive": true
+						}
+					},
+					{
+						"path": "/basic/basicJT/customerGroup",
+						"name": "customerGroup",
+						"component": "/basic/basicJT/customerGroup/index",
+						"meta": {
+							"icon": "Menu",
+							"title": "客户分类",
+							"isLink": "",
+							"isHide": false,
+							"isFull": false,
+							"isAffix": false,
+							"isKeepAlive": true
+						}
+					},
+					{
+						"path": "/basic/basicJT/supplier",
+						"name": "supplier",
+						"component": "/basic/basicJT/supplier/index",
+						"meta": {
+							"icon": "Menu",
+							"title": "供应商",
+							"isLink": "",
+							"isHide": false,
+							"isFull": false,
+							"isAffix": false,
+							"isKeepAlive": true
+						}
+					},
+					{
+						"path": "/basic/basicJT/supplierGroup",
+						"name": "supplierGroup",
+						"component": "/basic/basicJT/supplierGroup/index",
+						"meta": {
+							"icon": "Menu",
+							"title": "供应商分类",
+							"isLink": "",
+							"isHide": false,
+							"isFull": false,
+							"isAffix": false,
+							"isKeepAlive": true
+						}
+					},
+					{
+						"path": "/basic/basicJT/itemCategory",
+						"name": "itemCategory",
+						"component": "/basic/basicJT/itemCategory/index",
+						"meta": {
+							"icon": "Menu",
+							"title": "物料分类",
+							"isLink": "",
+							"isHide": false,
+							"isFull": false,
+							"isAffix": false,
+							"isKeepAlive": true
+						}
+					},
+					{
+						"path": "/basic/basicJT/itemmaster",
+						"name": "itemmaster",
+						"component": "/basic/basicJT/itemmaster/index",
+						"meta": {
+							"icon": "Menu",
+							"title": "物料",
+							"isLink": "",
+							"isHide": false,
+							"isFull": false,
+							"isAffix": false,
+							"isKeepAlive": true
+						}
+					},
+					{
+						"path": "/basic/basicJT/project",
+						"name": "project",
+						"component": "/basic/basicJT/project/index",
+						"meta": {
+							"icon": "Menu",
+							"title": "项目",
+							"isLink": "",
+							"isHide": false,
+							"isFull": false,
+							"isAffix": false,
+							"isKeepAlive": true
+						}
+					},
+					{
+						"path": "/basic/basicJT/uom",
+						"name": "uom",
+						"component": "/basic/basicJT/uom/index",
+						"meta": {
+							"icon": "Menu",
+							"title": "计量单位",
+							"isLink": "",
+							"isHide": false,
+							"isFull": false,
+							"isAffix": false,
+							"isKeepAlive": true
+						}
+					}
+				]
+			},
+			{
+				"path": "/basic/basicOrg",
+				"name": "basicOrg",
+				"redirect": "",
+				"meta": {
+					"icon": "Lock",
+					"title": "企业级档案",
+					"isLink": "",
+					"isHide": false,
+					"isFull": false,
+					"isAffix": false,
+					"isKeepAlive": true
+				},
+				"children": [{
+						"path": "/basic/basicOrg/Department",
+						"name": "Department",
+						"component": "/basic/basicOrg/Department/index",
+						"meta": {
+							"icon": "Menu",
+							"title": "部门",
+							"isLink": "",
+							"isHide": false,
+							"isFull": false,
+							"isAffix": false,
+							"isKeepAlive": true
+						}
+					},
+					{
+						"path": "/basic/basicOrg/Operators",
+						"name": "Operators",
+						"component": "/basic/basicOrg/Operators/index",
+						"meta": {
+							"icon": "Menu",
+							"title": "业务员",
+							"isLink": "",
+							"isHide": false,
+							"isFull": false,
+							"isAffix": false,
+							"isKeepAlive": true
+						}
+					},
+					{
+						"path": "/basic/basicOrg/wh",
+						"name": "wh",
+						"component": "/basic/basicOrg/wh/index",
+						"meta": {
+							"icon": "Menu",
+							"title": "存储地点",
+							"isLink": "",
+							"isHide": false,
+							"isFull": false,
+							"isAffix": false,
+							"isKeepAlive": true
+						}
+					},
+					{
+						"path": "/basic/basicOrg/whBin",
+						"name": "whBin",
+						"component": "/basic/basicOrg/whBin/index",
+						"meta": {
+							"icon": "Menu",
+							"title": "库区",
+							"isLink": "",
+							"isHide": false,
+							"isFull": false,
+							"isAffix": false,
+							"isKeepAlive": true
+						}
+					},
+					{
+						"path": "/basic/basicOrg/whSh",
+						"name": "whSh",
+						"component": "/basic/basicOrg/whSh/index",
+						"meta": {
+							"icon": "Menu",
+							"title": "货位",
+							"isLink": "",
+							"isHide": false,
+							"isFull": false,
+							"isAffix": false,
+							"isKeepAlive": true
+						}
+					}
+				]
+			},
+			{
+				"path": "/codeSet",
+				"name": "codeSet",
+				"redirect": "",
+				"meta": {
+					"icon": "Lock",
+					"title": "编码规则",
+					"isLink": "",
+					"isHide": false,
+					"isFull": false,
+					"isAffix": false,
+					"isKeepAlive": true
+				},
+				"children": [{
+						"path": "/basic/codeSet/DocRule",
+						"name": "DocRule",
+						"component": "/basic/codeSet/DocRule/index",
+						"meta": {
+							"icon": "Menu",
+							"title": "档案编码规则",
+							"isLink": "",
+							"isHide": false,
+							"isFull": false,
+							"isAffix": false,
+							"isKeepAlive": true
+						}
+					},
+					{
+						"path": "/basic/codeSet/OrderType",
+						"name": "OrderType",
+						"component": "/basic/codeSet/OrderType/index",
+						"meta": {
+							"icon": "Menu",
+							"title": "单据类型",
+							"isLink": "",
+							"isHide": false,
+							"isFull": false,
+							"isAffix": false,
+							"isKeepAlive": true
+						}
+					},
+					{
+						"path": "/basic/codeSet/OrderRule",
+						"name": "OrderRule",
+						"component": "/basic/codeSet/OrderRule/index",
+						"meta": {
+							"icon": "Menu",
+							"title": "单据编码规则",
+							"isLink": "",
+							"isHide": false,
+							"isFull": false,
+							"isAffix": false,
+							"isKeepAlive": true
+						}
+					}
+				]
+			}
+		]
+	},
+	{
+		"path": "/system",
+		"name": "system",
+		"redirect": "",
+		"meta": {
+			"icon": "Tools",
+			"title": "系统管理",
+			"isLink": "",
+			"isHide": false,
+			"isFull": false,
+			"isAffix": false,
+			"isKeepAlive": true
+		},
+		"children": [{
+				"path": "/system/user",
+				"name": "User",
+				"component": "/system/user/index",
+				"meta": {
+					"icon": "Menu",
+					"title": "用户管理",
+					"isLink": "",
+					"isHide": false,
+					"isFull": false,
+					"isAffix": false,
+					"isKeepAlive": true
+				}
+			},
+			{
+				"path": "/system/menu",
+				"name": "Menu",
+				"component": "/system/menu/index",
+				"meta": {
+					"icon": "Menu",
+					"title": "菜单管理",
+					"isLink": "",
+					"isHide": false,
+					"isFull": false,
+					"isAffix": false,
+					"isKeepAlive": true
+				}
+			},
+			{
+				"path": "/system/role",
+				"name": "Role",
+				"component": "/system/role/index",
+				"meta": {
+					"icon": "Menu",
+					"title": "角色管理",
+					"isLink": "",
+					"isHide": false,
+					"isFull": false,
+					"isAffix": false,
+					"isKeepAlive": true
+				}
+			},
+			{
+				"path": "/system/action",
+				"name": "Actioin",
+				"component": "/system/action/index",
+				"meta": {
+					"icon": "Menu",
+					"title": "动作权限",
+					"isLink": "",
+					"isHide": false,
+					"isFull": false,
+					"isAffix": false,
+					"isKeepAlive": true
+				}
+			},
+			{
+				"path": "/system/field",
+				"name": "Field",
+				"component": "/system/field/index",
+				"meta": {
+					"icon": "Menu",
+					"title": "动作权限",
+					"isLink": "",
+					"isHide": false,
+					"isFull": false,
+					"isAffix": false,
+					"isKeepAlive": true
+				}
+			},
+			{
+				"path": "/system/data",
+				"name": "Data",
+				"component": "/system/data/index",
+				"meta": {
+					"icon": "Menu",
+					"title": "数据权限",
+					"isLink": "",
+					"isHide": false,
+					"isFull": false,
+					"isAffix": false,
+					"isKeepAlive": true
+				}
+			}
+		]
+	},
+	{
+		"path": "/supplychain",
+		"name": "supplychain",
+		"redirect": "",
+		"meta": {
+			"icon": "Lock",
+			"title": "供应链",
+			"isLink": "",
+			"isHide": false,
+			"isFull": false,
+			"isAffix": false,
+			"isKeepAlive": true
+		},
+		"children": [{
+				"path": "/supplychain/pm",
+				"name": "PM",
+				"meta": {
+					"icon": "Menu",
+					"title": "采购管理",
+					"isLink": "",
+					"isHide": false,
+					"isFull": false,
+					"isAffix": false,
+					"isKeepAlive": true
+				},
+				"children": [{
+						"path": "/supplychain/pm/pr",
+						"name": "PR",
+						"component": "/supplychain/pm/pr/index",
+						"meta": {
+							"icon": "Menu",
+							"title": "请购单",
+							"isLink": "",
+							"isHide": false,
+							"isFull": false,
+							"isAffix": false,
+							"isKeepAlive": true
+						}
+					},
+					{
+						"path": "/supplychain/pm/po",
+						"name": "PO",
+						"component": "/supplychain/pm/po/index",
+						"meta": {
+							"icon": "Menu",
+							"title": "采购订单",
+							"isLink": "",
+							"isHide": false,
+							"isFull": false,
+							"isAffix": false,
+							"isKeepAlive": true
+						}
+					},
+					{
+						"path": "/supplychain/pm/delivery",
+						"name": "Delivery",
+						"component": "/supplychain/pm/delivery/index",
+						"meta": {
+							"icon": "Menu",
+							"title": "送货单",
+							"isLink": "",
+							"isHide": false,
+							"isFull": false,
+							"isAffix": false,
+							"isKeepAlive": true
+						}
+					},
+					{
+						"path": "/supplychain/pm/receipt",
+						"name": "Receipt",
+						"component": "/supplychain/pm/receipt/index",
+						"meta": {
+							"icon": "Menu",
+							"title": "采购入库单",
+							"isLink": "",
+							"isHide": false,
+							"isFull": false,
+							"isAffix": false,
+							"isKeepAlive": true
+						}
+					},
+					{
+						"path": "/supplychain/pm/rtnrequest",
+						"name": "RtnRequest",
+						"component": "/supplychain/pm/rtnrequest/index",
+						"meta": {
+							"icon": "Menu",
+							"title": "采购退货申请单",
+							"isLink": "",
+							"isHide": false,
+							"isFull": false,
+							"isAffix": false,
+							"isKeepAlive": true
+						}
+					},
+					{
+						"path": "/supplychain/pm/returnbill",
+						"name": "returnbill",
+						"component": "/supplychain/pm/returnbill/index",
+						"meta": {
+							"icon": "Menu",
+							"title": "采购退货单",
+							"isLink": "",
+							"isHide": false,
+							"isFull": false,
+							"isAffix": false,
+							"isKeepAlive": true
+						}
+					}
+				]
+			},
+			{
+				"path": "/supplychain/sm",
+				"name": "SM",
+				"meta": {
+					"icon": "Menu",
+					"title": "销售管理",
+					"isLink": "",
+					"isHide": false,
+					"isFull": false,
+					"isAffix": false,
+					"isKeepAlive": true
+				},
+				"children": [{
+						"path": "/supplychain/sm/so",
+						"name": "SO",
+						"component": "/supplychain/sm/so/index",
+						"meta": {
+							"icon": "Menu",
+							"title": "销售订单",
+							"isLink": "",
+							"isHide": false,
+							"isFull": false,
+							"isAffix": false,
+							"isKeepAlive": true
+						}
+					},
+					{
+						"path": "/supplychain/sm/shipplan",
+						"name": "ShipPlan",
+						"component": "/supplychain/sm/shipplan/index",
+						"meta": {
+							"icon": "Menu",
+							"title": "发货计划",
+							"isLink": "",
+							"isHide": false,
+							"isFull": false,
+							"isAffix": false,
+							"isKeepAlive": true
+						}
+					},
+					{
+						"path": "/supplychain/sm/shipment",
+						"name": "Shipment",
+						"component": "/supplychain/sm/shipment/index",
+						"meta": {
+							"icon": "Menu",
+							"title": "销售出货",
+							"isLink": "",
+							"isHide": false,
+							"isFull": false,
+							"isAffix": false,
+							"isKeepAlive": true
+						}
+					},
+					{
+						"path": "/supplychain/sm/salertn",
+						"name": "SaleRtn",
+						"component": "/supplychain/sm/salertn/index",
+						"meta": {
+							"icon": "Menu",
+							"title": "销售退货申请",
+							"isLink": "",
+							"isHide": false,
+							"isFull": false,
+							"isAffix": false,
+							"isKeepAlive": true
+						}
+					},
+					{
+						"path": "/supplychain/sm/salercv",
+						"name": "SaleRcv",
+						"component": "/supplychain/sm/salercv/index",
+						"meta": {
+							"icon": "Menu",
+							"title": "销售退回收货单",
+							"isLink": "",
+							"isHide": false,
+							"isFull": false,
+							"isAffix": false,
+							"isKeepAlive": true
+						}
+					}
+				]
+			}
+		]
+	},
+	{
+		"path": "/datacenter",
+		"name": "datacenter",
+		"redirect": "",
+		"meta": {
+			"icon": "Lock",
+			"title": "报表中心",
+			"isLink": "",
+			"isHide": false,
+			"isFull": false,
+			"isAffix": false,
+			"isKeepAlive": true
+		},
+		"children": [{
+				"path": "/datacenter/pm",
+				"name": "datacenterpm",
+				"meta": {
+					"icon": "Menu",
+					"title": "采购报表中心",
+					"isLink": "",
+					"isHide": false,
+					"isFull": false,
+					"isAffix": false,
+					"isKeepAlive": true
+				},
+				"children": [{
+					"path": "/datacenter/pm/poorderflow",
+					"name": "POOrderFlow",
+					"component": "/datacenter/pm/poorderflow/index",
+					"meta": {
+						"icon": "Menu",
+						"title": "采购订单追踪表",
+						"isLink": "",
+						"isHide": false,
+						"isFull": false,
+						"isAffix": false,
+						"isKeepAlive": true
+					}
+				}]
+			},
+			{
+				"path": "/datacenter/sm",
+				"name": "datacentersm",
+				"meta": {
+					"icon": "Menu",
+					"title": "销售报表中心",
+					"isLink": "",
+					"isHide": false,
+					"isFull": false,
+					"isAffix": false,
+					"isKeepAlive": true
+				},
+				"children": [{
+					"path": "/datacenter/sm/saleorderflow",
+					"name": "SaleOrderFlow",
+					"component": "/datacenter/sm/saleorderflow/index",
+					"meta": {
+						"icon": "Menu",
+						"title": "销售订单追踪表",
+						"isLink": "",
+						"isHide": false,
+						"isFull": false,
+						"isAffix": false,
+						"isKeepAlive": true
+					}
+				}]
+			}
+		]
+	},
+	{
+		"path": "/barCodePlatform",
+		"name": "BarCodePlatform",
+		"redirect": "",
+		"meta": {
+			"icon": "Lock",
+			"title": "条码平台",
+			"isLink": "",
+			"isHide": false,
+			"isFull": false,
+			"isAffix": false,
+			"isKeepAlive": true
+		},
+		"children": [{
+				"path": "/barCodePlatform/lot",
+				"name": "Lot",
+				"meta": {
+					"icon": "Menu",
+					"title": "批次",
+					"isLink": "",
+					"isHide": false,
+					"isFull": false,
+					"isAffix": false,
+					"isKeepAlive": true
+				},
+				"children": [{
+						"path": "/barCodePlatform/lot/lotMaster",
+						"name": "LotMaster",
+						"component": "/barCodePlatform/lot/lotMaster/index",
+						"meta": {
+							"icon": "Menu",
+							"title": "批次主档",
+							"isLink": "",
+							"isHide": false,
+							"isFull": false,
+							"isAffix": false,
+							"isKeepAlive": true
+						}
+					},
+					{
+						"path": "/barCodePlatform/lot/lotRule",
+						"name": "LotRule",
+						"component": "/barCodePlatform/lot/lotRule/index",
+						"meta": {
+							"icon": "Menu",
+							"title": "批次规则",
+							"isLink": "",
+							"isHide": false,
+							"isFull": false,
+							"isAffix": false,
+							"isKeepAlive": true
+						}
+					},
+					{
+						"path": "/barCodePlatform/lot/lotRuleShare",
+						"name": "LotRuleShare",
+						"component": "/barCodePlatform/lot/lotRuleShare/index",
+						"meta": {
+							"icon": "Menu",
+							"title": "批次规则分配",
+							"isLink": "",
+							"isHide": false,
+							"isFull": false,
+							"isAffix": false,
+							"isKeepAlive": true
+						}
+					}
+				]
+			},
+			{
+				"path": "/barCodePlatform/pack",
+				"name": "Pack",
+				"meta": {
+					"icon": "Menu",
+					"title": "装箱管理",
+					"isLink": "",
+					"isHide": false,
+					"isFull": false,
+					"isAffix": false,
+					"isKeepAlive": true
+				},
+				"children": [{
+						"path": "/barCodePlatform/pack/packRuleSet",
+						"name": "PackRuleSet",
+						"component": "/barCodePlatform/pack/packRuleSet/index",
+						"meta": {
+							"icon": "Menu",
+							"title": "包装码规则设置",
+							"isLink": "",
+							"isHide": false,
+							"isFull": false,
+							"isAffix": false,
+							"isKeepAlive": true
+						}
+					},
+					{
+						"path": "/barCodePlatform/pack/packLableSet",
+						"name": "PackLableSet",
+						"component": "/barCodePlatform/pack/packLableSet/index",
+						"meta": {
+							"icon": "Menu",
+							"title": "包装码标签设计",
+							"isLink": "",
+							"isHide": false,
+							"isFull": false,
+							"isAffix": false,
+							"isKeepAlive": true
+						}
+					},
+					{
+						"path": "/barCodePlatform/pack/packPlanSet",
+						"name": "PackPlanSet",
+						"component": "/barCodePlatform/pack/packPlanSet/index",
+						"meta": {
+							"icon": "Menu",
+							"title": "包装方案设置",
+							"isLink": "",
+							"isHide": false,
+							"isFull": false,
+							"isAffix": false,
+							"isKeepAlive": true
+						}
+					},
+					{
+						"path": "/barCodePlatform/pack/packPlanShare",
+						"name": "PackPlanShare",
+						"component": "/barCodePlatform/pack/packPlanShare/index",
+						"meta": {
+							"icon": "Menu",
+							"title": "包装方案分配",
+							"isLink": "",
+							"isHide": false,
+							"isFull": false,
+							"isAffix": false,
+							"isKeepAlive": true
+						}
+					},
+					{
+						"path": "/barCodePlatform/pack/packBoxPrint",
+						"name": "PackBoxPrint",
+						"component": "/barCodePlatform/pack/packBoxPrint/index",
+						"meta": {
+							"icon": "Menu",
+							"title": "包装箱码打印",
+							"isLink": "",
+							"isHide": false,
+							"isFull": false,
+							"isAffix": false,
+							"isKeepAlive": true
+						}
+					},
+					{
+						"path": "/barCodePlatform/pack/packBoxBatchPrint",
+						"name": "PackBoxBatchPrint",
+						"component": "/barCodePlatform/pack/packBoxBatchPrint/index",
+						"meta": {
+							"icon": "Menu",
+							"title": "包装箱码批量打印",
+							"isLink": "",
+							"isHide": false,
+							"isFull": false,
+							"isAffix": false,
+							"isKeepAlive": true
+						}
+					},
+					{
+						"path": "/barCodePlatform/pack/boxOrder",
+						"name": "BoxOrder",
+						"component": "/barCodePlatform/pack/boxOrder/index",
+						"meta": {
+							"icon": "Menu",
+							"title": " 装箱单",
+							"isLink": "",
+							"isHide": false,
+							"isFull": false,
+							"isAffix": false,
+							"isKeepAlive": true
+						}
+					},
+					{
+						"path": "/barCodePlatform/pack/boxCodeList",
+						"name": "BoxCodeList",
+						"component": "/barCodePlatform/pack/boxCodeList/index",
+						"meta": {
+							"icon": "Menu",
+							"title": " 箱码列表",
+							"isLink": "",
+							"isHide": false,
+							"isFull": false,
+							"isAffix": false,
+							"isKeepAlive": true
+						}
+					}
+				]
+			},
+			{
+				"path": "/barCodePlatform/barCodeManage",
+				"name": "Pack",
+				"meta": {
+					"icon": "Menu",
+					"title": "条码管理",
+					"isLink": "",
+					"isHide": false,
+					"isFull": false,
+					"isAffix": false,
+					"isKeepAlive": true
+				},
+				"children": [{
+						"path": "/barCodePlatform/barCodeManage/lableRuleSet",
+						"name": "LableRuleSet",
+						"component": "/barCodePlatform/barCodeManage/lableRuleSet/index",
+						"meta": {
+							"icon": "Menu",
+							"title": "标签规则设置",
+							"isLink": "",
+							"isHide": false,
+							"isFull": false,
+							"isAffix": false,
+							"isKeepAlive": true
+						}
+					},
+					{
+						"path": "/barCodePlatform/barCodeManage/lableDesign",
+						"name": "LableDesign",
+						"component": "/barCodePlatform/barCodeManage/lableDesign/index",
+						"meta": {
+							"icon": "Menu",
+							"title": "标签设计",
+							"isLink": "",
+							"isHide": false,
+							"isFull": false,
+							"isAffix": false,
+							"isKeepAlive": true
+						}
+					},
+					{
+						"path": "/barCodePlatform/barCodeManage/lablePlanSet",
+						"name": "LablePlanSet",
+						"component": "/barCodePlatform/barCodeManage/lablePlanSet/index",
+						"meta": {
+							"icon": "Menu",
+							"title": "标签方案设置",
+							"isLink": "",
+							"isHide": false,
+							"isFull": false,
+							"isAffix": false,
+							"isKeepAlive": true
+						}
+					},
+					{
+						"path": "/barCodePlatform/barCodeManage/lablePlanShare",
+						"name": "LablePlanShare",
+						"component": "/barCodePlatform/barCodeManage/lablePlanShare/index",
+						"meta": {
+							"icon": "Menu",
+							"title": "标签方案分配",
+							"isLink": "",
+							"isHide": false,
+							"isFull": false,
+							"isAffix": false,
+							"isKeepAlive": true
+						}
+					},
+					{
+						"path": "/barCodePlatform/barCodeManage/lablePrint",
+						"name": "LablePrint",
+						"component": "/barCodePlatform/barCodeManage/lablePrint/index",
+						"meta": {
+							"icon": "Menu",
+							"title": "标签打印",
+							"isLink": "",
+							"isHide": false,
+							"isFull": false,
+							"isAffix": false,
+							"isKeepAlive": true
+						}
+					},
+					{
+						"path": "/barCodePlatform/barCodeManage/barCodeInf",
+						"name": "BarCodeInf",
+						"component": "/barCodePlatform/barCodeManage/barCodeInf/index",
+						"meta": {
+							"icon": "Menu",
+							"title": "条码信息",
+							"isLink": "",
+							"isHide": false,
+							"isFull": false,
+							"isAffix": false,
+							"isKeepAlive": true
+						}
+					}
+				]
+			}
+		]
+	}
+]

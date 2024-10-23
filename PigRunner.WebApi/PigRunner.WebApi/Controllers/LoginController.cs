@@ -33,5 +33,19 @@ namespace PigRunner.WebApi.Controllers
         {         
             return loginServices.Login(request.UserName,request.Password);
         }
+
+        /// <summary>
+        /// 注销:action可以不区分大小写
+        /// </summary>
+        /// <returns></returns>
+        [AllowAnonymous]
+        [HttpPost]
+        //s[Route("/api/logout")]
+        public ResponseBody Logout() { 
+            ResponseBody response = new ResponseBody();
+            response.code = 200;
+            response.msg = "系统注销成功";
+            return response;
+        }
     }
 }

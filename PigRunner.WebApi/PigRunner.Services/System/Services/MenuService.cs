@@ -53,7 +53,6 @@ namespace PigRunner.Services.System
             sysMenu.IsKeepAlive = vo.isKeepAlive ? 1 : 0;//--缓存
             sysMenu.Parent = vo.parent;
             return menuRepository.InsertOrUpdate(sysMenu);
-
         }
 
 
@@ -89,6 +88,7 @@ namespace PigRunner.Services.System
             ResponseBody response = new ResponseBody();
             Stopwatch stopwatch = Stopwatch.StartNew();
 
+            /*
             var results = menuRepository.AsQueryable().ToTree(item => item.Children, item => item.Parent, 0);
              var Tree=results.Select(s => new
             {
@@ -137,11 +137,15 @@ namespace PigRunner.Services.System
                     })
                 })
             });
+            */
+            var menuPath = "menudata.json";
+            var json= File.ReadAllTextAsync(menuPath).Result;
+
             stopwatch.Stop();
-            response.total = results.Count();
+            response.total = 1;
             response.code = 200;
             response.msg = $"查询完成,耗时：{stopwatch.ElapsedMilliseconds} 毫秒";
-            response.data = JArray.FromObject(Tree);
+            response.data = JArray.Parse(json);
 
             return response;
         }

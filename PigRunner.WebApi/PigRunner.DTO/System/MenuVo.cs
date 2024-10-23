@@ -63,7 +63,7 @@ namespace PigRunner.DTO.System
         /// <summary>
         /// 外部链接
         /// </summary>
-        public string isLink { get; set; }=string.Empty;
+        public bool isLink { get; set; }
         /// <summary>
         /// 是否隐藏
         /// </summary>
