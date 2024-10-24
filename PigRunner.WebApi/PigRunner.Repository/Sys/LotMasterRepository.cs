@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PigRunner.Repository.System
+namespace PigRunner.Repository.Sys
 {
      /// <summary>
      /// 批号存储库

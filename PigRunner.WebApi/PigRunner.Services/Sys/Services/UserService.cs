@@ -1,12 +1,12 @@
-﻿using PigRunner.Entitys.System;
-using PigRunner.Repository.System;
+﻿using PigRunner.Entitys.Sys;
+using PigRunner.Repository.Sys;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PigRunner.Services.System
+namespace PigRunner.Services.Sys
 {
     /// <summary>
     /// 用户服务实现

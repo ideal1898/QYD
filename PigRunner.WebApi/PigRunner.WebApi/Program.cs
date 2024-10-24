@@ -11,6 +11,7 @@ using System.Text;
 using Microsoft.Extensions.FileProviders;
 using PigRunner.Public.Helpers;
 using Newtonsoft.Json;
+using PigRunner.Public.Common.Views;
 
 var builder = WebApplication.CreateBuilder(args);
 //ÈÕÖ¾
@@ -175,7 +176,7 @@ SugarIocServices.ConfigurationSugar(db =>
 #region IOC
 
 builder.Services.InjectionAllServices();
-
+builder.Services.AddScoped<WebSession>();
 
 #endregion
 

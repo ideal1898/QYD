@@ -1,6 +1,6 @@
 
 ﻿using PigRunner.DTO.Basic;
-using PigRunner.Entitys.System;
+using PigRunner.Entitys.Sys;
 using PigRunner.Public.Common.Views;
 
 using PigRunner.Public.Interface;
@@ -11,7 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PigRunner.Services.System
+namespace PigRunner.Services.Sys
 {
     public interface IMenuService : IScopedService
     {

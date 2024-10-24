@@ -1,11 +1,11 @@
 
 using PigRunner.DTO.Basic;
-using PigRunner.Entitys.System;
+using PigRunner.Entitys.Sys;
 using Newtonsoft.Json.Linq;
 using PigRunner.Public.Common.Views;
 
-using PigRunner.Repository.System;
-using PigRunner.Services.System;
+using PigRunner.Repository.Sys;
+using PigRunner.Services.Sys;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,19 +17,22 @@ using System.Drawing;
 using System.Runtime.CompilerServices;
 using System.Diagnostics;
 using PigRunner.Services.Common;
+using Newtonsoft.Json;
 
-namespace PigRunner.Services.System
+namespace PigRunner.Services.Sys
 {
     public class MenuService : IMenuService
     {
         private MenuRepository menuRepository;
+        private  WebSession session;
         /// <summary>
         /// 服务注册
         /// </summary>
         /// <param name="_menuRepository"></param>
-        public MenuService(MenuRepository _menuRepository)
+        public MenuService(MenuRepository _menuRepository, WebSession _session)
         {
             menuRepository = _menuRepository;
+            this.session = _session;
         }
         public bool Save(MenuView view)
         {
@@ -95,16 +98,21 @@ namespace PigRunner.Services.System
 
             var menuPath = "menudata.json";
             var json = File.ReadAllTextAsync(menuPath).Result;
+            JsonSerializerSettings settings = new JsonSerializerSettings();
+            settings.NullValueHandling = NullValueHandling.Ignore;
+            var objs = System.Text.Json.JsonSerializer.Deserialize<List<MenuView>>(json);
+            var menuViews = JsonConvert.DeserializeObject<List<MenuView>>(json, settings);
 
             stopwatch.Stop();
             response.total = 1;
             response.code = 200;
             response.msg = $"查询完成,耗时：{stopwatch.ElapsedMilliseconds} 毫秒";
             response.data = JArray.Parse(json);
-          
+
             return response;
         }
-        private ResponseBody listByDB() { 
+        private ResponseBody listByDB()
+        {
             ResponseBody response = new ResponseBody();
             Stopwatch stopwatch = Stopwatch.StartNew();
             var sysMenus = menuRepository.AsQueryable().ToTree(it => it.Children, it => it.Parent, 0);
@@ -113,6 +121,28 @@ namespace PigRunner.Services.System
             response.code = 200;
             response.msg = $"查询完成,耗时：{stopwatch.ElapsedMilliseconds} 毫秒";
             response.data = JArray.FromObject(list);
+            return response;
+        }
+
+        private ResponseBody BatchInsertByJson()
+        {
+            ResponseBody response = new ResponseBody();
+            Stopwatch startwatch = Stopwatch.StartNew();
+            var menuPath = "menudata.json";
+            var json = File.ReadAllTextAsync(menuPath).Result;
+            var menuViews = System.Text.Json.JsonSerializer.Deserialize<List<MenuView>>(json);
+
+            List<SysMenu> sysMenus = MenuTree.ConverEntity(menuViews,session);
+            //插入数据
+            menuRepository.Context.Insertable(sysMenus).ExecuteCommand();
+            
+            startwatch.Stop();
+
+            response.total = sysMenus.Count;
+            response.code = 200;
+            response.msg = $"查询完成,耗时：{startwatch.ElapsedMilliseconds} 毫秒";
+            response.data = JArray.FromObject(sysMenus);
+
             return response;
         }
 

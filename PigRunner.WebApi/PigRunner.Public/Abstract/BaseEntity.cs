@@ -28,6 +28,10 @@ namespace PigRunner.Public.Abstract
         /// 版本
         /// </summary>
         public long SysVersion { get; set; }
+        /// <summary>
+        /// 创建实体
+        /// </summary>
+        /// <returns></returns>
         public static T Create()
         {
             T instance = Activator.CreateInstance<T>();

@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Transactions;
 
-namespace PigRunner.Repository.System
+namespace PigRunner.Repository.Sys
 {
     public class LotRuleRepository : BaseRepository<BCLotRule>, IScopedService
     {

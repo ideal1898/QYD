@@ -5,7 +5,7 @@
 		"meta": {
 			"icon": "HomeFilled",
 			"title": "首页",
-			"isLink": "",
+			"isLink": false,
 			"isHide": false,
 			"isFull": false,
 			"isAffix": true,
@@ -19,7 +19,7 @@
 		"meta": {
 			"icon": "Lock",
 			"title": "基础设置",
-			"isLink": "",
+			"isLink": false,
 			"isHide": false,
 			"isFull": false,
 			"isAffix": false,
@@ -32,7 +32,7 @@
 				"meta": {
 					"icon": "Lock",
 					"title": "公共档案",
-					"isLink": "",
+					"isLink": false,
 					"isHide": false,
 					"isFull": false,
 					"isAffix": false,
@@ -45,7 +45,7 @@
 						"meta": {
 							"icon": "Menu",
 							"title": "国家",
-							"isLink": "",
+							"isLink": false,
 							"isHide": false,
 							"isFull": false,
 							"isAffix": false,
@@ -59,7 +59,7 @@
 						"meta": {
 							"icon": "Menu",
 							"title": "省份及自治区",
-							"isLink": "",
+							"isLink": false,
 							"isHide": false,
 							"isFull": false,
 							"isAffix": false,
@@ -73,7 +73,7 @@
 						"meta": {
 							"icon": "Menu",
 							"title": "税率信息",
-							"isLink": "",
+							"isLink": false,
 							"isHide": false,
 							"isFull": false,
 							"isAffix": false,
@@ -89,7 +89,7 @@
 				"meta": {
 					"icon": "Lock",
 					"title": "集团级档案",
-					"isLink": "",
+					"isLink": false,
 					"isHide": false,
 					"isFull": false,
 					"isAffix": false,
@@ -102,7 +102,7 @@
 						"meta": {
 							"icon": "Menu",
 							"title": "企业机构",
-							"isLink": "",
+							"isLink": false,
 							"isHide": false,
 							"isFull": false,
 							"isAffix": false,
@@ -116,7 +116,7 @@
 						"meta": {
 							"icon": "Menu",
 							"title": "客户",
-							"isLink": "",
+							"isLink": false,
 							"isHide": false,
 							"isFull": false,
 							"isAffix": false,
@@ -130,7 +130,7 @@
 						"meta": {
 							"icon": "Menu",
 							"title": "客户分类",
-							"isLink": "",
+							"isLink": false,
 							"isHide": false,
 							"isFull": false,
 							"isAffix": false,
@@ -144,7 +144,7 @@
 						"meta": {
 							"icon": "Menu",
 							"title": "供应商",
-							"isLink": "",
+							"isLink": false,
 							"isHide": false,
 							"isFull": false,
 							"isAffix": false,
@@ -158,7 +158,7 @@
 						"meta": {
 							"icon": "Menu",
 							"title": "供应商分类",
-							"isLink": "",
+							"isLink": false,
 							"isHide": false,
 							"isFull": false,
 							"isAffix": false,
@@ -172,7 +172,7 @@
 						"meta": {
 							"icon": "Menu",
 							"title": "物料分类",
-							"isLink": "",
+							"isLink": false,
 							"isHide": false,
 							"isFull": false,
 							"isAffix": false,
@@ -186,7 +186,7 @@
 						"meta": {
 							"icon": "Menu",
 							"title": "物料",
-							"isLink": "",
+							"isLink": false,
 							"isHide": false,
 							"isFull": false,
 							"isAffix": false,
@@ -200,7 +200,7 @@
 						"meta": {
 							"icon": "Menu",
 							"title": "项目",
-							"isLink": "",
+							"isLink": false,
 							"isHide": false,
 							"isFull": false,
 							"isAffix": false,
@@ -214,7 +214,7 @@
 						"meta": {
 							"icon": "Menu",
 							"title": "计量单位",
-							"isLink": "",
+							"isLink": false,
 							"isHide": false,
 							"isFull": false,
 							"isAffix": false,
@@ -230,7 +230,7 @@
 				"meta": {
 					"icon": "Lock",
 					"title": "企业级档案",
-					"isLink": "",
+					"isLink": false,
 					"isHide": false,
 					"isFull": false,
 					"isAffix": false,
@@ -243,7 +243,7 @@
 						"meta": {
 							"icon": "Menu",
 							"title": "部门",
-							"isLink": "",
+							"isLink": false,
 							"isHide": false,
 							"isFull": false,
 							"isAffix": false,
@@ -257,7 +257,7 @@
 						"meta": {
 							"icon": "Menu",
 							"title": "业务员",
-							"isLink": "",
+							"isLink": false,
 							"isHide": false,
 							"isFull": false,
 							"isAffix": false,
@@ -271,7 +271,7 @@
 						"meta": {
 							"icon": "Menu",
 							"title": "存储地点",
-							"isLink": "",
+							"isLink": false,
 							"isHide": false,
 							"isFull": false,
 							"isAffix": false,
@@ -285,7 +285,7 @@
 						"meta": {
 							"icon": "Menu",
 							"title": "库区",
-							"isLink": "",
+							"isLink": false,
 							"isHide": false,
 							"isFull": false,
 							"isAffix": false,
@@ -299,7 +299,7 @@
 						"meta": {
 							"icon": "Menu",
 							"title": "货位",
-							"isLink": "",
+							"isLink": false,
 							"isHide": false,
 							"isFull": false,
 							"isAffix": false,
@@ -315,7 +315,7 @@
 				"meta": {
 					"icon": "Lock",
 					"title": "编码规则",
-					"isLink": "",
+					"isLink": false,
 					"isHide": false,
 					"isFull": false,
 					"isAffix": false,
@@ -328,7 +328,7 @@
 						"meta": {
 							"icon": "Menu",
 							"title": "档案编码规则",
-							"isLink": "",
+							"isLink": false,
 							"isHide": false,
 							"isFull": false,
 							"isAffix": false,
@@ -342,7 +342,7 @@
 						"meta": {
 							"icon": "Menu",
 							"title": "单据类型",
-							"isLink": "",
+							"isLink": false,
 							"isHide": false,
 							"isFull": false,
 							"isAffix": false,
@@ -356,7 +356,7 @@
 						"meta": {
 							"icon": "Menu",
 							"title": "单据编码规则",
-							"isLink": "",
+							"isLink": false,
 							"isHide": false,
 							"isFull": false,
 							"isAffix": false,
@@ -374,7 +374,7 @@
 		"meta": {
 			"icon": "Tools",
 			"title": "系统管理",
-			"isLink": "",
+			"isLink": false,
 			"isHide": false,
 			"isFull": false,
 			"isAffix": false,
@@ -387,7 +387,7 @@
 				"meta": {
 					"icon": "Menu",
 					"title": "用户管理",
-					"isLink": "",
+					"isLink": false,
 					"isHide": false,
 					"isFull": false,
 					"isAffix": false,
@@ -401,7 +401,7 @@
 				"meta": {
 					"icon": "Menu",
 					"title": "菜单管理",
-					"isLink": "",
+					"isLink": false,
 					"isHide": false,
 					"isFull": false,
 					"isAffix": false,
@@ -415,7 +415,7 @@
 				"meta": {
 					"icon": "Menu",
 					"title": "角色管理",
-					"isLink": "",
+					"isLink": false,
 					"isHide": false,
 					"isFull": false,
 					"isAffix": false,
@@ -429,7 +429,7 @@
 				"meta": {
 					"icon": "Menu",
 					"title": "动作权限",
-					"isLink": "",
+					"isLink": false,
 					"isHide": false,
 					"isFull": false,
 					"isAffix": false,
@@ -443,7 +443,7 @@
 				"meta": {
 					"icon": "Menu",
 					"title": "动作权限",
-					"isLink": "",
+					"isLink": false,
 					"isHide": false,
 					"isFull": false,
 					"isAffix": false,
@@ -457,7 +457,7 @@
 				"meta": {
 					"icon": "Menu",
 					"title": "数据权限",
-					"isLink": "",
+					"isLink": false,
 					"isHide": false,
 					"isFull": false,
 					"isAffix": false,
@@ -473,7 +473,7 @@
 		"meta": {
 			"icon": "Lock",
 			"title": "供应链",
-			"isLink": "",
+			"isLink": false,
 			"isHide": false,
 			"isFull": false,
 			"isAffix": false,
@@ -485,7 +485,7 @@
 				"meta": {
 					"icon": "Menu",
 					"title": "采购管理",
-					"isLink": "",
+					"isLink": false,
 					"isHide": false,
 					"isFull": false,
 					"isAffix": false,
@@ -498,7 +498,7 @@
 						"meta": {
 							"icon": "Menu",
 							"title": "请购单",
-							"isLink": "",
+							"isLink": false,
 							"isHide": false,
 							"isFull": false,
 							"isAffix": false,
@@ -512,7 +512,7 @@
 						"meta": {
 							"icon": "Menu",
 							"title": "采购订单",
-							"isLink": "",
+							"isLink": false,
 							"isHide": false,
 							"isFull": false,
 							"isAffix": false,
@@ -526,7 +526,7 @@
 						"meta": {
 							"icon": "Menu",
 							"title": "送货单",
-							"isLink": "",
+							"isLink": false,
 							"isHide": false,
 							"isFull": false,
 							"isAffix": false,
@@ -540,7 +540,7 @@
 						"meta": {
 							"icon": "Menu",
 							"title": "采购入库单",
-							"isLink": "",
+							"isLink": false,
 							"isHide": false,
 							"isFull": false,
 							"isAffix": false,
@@ -554,7 +554,7 @@
 						"meta": {
 							"icon": "Menu",
 							"title": "采购退货申请单",
-							"isLink": "",
+							"isLink": false,
 							"isHide": false,
 							"isFull": false,
 							"isAffix": false,
@@ -568,7 +568,7 @@
 						"meta": {
 							"icon": "Menu",
 							"title": "采购退货单",
-							"isLink": "",
+							"isLink": false,
 							"isHide": false,
 							"isFull": false,
 							"isAffix": false,
@@ -583,7 +583,7 @@
 				"meta": {
 					"icon": "Menu",
 					"title": "销售管理",
-					"isLink": "",
+					"isLink": false,
 					"isHide": false,
 					"isFull": false,
 					"isAffix": false,
@@ -596,7 +596,7 @@
 						"meta": {
 							"icon": "Menu",
 							"title": "销售订单",
-							"isLink": "",
+							"isLink": false,
 							"isHide": false,
 							"isFull": false,
 							"isAffix": false,
@@ -610,7 +610,7 @@
 						"meta": {
 							"icon": "Menu",
 							"title": "发货计划",
-							"isLink": "",
+							"isLink": false,
 							"isHide": false,
 							"isFull": false,
 							"isAffix": false,
@@ -624,7 +624,7 @@
 						"meta": {
 							"icon": "Menu",
 							"title": "销售出货",
-							"isLink": "",
+							"isLink": false,
 							"isHide": false,
 							"isFull": false,
 							"isAffix": false,
@@ -638,7 +638,7 @@
 						"meta": {
 							"icon": "Menu",
 							"title": "销售退货申请",
-							"isLink": "",
+							"isLink": false,
 							"isHide": false,
 							"isFull": false,
 							"isAffix": false,
@@ -652,7 +652,7 @@
 						"meta": {
 							"icon": "Menu",
 							"title": "销售退回收货单",
-							"isLink": "",
+							"isLink": false,
 							"isHide": false,
 							"isFull": false,
 							"isAffix": false,
@@ -670,7 +670,7 @@
 		"meta": {
 			"icon": "Lock",
 			"title": "报表中心",
-			"isLink": "",
+			"isLink": false,
 			"isHide": false,
 			"isFull": false,
 			"isAffix": false,
@@ -682,7 +682,7 @@
 				"meta": {
 					"icon": "Menu",
 					"title": "采购报表中心",
-					"isLink": "",
+					"isLink": false,
 					"isHide": false,
 					"isFull": false,
 					"isAffix": false,
@@ -695,7 +695,7 @@
 					"meta": {
 						"icon": "Menu",
 						"title": "采购订单追踪表",
-						"isLink": "",
+						"isLink": false,
 						"isHide": false,
 						"isFull": false,
 						"isAffix": false,
@@ -709,7 +709,7 @@
 				"meta": {
 					"icon": "Menu",
 					"title": "销售报表中心",
-					"isLink": "",
+					"isLink": false,
 					"isHide": false,
 					"isFull": false,
 					"isAffix": false,
@@ -722,7 +722,7 @@
 					"meta": {
 						"icon": "Menu",
 						"title": "销售订单追踪表",
-						"isLink": "",
+						"isLink": false,
 						"isHide": false,
 						"isFull": false,
 						"isAffix": false,
@@ -739,7 +739,7 @@
 		"meta": {
 			"icon": "Lock",
 			"title": "条码平台",
-			"isLink": "",
+			"isLink": false,
 			"isHide": false,
 			"isFull": false,
 			"isAffix": false,
@@ -751,7 +751,7 @@
 				"meta": {
 					"icon": "Menu",
 					"title": "批次",
-					"isLink": "",
+					"isLink": false,
 					"isHide": false,
 					"isFull": false,
 					"isAffix": false,
@@ -764,7 +764,7 @@
 						"meta": {
 							"icon": "Menu",
 							"title": "批次主档",
-							"isLink": "",
+							"isLink": false,
 							"isHide": false,
 							"isFull": false,
 							"isAffix": false,
@@ -778,7 +778,7 @@
 						"meta": {
 							"icon": "Menu",
 							"title": "批次规则",
-							"isLink": "",
+							"isLink": false,
 							"isHide": false,
 							"isFull": false,
 							"isAffix": false,
@@ -792,7 +792,7 @@
 						"meta": {
 							"icon": "Menu",
 							"title": "批次规则分配",
-							"isLink": "",
+							"isLink": false,
 							"isHide": false,
 							"isFull": false,
 							"isAffix": false,
@@ -807,7 +807,7 @@
 				"meta": {
 					"icon": "Menu",
 					"title": "装箱管理",
-					"isLink": "",
+					"isLink": false,
 					"isHide": false,
 					"isFull": false,
 					"isAffix": false,
@@ -820,7 +820,7 @@
 						"meta": {
 							"icon": "Menu",
 							"title": "包装码规则设置",
-							"isLink": "",
+							"isLink": false,
 							"isHide": false,
 							"isFull": false,
 							"isAffix": false,
@@ -834,7 +834,7 @@
 						"meta": {
 							"icon": "Menu",
 							"title": "包装码标签设计",
-							"isLink": "",
+							"isLink": false,
 							"isHide": false,
 							"isFull": false,
 							"isAffix": false,
@@ -848,7 +848,7 @@
 						"meta": {
 							"icon": "Menu",
 							"title": "包装方案设置",
-							"isLink": "",
+							"isLink": false,
 							"isHide": false,
 							"isFull": false,
 							"isAffix": false,
@@ -862,7 +862,7 @@
 						"meta": {
 							"icon": "Menu",
 							"title": "包装方案分配",
-							"isLink": "",
+							"isLink": false,
 							"isHide": false,
 							"isFull": false,
 							"isAffix": false,
@@ -876,7 +876,7 @@
 						"meta": {
 							"icon": "Menu",
 							"title": "包装箱码打印",
-							"isLink": "",
+							"isLink": false,
 							"isHide": false,
 							"isFull": false,
 							"isAffix": false,
@@ -890,7 +890,7 @@
 						"meta": {
 							"icon": "Menu",
 							"title": "包装箱码批量打印",
-							"isLink": "",
+							"isLink": false,
 							"isHide": false,
 							"isFull": false,
 							"isAffix": false,
@@ -904,7 +904,7 @@
 						"meta": {
 							"icon": "Menu",
 							"title": " 装箱单",
-							"isLink": "",
+							"isLink": false,
 							"isHide": false,
 							"isFull": false,
 							"isAffix": false,
@@ -918,7 +918,7 @@
 						"meta": {
 							"icon": "Menu",
 							"title": " 箱码列表",
-							"isLink": "",
+							"isLink": false,
 							"isHide": false,
 							"isFull": false,
 							"isAffix": false,
@@ -933,7 +933,7 @@
 				"meta": {
 					"icon": "Menu",
 					"title": "条码管理",
-					"isLink": "",
+					"isLink": false,
 					"isHide": false,
 					"isFull": false,
 					"isAffix": false,
@@ -946,7 +946,7 @@
 						"meta": {
 							"icon": "Menu",
 							"title": "标签规则设置",
-							"isLink": "",
+							"isLink": false,
 							"isHide": false,
 							"isFull": false,
 							"isAffix": false,
@@ -960,7 +960,7 @@
 						"meta": {
 							"icon": "Menu",
 							"title": "标签设计",
-							"isLink": "",
+							"isLink": false,
 							"isHide": false,
 							"isFull": false,
 							"isAffix": false,
@@ -974,7 +974,7 @@
 						"meta": {
 							"icon": "Menu",
 							"title": "标签方案设置",
-							"isLink": "",
+							"isLink": false,
 							"isHide": false,
 							"isFull": false,
 							"isAffix": false,
@@ -988,7 +988,7 @@
 						"meta": {
 							"icon": "Menu",
 							"title": "标签方案分配",
-							"isLink": "",
+							"isLink": false,
 							"isHide": false,
 							"isFull": false,
 							"isAffix": false,
@@ -1002,7 +1002,7 @@
 						"meta": {
 							"icon": "Menu",
 							"title": "标签打印",
-							"isLink": "",
+							"isLink": false,
 							"isHide": false,
 							"isFull": false,
 							"isAffix": false,
@@ -1016,7 +1016,7 @@
 						"meta": {
 							"icon": "Menu",
 							"title": "条码信息",
-							"isLink": "",
+							"isLink": false,
 							"isHide": false,
 							"isFull": false,
 							"isAffix": false,

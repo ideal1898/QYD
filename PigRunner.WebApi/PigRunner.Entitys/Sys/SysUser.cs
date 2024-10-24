@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PigRunner.Entitys.System
+namespace PigRunner.Entitys.Sys
 {
     [SqlSugar.SugarTable("Base_Sys_User")]
     public class SysUser:BaseEntity<SysUser>

@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using PigRunner.Entitys.System;
+using PigRunner.Entitys.Sys;
 using PigRunner.Public.Common.Views;
-using PigRunner.Services.System;
+using PigRunner.Services.Sys;
 
 namespace PigRunner.WebApi.Controllers.Sys
 {

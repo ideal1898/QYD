@@ -1,12 +1,12 @@
 ﻿using Newtonsoft.Json.Linq;
 using PigRunner.Entitys.BarCode;
-using PigRunner.Entitys.System;
+using PigRunner.Entitys.Sys;
 using PigRunner.Public.Common.Views;
 using PigRunner.Public.Helpers;
-using PigRunner.Repository.System;
-using PigRunner.Services.System.IServices;
+using PigRunner.Repository.Sys;
+using PigRunner.Services.Sys.IServices;
 
-namespace PigRunner.Services.System.Services
+namespace PigRunner.Services.Sys.Services
 {
     /// <summary>
     /// 批号服务

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PigRunner.Public.Common.Views;
-using PigRunner.Services.System.IServices;
+using PigRunner.Services.Sys.IServices;
 
 namespace PigRunner.WebApi.Controllers
 {

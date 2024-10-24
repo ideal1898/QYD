@@ -1,14 +1,14 @@
 ﻿using PigRunner.Entitys.BarCode;
 using PigRunner.Public.Common.Views;
-using PigRunner.Repository.System;
-using PigRunner.Services.System.IServices;
+using PigRunner.Repository.Sys;
+using PigRunner.Services.Sys.IServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PigRunner.Services.System.Services
+namespace PigRunner.Services.Sys.Services
 {
       /// <summary>
       /// 批号规则服务

@@ -4,7 +4,7 @@
  * 版权所有 (c) 2024 P R C  保留所有权利。
  * CLR版本：4.0.30319.42000
  * 机器名称：NXBY
- * 命名空间：PigRunner.Services.System.Services
+ * 命名空间：PigRunner.Services.Sys.Services
  * 唯一标识：9c315c42-d8d2-4788-82e8-35d3b6a90dc4
  * 文件名：LoginService
  * 
@@ -26,10 +26,10 @@
 
 using Dm.filter.log;
 using Newtonsoft.Json.Linq;
-using PigRunner.Entitys.System;
+using PigRunner.Entitys.Sys;
 using PigRunner.Public.Common.Views;
 using PigRunner.Public.Helpers;
-using PigRunner.Repository.System;
+using PigRunner.Repository.Sys;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,7 +37,7 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PigRunner.Services.System.Services
+namespace PigRunner.Services.Sys.Services
 {
     /// <summary>
     /// 登录服务

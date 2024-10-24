@@ -4,7 +4,7 @@
  * 版权所有 (c) 2024 P R C  保留所有权利。
  * CLR版本：4.0.30319.42000
  * 机器名称：NXBY
- * 命名空间：PigRunner.Services.System
+ * 命名空间：PigRunner.Services.Sys
  * 唯一标识：10435c1e-bad3-44db-9c10-740d8483f640
  * 文件名：ILoginServices
  * 
@@ -25,7 +25,7 @@
 
 
 
-using PigRunner.Entitys.System;
+using PigRunner.Entitys.Sys;
 using PigRunner.Public.Common.Views;
 using PigRunner.Public.Interface;
 using System;
@@ -34,7 +34,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PigRunner.Services.System
+namespace PigRunner.Services.Sys
 {
     public interface ILoginService: IScopedService
     {

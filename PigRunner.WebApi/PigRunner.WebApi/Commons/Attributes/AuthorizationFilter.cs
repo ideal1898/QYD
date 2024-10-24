@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc;
 using System.IdentityModel.Tokens.Jwt;
 using PigRunner.Public.Helpers;
-using PigRunner.Repository.System;
+using PigRunner.Repository.Sys;
+using PigRunner.Public.Common.Views;
+using DocumentFormat.OpenXml.Spreadsheet;
 
 namespace PigRunner.WebApi.Commons.Attributes
 {
@@ -15,14 +17,17 @@ namespace PigRunner.WebApi.Commons.Attributes
         #region 构造函数
 
         private LoginRepository loginRepository;
+        private readonly WebSession _session;
 
         /// <summary>
         /// 服务注册
         /// </summary>
         /// <param name="_loginRepository"></param>
-        public AuthorizationFilter(LoginRepository _loginRepository)
+        /// <param name="session"></param>
+        public AuthorizationFilter(LoginRepository _loginRepository,WebSession session)
         {
           this.loginRepository = _loginRepository;
+            this._session = session;
         }
 
         #endregion
@@ -39,6 +44,8 @@ namespace PigRunner.WebApi.Commons.Attributes
             {
                 return;
             }
+
+           
 
             var token = context.HttpContext.Request.Headers["authorization"];
             var accountData = JWTHelper.JWTDecode(token);
@@ -61,6 +68,9 @@ namespace PigRunner.WebApi.Commons.Attributes
             {
                 loginRepository.UpdateExpireTime(sysLogin.ID, DateTime.Now.AddMinutes(45));
             }
+      
+            _session.UserID = sysLogin.ID;
+            _session.UserName =sysLogin.Username;
         }
 
         private bool HasAllowAnonymous(AuthorizationFilterContext context)

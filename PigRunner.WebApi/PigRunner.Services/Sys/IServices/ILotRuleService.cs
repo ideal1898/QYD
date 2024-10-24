@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PigRunner.Services.System.IServices
+namespace PigRunner.Services.Sys.IServices
 {
     public interface ILotRuleService : IScopedService
     {
