@@ -69,9 +69,22 @@ builder.Services.AddSwaggerGen(options =>
     });
 
     options.SwaggerDoc("v1", new OpenApiInfo { Title = "WebApi接口文档", Version = "v1" });
+    //匹配规则查找所有xml文件都加入swagger中即可
+    string baseDirectory=AppContext.BaseDirectory;
+    DirectoryInfo directoryInfo = new DirectoryInfo(baseDirectory);
+    var Files= directoryInfo.GetFiles("*.xml");
+    foreach (var file in Files) {
+        options.IncludeXmlComments(file.FullName, true);
+    }
+    /*
     var path = Path.Combine(AppContext.BaseDirectory, "PigRunner.WebApi.xml");
     //显示控制器层注释
     options.IncludeXmlComments(path, true);
+    //显示实体注释
+    options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "PigRunner.Entitys.xml"), true);
+    //显示公共注释
+    options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "PigRunner.Public.xml"), true);
+    */
 });
 
 #endregion
@@ -192,8 +205,6 @@ if (app.Environment.IsDevelopment())
 app.UseSwagger();
 app.UseSwaggerUI();
 
-app.UseSwagger();
-app.UseSwaggerUI();
 //app.UseHttpsRedirection();
 
 app.UseAuthentication();

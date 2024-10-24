@@ -85,7 +85,7 @@ namespace PigRunner.Services.System
 
         public ResponseBody list()
         {
-            return listByFile();
+            return listByDB();
         }
 
         private ResponseBody listByFile()

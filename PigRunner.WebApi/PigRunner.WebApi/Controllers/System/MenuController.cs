@@ -54,13 +54,5 @@ namespace PigRunner.WebApi.Controllers.Sys
         {
             return menuService.list();
         }
-        [AllowAnonymous]
-        [HttpGet]
-        public  ResponseBody list1() {
-            ResponseBody response = new ResponseBody();
-            
-
-            return response;
-        }
     }
 }
