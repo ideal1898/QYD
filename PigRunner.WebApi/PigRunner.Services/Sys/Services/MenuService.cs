@@ -18,13 +18,14 @@ using System.Runtime.CompilerServices;
 using System.Diagnostics;
 using PigRunner.Services.Common;
 using Newtonsoft.Json;
+using System.Collections;
 
 namespace PigRunner.Services.Sys
 {
     public class MenuService : IMenuService
     {
         private MenuRepository menuRepository;
-        private  WebSession session;
+        private WebSession session;
         /// <summary>
         /// 服务注册
         /// </summary>
@@ -34,95 +35,106 @@ namespace PigRunner.Services.Sys
             menuRepository = _menuRepository;
             this.session = _session;
         }
-        public bool Save(MenuView view)
+        /// <summary>
+        /// 删除菜单
+        /// </summary>
+        /// <param name="view"></param>
+        /// <returns></returns>
+        public bool DeleteMenu(MenuView view)
         {
-            SysMenu sysMenu = null;
-            if (view.id == 0)
-                sysMenu = SysMenu.Create();
-            else
-                sysMenu = menuRepository.GetById(view.id);
-
-            sysMenu.Path = view.path;// 
-            sysMenu.Name = view.name;// 组建名称
-            sysMenu.Component = view.component;//--组件
-            sysMenu.Redirect = view.redirect;//定向 
-            sysMenu.IsActive = view.meta.isActive ? 1 : 0;//--生效
-            sysMenu.Icon = view.meta.icon;//--图标
-            sysMenu.Title = view.meta.title;// --标题
-            //sysMenu.IsLink = view.meta.isLink?1:0;// 外部连接
-            sysMenu.IsHide = view.meta.isHide ? 1 : 0;//显示
-            sysMenu.IsFull = view.meta.isFull ? 1 : 0;//全屏
-            sysMenu.IsAffix = view.meta.isAffix ? 1 : 0;//固钉
-            sysMenu.IsKeepAlive = view.meta.isKeepAlive ? 1 : 0;//--缓存
-            sysMenu.Parent = view.parent;
-            return menuRepository.InsertOrUpdate(sysMenu);
+            return menuRepository.Context.Deleteable<SysMenu>(view.id).ExecuteCommand() > 0;
+        }
+        /// <summary>
+        /// 批量删除菜单
+        /// </summary>
+        /// <param name="views"></param>
+        /// <returns></returns> 
+        public bool DeleteMenus(List<MenuView> views)
+        {
+            var list = new List<dynamic>() { views.Select(s => s.id) };
+            return menuRepository.DeleteByIds(list.ToArray());
         }
 
-
-
-
-        public PubResponse GetMenu()
+        /// <summary>
+        /// 新增菜单
+        /// </summary>
+        /// <param name="view"></param>
+        /// <returns></returns>
+        public bool InsertMenu(MenuView view)
         {
-            PubResponse rtn = new PubResponse();
-            try
+            return menuRepository.InsertOrUpdate(MenuTree.GetSysMenuByView(view, session));
+        }
+        /// <summary>
+        /// 批量新增菜单
+        /// </summary>
+        /// <param name="views"></param>
+        /// <returns></returns>
+        public bool InsertMenus(List<MenuView> views)
+        {
+            List<SysMenu> list = new List<SysMenu>();
+            foreach (var view in views)
             {
-                string jsonFilePath = "E:/DevTools/WebServer/menudata.json";
-                // jsonFilePath = "D:/Wordfolder/Personal/PlatForm/WebServer/menudata.json";
-                var json = File.ReadAllText(jsonFilePath);
-                rtn.success = true;
-                rtn.code = 200;
-                JArray array = JArray.Parse(json);
-                rtn.data = array;
+                list.Add(MenuTree.GetSysMenuByView(view, session));
             }
-            catch (Exception ex)
-            {
-                rtn.msg = ex.Message;
-            }
-            return rtn;
+            return menuRepository.Context.Insertable<SysMenu>(list).ExecuteCommand() > 0;
+
         }
 
-        public bool Save(SysMenu sysMenu)
+        public bool InsertMenusByJson(List<MenuView>? menuViews)
+        {
+            List<SysMenu> sysMenus = MenuTree.ConverEntity(menuViews, session);
+            return menuRepository.Context.Insertable<SysMenu>(sysMenus).ExecuteCommand() > 0;
+        }
+
+        /// <summary>
+        /// 查询所有菜单
+        /// </summary>
+        /// <returns></returns>
+        public List<MenuView> QueryAllMenus()
+        {
+            var sysMenus = menuRepository.AsQueryable().ToTree(it => it.Children, it => it.Parent, 0);
+            return MenuTree.Convert(sysMenus);
+        }
+        /// <summary>
+        /// 分页查询
+        /// </summary>
+        /// <param name="PageSize">每页大小</param>
+        /// <param name="Current">当前页</param>
+        /// <param name="Total">总数</param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public List<MenuView> QueryMenusByPage(int PageSize, int Current, ref int Total)
+        {
+            var sysMenus = menuRepository.Context.Queryable<SysMenu>().ToPageList(PageSize, Current, ref Total);
+            List<MenuView> views = new List<MenuView>();
+            foreach (var sysMenu in sysMenus)
+            {
+                views.Add(MenuTree.GetMenuView(sysMenu));
+            }
+
+            return views;
+        }
+        /// <summary>
+        /// 更新菜单
+        /// </summary>
+        /// <param name="view"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public bool UpdateMenu(MenuView view)
+        {
+            throw new NotImplementedException();
+        }
+        /// <summary>
+        /// 批量更新菜单
+        /// </summary>
+        /// <param name="views"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public bool UpdateMenus(List<MenuView> views)
         {
             throw new NotImplementedException();
         }
 
-        public ResponseBody list()
-        {
-            return listByDB();
-        }
-
-        private ResponseBody listByFile()
-        {
-            ResponseBody response = new ResponseBody();
-            Stopwatch stopwatch = Stopwatch.StartNew();
-
-            var menuPath = "menudata.json";
-            var json = File.ReadAllTextAsync(menuPath).Result;
-            JsonSerializerSettings settings = new JsonSerializerSettings();
-            settings.NullValueHandling = NullValueHandling.Ignore;
-            var objs = System.Text.Json.JsonSerializer.Deserialize<List<MenuView>>(json);
-            var menuViews = JsonConvert.DeserializeObject<List<MenuView>>(json, settings);
-
-            stopwatch.Stop();
-            response.total = 1;
-            response.code = 200;
-            response.msg = $"查询完成,耗时：{stopwatch.ElapsedMilliseconds} 毫秒";
-            response.data = JArray.Parse(json);
-
-            return response;
-        }
-        private ResponseBody listByDB()
-        {
-            ResponseBody response = new ResponseBody();
-            Stopwatch stopwatch = Stopwatch.StartNew();
-            var sysMenus = menuRepository.AsQueryable().ToTree(it => it.Children, it => it.Parent, 0);
-            List<MenuView> list = MenuTree.Convert(sysMenus);
-            response.total = 1;
-            response.code = 200;
-            response.msg = $"查询完成,耗时：{stopwatch.ElapsedMilliseconds} 毫秒";
-            response.data = JArray.FromObject(list);
-            return response;
-        }
 
         private ResponseBody BatchInsertByJson()
         {
@@ -132,10 +144,10 @@ namespace PigRunner.Services.Sys
             var json = File.ReadAllTextAsync(menuPath).Result;
             var menuViews = System.Text.Json.JsonSerializer.Deserialize<List<MenuView>>(json);
 
-            List<SysMenu> sysMenus = MenuTree.ConverEntity(menuViews,session);
+            List<SysMenu> sysMenus = MenuTree.ConverEntity(menuViews, session);
             //插入数据
             menuRepository.Context.Insertable(sysMenus).ExecuteCommand();
-            
+
             startwatch.Stop();
 
             response.total = sysMenus.Count;
@@ -145,6 +157,5 @@ namespace PigRunner.Services.Sys
 
             return response;
         }
-
     }
 }

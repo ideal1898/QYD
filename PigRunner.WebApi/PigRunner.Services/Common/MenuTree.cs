@@ -112,7 +112,7 @@ namespace PigRunner.Services.Common
 
         #endregion
 
-        private static MenuView GetMenuView(SysMenu item)
+        public static MenuView GetMenuView(SysMenu item)
         {
             var menuView = new MenuView();
             menuView.parent = item.ID;
@@ -134,7 +134,7 @@ namespace PigRunner.Services.Common
         }
 
         #region 转化View为Entity
-        public static List<SysMenu> ConverEntity(List<MenuView> menuViews,WebSession session)
+        public static List<SysMenu> ConverEntity(List<MenuView> menuViews, WebSession session)
         {
             List<SysMenu> list = new List<SysMenu>();
             foreach (var view in menuViews)
@@ -147,7 +147,7 @@ namespace PigRunner.Services.Common
             return list;
         }
 
-        private static void GetChildEntitys(List<MenuView> menuViews, long Parent, List<SysMenu> list,WebSession session)
+        private static void GetChildEntitys(List<MenuView> menuViews, long Parent, List<SysMenu> list, WebSession session)
         {
             foreach (var view in menuViews)
             {
@@ -158,7 +158,7 @@ namespace PigRunner.Services.Common
             }
         }
 
-        private static SysMenu GetSysMenu(MenuView view, long parent,WebSession session)
+        private static SysMenu GetSysMenu(MenuView view, long parent, WebSession session)
         {
             var sysMenu = new SysMenu();
             sysMenu.ID = IdGeneratorHelper.GetNextId();
@@ -179,8 +179,30 @@ namespace PigRunner.Services.Common
 
             return sysMenu;
         }
-
         #endregion
+
+        public static SysMenu GetSysMenuByView(MenuView view, WebSession session)
+        {
+            var sysMenu = new SysMenu();
+            sysMenu.ID = IdGeneratorHelper.GetNextId();
+            sysMenu.CreatedTime = DateTime.Now;
+            sysMenu.CreatedBy = session.UserName;
+            sysMenu.Path = view.path;// 
+            sysMenu.Name = view.name;// 组建名称
+            sysMenu.Component = view.component;//--组件
+            sysMenu.Redirect = view.redirect;//定向 
+            sysMenu.IsActive = view.meta.isActive ? 1 : 0;//--生效
+            sysMenu.Icon = view.meta.icon;//--图标
+            sysMenu.Title = view.meta.title;// --标题                
+            sysMenu.IsHide = view.meta.isHide ? 1 : 0;//显示
+            sysMenu.IsFull = view.meta.isFull ? 1 : 0;//全屏
+            sysMenu.IsAffix = view.meta.isAffix ? 1 : 0;//固钉
+            sysMenu.IsKeepAlive = view.meta.isKeepAlive ? 1 : 0;//--缓存
+            sysMenu.Parent = view.parent;
+
+            return sysMenu;
+
+        }
 
 
     }
