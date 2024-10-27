@@ -71,7 +71,8 @@ namespace PigRunner.WebApi.Controllers.Sys
         /// <returns></returns>
         [AllowAnonymous]
         [HttpGet]
-        public ResponseBody QueryAllMenus()
+        //public ResponseBody QueryAllMenus()
+        public ResponseBody list()
         {
             Stopwatch stopwatch = Stopwatch.StartNew();
             ResponseBody response = new ResponseBody();

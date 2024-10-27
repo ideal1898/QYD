@@ -81,7 +81,7 @@ namespace PigRunner.Services.Sys.Services
                     BcLotMaster head = lotMasterRepository.GetFirst(q => q.LotCode == request.LotCode);
                     if (head == null)
                         throw new Exception(string.Format("编码为【{0}】的批号不存在！", request.LotCode));
-                    response.data = head;
+                   // response.data = head;
                 }
                 response.success = true;
                 response.code = 200;

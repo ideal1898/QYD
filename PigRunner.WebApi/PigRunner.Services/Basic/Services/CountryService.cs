@@ -1,4 +1,5 @@
-﻿using PigRunner.DTO.Basic;
+﻿using Newtonsoft.Json.Linq;
+using PigRunner.DTO.Basic;
 using PigRunner.Entitys.Basic;
 using PigRunner.Public.Common.Views;
 using PigRunner.Repository.Basic;
@@ -37,9 +38,9 @@ namespace PigRunner.Services.Basic.Services
 
             try
             {
-               
 
-                if (request.OptType == 0|| request.OptType == 1)
+
+                if (request.OptType == 0 || request.OptType == 1)
                 {
                     if (string.IsNullOrEmpty(request.Code))
                         throw new Exception("编码不能为空！");
@@ -78,11 +79,18 @@ namespace PigRunner.Services.Basic.Services
                         Country head = repository.GetFirst(q => q.Code == request.Code);
                         if (head == null)
                             throw new Exception(string.Format("编码为【{0}】的国家地区不存在！", request.Code));
-                        response.data = head;
 
+                        List<Country> list = new List<Country>();
+                        list.Add(head);
+
+                        response.data = JArray.FromObject(list);
                     }
-                    //else
-                    //    var list = repository.GetList(q=>!string.IsNullOrEmpty(q.Code)).FindAll;
+                    else
+                    {
+
+                        var lst = repository.Context.Queryable<Country>().ToList();
+                        response.data = JArray.FromObject(lst);
+                    }
                 }
                 response.success = true;
                 response.code = 200;
