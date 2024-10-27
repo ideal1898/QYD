@@ -37,11 +37,12 @@ namespace PigRunner.Services.Basic.Services
 
             try
             {
-                if (string.IsNullOrEmpty(request.Code))
-                    throw new Exception("编码不能为空！");
+               
 
                 if (request.OptType == 0|| request.OptType == 1)
                 {
+                    if (string.IsNullOrEmpty(request.Code))
+                        throw new Exception("编码不能为空！");
                     Country head = repository.GetFirst(q => q.Code == request.Code);
                     if (head == null)
                         head = Country.Create();
@@ -60,20 +61,28 @@ namespace PigRunner.Services.Basic.Services
                 }
                 else if (request.OptType == 2)
                 {
+                    if (string.IsNullOrEmpty(request.Code))
+                        throw new Exception("编码不能为空！");
                     Country head = repository.GetFirst(q => q.Code == request.Code);
                     if (head == null)
                         throw new Exception(string.Format("编码为【{0}】的国家地区不存在！", request.Code));
 
                     bool isSuccess = repository.Delete(head);
                     if (!isSuccess)
-                        throw new Exception("批号删除失败！");
+                        throw new Exception("删除失败！");
                 }
-                else if (request.OptType == 2)
+                else if (request.OptType == 3)
                 {
-                    Country head = repository.GetFirst(q => q.Code == request.Code);
-                    if (head == null)
-                        throw new Exception(string.Format("编码为【{0}】的国家地区不存在！", request.Code));
-                    response.data = head;
+                    if (!string.IsNullOrEmpty(request.Code))
+                    {
+                        Country head = repository.GetFirst(q => q.Code == request.Code);
+                        if (head == null)
+                            throw new Exception(string.Format("编码为【{0}】的国家地区不存在！", request.Code));
+                        response.data = head;
+
+                    }
+                    //else
+                    //    var list = repository.GetList(q=>!string.IsNullOrEmpty(q.Code)).FindAll;
                 }
                 response.success = true;
                 response.code = 200;
