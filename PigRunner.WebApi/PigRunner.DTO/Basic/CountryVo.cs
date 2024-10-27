@@ -24,7 +24,7 @@ namespace PigRunner.DTO.Basic
         public int TimeZone { get; set; } = -1;
 
         /// <summary>
-        /// 时区
+        /// 地区格式
         /// </summary>
         public int CountryFormat { get; set; } = -1;
 
