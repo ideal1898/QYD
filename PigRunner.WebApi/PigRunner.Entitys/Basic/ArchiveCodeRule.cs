@@ -12,20 +12,20 @@ namespace PigRunner.Entitys.Basic
     public class ArchiveCodeRule : BaseEntity<ArchiveCodeRule>
     {
         
+     
+     
+     
+     
          
-         
-         
-         
-         
-         
-        
+     
+     
         /// <summary>
         /// 备  注:
         /// 默认值:
         ///</summary>
         [SugarColumn(ColumnName="IsEffective" ) ]
         public int? IsEffective  { get; set;  } 
-        
+     
          
         
         /// <summary>
@@ -34,7 +34,7 @@ namespace PigRunner.Entitys.Basic
         ///</summary>
         [SugarColumn(ColumnName="Code" ) ]
         public string? Code  { get; set;  } 
-        
+     
          
         
         /// <summary>
@@ -43,7 +43,7 @@ namespace PigRunner.Entitys.Basic
         ///</summary>
         [SugarColumn(ColumnName="Name" ) ]
         public string? Name  { get; set;  } 
-        
+     
          
         
         /// <summary>
@@ -52,7 +52,7 @@ namespace PigRunner.Entitys.Basic
         ///</summary>
         [SugarColumn(ColumnName="Org" ) ]
         public long? Org  { get; set;  } 
-        
+     
          
         
         /// <summary>
@@ -61,7 +61,7 @@ namespace PigRunner.Entitys.Basic
         ///</summary>
         [SugarColumn(ColumnName="CodeRule" ) ]
         public string? CodeRule  { get; set;  } 
-        
+     
          
         
         /// <summary>
@@ -70,8 +70,8 @@ namespace PigRunner.Entitys.Basic
         ///</summary>
         [SugarColumn(ColumnName="EnTity" ) ]
         public string? EnTity  { get; set;  } 
-        
-         
+    
+
         
 
     }

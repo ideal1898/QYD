@@ -12,20 +12,20 @@ namespace PigRunner.Entitys.Basic
     public class Customer : BaseEntity<Customer>
     {
         
+     
+     
+     
          
-         
-         
-         
-         
-         
-        
+     
+     
+     
         /// <summary>
         /// 备  注:客户编码
         /// 默认值:
         ///</summary>
         [SugarColumn(ColumnName="Code" ) ]
         public string? Code  { get; set;  } 
-        
+     
          
         
         /// <summary>
@@ -34,7 +34,7 @@ namespace PigRunner.Entitys.Basic
         ///</summary>
         [SugarColumn(ColumnName="Name" ) ]
         public string? Name  { get; set;  } 
-        
+     
          
         
         /// <summary>
@@ -43,7 +43,7 @@ namespace PigRunner.Entitys.Basic
         ///</summary>
         [SugarColumn(ColumnName="ShortName" ) ]
         public string? ShortName  { get; set;  } 
-        
+     
          
         
         /// <summary>
@@ -52,7 +52,7 @@ namespace PigRunner.Entitys.Basic
         ///</summary>
         [SugarColumn(ColumnName="ARConfirmTermName" ) ]
         public string? ARConfirmTermName  { get; set;  } 
-        
+     
          
         
         /// <summary>
@@ -61,7 +61,7 @@ namespace PigRunner.Entitys.Basic
         ///</summary>
         [SugarColumn(ColumnName="TaxData" ) ]
         public decimal? TaxData  { get; set;  } 
-        
+     
          
         
         /// <summary>
@@ -70,7 +70,7 @@ namespace PigRunner.Entitys.Basic
         ///</summary>
         [SugarColumn(ColumnName="Saleser" ) ]
         public long? Saleser  { get; set;  } 
-        
+     
          
         
         /// <summary>
@@ -79,7 +79,7 @@ namespace PigRunner.Entitys.Basic
         ///</summary>
         [SugarColumn(ColumnName="Department" ) ]
         public long? Department  { get; set;  } 
-        
+     
          
         
         /// <summary>
@@ -88,7 +88,7 @@ namespace PigRunner.Entitys.Basic
         ///</summary>
         [SugarColumn(ColumnName="TaxNo" ) ]
         public string? TaxNo  { get; set;  } 
-        
+     
          
         
         /// <summary>
@@ -97,7 +97,7 @@ namespace PigRunner.Entitys.Basic
         ///</summary>
         [SugarColumn(ColumnName="Category" ) ]
         public long? Category  { get; set;  } 
-        
+     
          
         
         /// <summary>
@@ -106,7 +106,7 @@ namespace PigRunner.Entitys.Basic
         ///</summary>
         [SugarColumn(ColumnName="Org" ) ]
         public byte? Org  { get; set;  } 
-        
+     
          
         
         /// <summary>
@@ -115,7 +115,7 @@ namespace PigRunner.Entitys.Basic
         ///</summary>
         [SugarColumn(ColumnName="Province" ) ]
         public long? Province  { get; set;  } 
-        
+     
          
         
         /// <summary>
@@ -124,7 +124,7 @@ namespace PigRunner.Entitys.Basic
         ///</summary>
         [SugarColumn(ColumnName="RcvAddress" ) ]
         public string? RcvAddress  { get; set;  } 
-        
+     
          
         
         /// <summary>
@@ -133,7 +133,7 @@ namespace PigRunner.Entitys.Basic
         ///</summary>
         [SugarColumn(ColumnName="RcvTel" ) ]
         public string? RcvTel  { get; set;  } 
-        
+     
          
         
         /// <summary>
@@ -142,7 +142,7 @@ namespace PigRunner.Entitys.Basic
         ///</summary>
         [SugarColumn(ColumnName="ParentNodeCus" ) ]
         public long? ParentNodeCus  { get; set;  } 
-        
+     
          
         
         /// <summary>
@@ -151,7 +151,7 @@ namespace PigRunner.Entitys.Basic
         ///</summary>
         [SugarColumn(ColumnName="IsOrg" ) ]
         public int? IsOrg  { get; set;  } 
-        
+     
          
         
         /// <summary>
@@ -160,7 +160,7 @@ namespace PigRunner.Entitys.Basic
         ///</summary>
         [SugarColumn(ColumnName="Status" ) ]
         public string? Status  { get; set;  } 
-        
+     
          
         
         /// <summary>
@@ -169,7 +169,7 @@ namespace PigRunner.Entitys.Basic
         ///</summary>
         [SugarColumn(ColumnName="ShipRule" ) ]
         public string? ShipRule  { get; set;  } 
-        
+     
          
         
         /// <summary>
@@ -180,15 +180,15 @@ namespace PigRunner.Entitys.Basic
         public string? RcvPayRule  { get; set;  } 
         
          
-        
+     
         /// <summary>
         /// 备  注:供应商ID
         /// 默认值:
         ///</summary>
         [SugarColumn(ColumnName="Supplier" ) ]
         public long? Supplier  { get; set;  } 
-        
-         
+    
+
         
 
     }
