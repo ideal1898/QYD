@@ -12,62 +12,38 @@ namespace PigRunner.Entitys.Basic
     public class DocType : BaseEntity<DocType>
     {
         
-     
-        /// <summary>
-        /// 备  注:
-        /// 默认值:
-        ///</summary>
-        [SugarColumn(ColumnName="ID" ,IsPrimaryKey = true,IsIdentity = true) ]
-        public long ID  { get; set;  } 
-     
-        /// <summary>
-        /// 备  注:
-        /// 默认值:
-        ///</summary>
-        [SugarColumn(ColumnName="CreatedBy" ) ]
-        public string? CreatedBy  { get; set;  } 
-     
-        /// <summary>
-        /// 备  注:
-        /// 默认值:
-        ///</summary>
-        [SugarColumn(ColumnName="CreatedOn" ) ]
-        public DateTime? CreatedOn  { get; set;  } 
-     
          
-     
+         
+         
+         
+         
+         
+        
         /// <summary>
-        /// 备  注:
-        /// 默认值:
-        ///</summary>
-        [SugarColumn(ColumnName="ModifiedOn" ) ]
-        public DateTime? ModifiedOn  { get; set;  } 
-     
-        /// <summary>
-        /// 备  注:
+        /// 备  注:是否生效
         /// 默认值:
         ///</summary>
         [SugarColumn(ColumnName="IsEffective" ) ]
         public int? IsEffective  { get; set;  } 
-     
+        
          
         
         /// <summary>
-        /// 备  注:
+        /// 备  注:单据类型编码
         /// 默认值:
         ///</summary>
         [SugarColumn(ColumnName="Code" ) ]
         public string? Code  { get; set;  } 
-     
+        
          
         
         /// <summary>
-        /// 备  注:
+        /// 备  注:单据类型名称
         /// 默认值:
         ///</summary>
         [SugarColumn(ColumnName="Name" ) ]
         public string? Name  { get; set;  } 
-     
+        
          
         
         /// <summary>
@@ -78,7 +54,7 @@ namespace PigRunner.Entitys.Basic
         public int? RuleRcv  { get; set;  } 
         
          
-     
+        
         /// <summary>
         /// 备  注:收发规则_发
         /// 默认值:
@@ -87,14 +63,14 @@ namespace PigRunner.Entitys.Basic
         public int? RuleShip  { get; set;  } 
         
          
-     
+        
         /// <summary>
         /// 备  注:编码规则
         /// 默认值:
         ///</summary>
         [SugarColumn(ColumnName="DocCodeRule" ) ]
         public long? DocCodeRule  { get; set;  } 
-     
+        
          
         
         /// <summary>
@@ -103,7 +79,7 @@ namespace PigRunner.Entitys.Basic
         ///</summary>
         [SugarColumn(ColumnName="IsAutoCode" ) ]
         public int? IsAutoCode  { get; set;  } 
-     
+        
          
         
         /// <summary>
@@ -112,8 +88,8 @@ namespace PigRunner.Entitys.Basic
         ///</summary>
         [SugarColumn(ColumnName="IsApprovalProcess" ) ]
         public int? IsApprovalProcess  { get; set;  } 
-    
-
+        
+         
         
 
     }
