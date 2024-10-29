@@ -12,20 +12,20 @@ namespace PigRunner.Entitys.Basic
     public class TaxSchedule : BaseEntity<TaxSchedule>
     {
         
-     
-     
-     
-     
          
-     
-     
+         
+         
+         
+         
+         
+        
         /// <summary>
         /// 备  注:是否生效
         /// 默认值:
         ///</summary>
         [SugarColumn(ColumnName="IsEffective" ) ]
         public int? IsEffective  { get; set;  } 
-     
+        
          
         
         /// <summary>
@@ -34,7 +34,7 @@ namespace PigRunner.Entitys.Basic
         ///</summary>
         [SugarColumn(ColumnName="Code" ) ]
         public string? Code  { get; set;  } 
-     
+        
          
         
         /// <summary>
@@ -43,7 +43,7 @@ namespace PigRunner.Entitys.Basic
         ///</summary>
         [SugarColumn(ColumnName="Name" ) ]
         public string? Name  { get; set;  } 
-     
+        
          
         
         /// <summary>
@@ -52,7 +52,7 @@ namespace PigRunner.Entitys.Basic
         ///</summary>
         [SugarColumn(ColumnName="Tax" ) ]
         public decimal? Tax  { get; set;  } 
-     
+        
          
         
         /// <summary>
@@ -61,8 +61,8 @@ namespace PigRunner.Entitys.Basic
         ///</summary>
         [SugarColumn(ColumnName="TaxType" ) ]
         public int? TaxType  { get; set;  } 
-    
-
+        
+         
         
 
     }

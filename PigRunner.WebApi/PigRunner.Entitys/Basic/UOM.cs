@@ -12,20 +12,20 @@ namespace PigRunner.Entitys.Basic
     public class UOM : BaseEntity<UOM>
     {
         
-     
-     
-     
-     
          
-     
-     
+         
+         
+         
+         
+         
+        
         /// <summary>
         /// 备  注:是否生效
         /// 默认值:
         ///</summary>
         [SugarColumn(ColumnName="IsEffective" ) ]
         public int? IsEffective  { get; set;  } 
-     
+        
          
         
         /// <summary>
@@ -34,7 +34,7 @@ namespace PigRunner.Entitys.Basic
         ///</summary>
         [SugarColumn(ColumnName="Code" ) ]
         public string? Code  { get; set;  } 
-     
+        
          
         
         /// <summary>
@@ -43,7 +43,7 @@ namespace PigRunner.Entitys.Basic
         ///</summary>
         [SugarColumn(ColumnName="Name" ) ]
         public string? Name  { get; set;  } 
-     
+        
          
         
         /// <summary>
@@ -52,7 +52,7 @@ namespace PigRunner.Entitys.Basic
         ///</summary>
         [SugarColumn(ColumnName="IsBase" ) ]
         public int? IsBase  { get; set;  } 
-     
+        
          
         
         /// <summary>
@@ -61,7 +61,7 @@ namespace PigRunner.Entitys.Basic
         ///</summary>
         [SugarColumn(ColumnName="BaseUOM" ) ]
         public string? BaseUOM  { get; set;  } 
-     
+        
          
         
         /// <summary>
@@ -70,7 +70,7 @@ namespace PigRunner.Entitys.Basic
         ///</summary>
         [SugarColumn(ColumnName="RatioToBase" ) ]
         public decimal? RatioToBase  { get; set;  } 
-     
+        
          
         
         /// <summary>
@@ -79,7 +79,7 @@ namespace PigRunner.Entitys.Basic
         ///</summary>
         [SugarColumn(ColumnName="UOMGroup" ) ]
         public string? UOMGroup  { get; set;  } 
-     
+        
          
         
         /// <summary>
@@ -88,8 +88,8 @@ namespace PigRunner.Entitys.Basic
         ///</summary>
         [SugarColumn(ColumnName="Remark" ) ]
         public string? Remark  { get; set;  } 
-    
-
+        
+         
         
 
     }

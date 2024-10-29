@@ -6,7 +6,7 @@ using SqlSugar;
 namespace PigRunner.Entitys.Basic
 {
     /// <summary>
-    /// 货位
+    /// 库位
     ///</summary>
     [SugarTable("QYD_Basic_WhBin")]
     public class WhBin : BaseEntity<WhBin>

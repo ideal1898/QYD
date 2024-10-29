@@ -35,14 +35,6 @@ namespace PigRunner.Entitys.Basic
          
          
          
-        
-        /// <summary>
-        /// 备  注:修改时间
-        /// 默认值:
-        ///</summary>
-        [SugarColumn(ColumnName="ModifiedOn" ) ]
-        public DateTime? ModifiedOn  { get; set;  } 
-        
          
         
         /// <summary>

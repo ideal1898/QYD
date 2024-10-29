@@ -12,44 +12,20 @@ namespace PigRunner.Entitys.Basic
     public class DocCodeRule : BaseEntity<DocCodeRule>
     {
         
-     
-        /// <summary>
-        /// 备  注:
-        /// 默认值:
-        ///</summary>
-        [SugarColumn(ColumnName="ID" ,IsPrimaryKey = true,IsIdentity = true) ]
-        public long ID  { get; set;  } 
-     
-        /// <summary>
-        /// 备  注:创建人
-        /// 默认值:
-        ///</summary>
-        [SugarColumn(ColumnName="CreatedBy" ) ]
-        public string? CreatedBy  { get; set;  } 
-     
          
-     
-        /// <summary>
-        /// 备  注:修改人
-        /// 默认值:
-        ///</summary>
-        [SugarColumn(ColumnName="ModifiedBy" ) ]
-        public string? ModifiedBy  { get; set;  } 
-     
-        /// <summary>
-        /// 备  注:修改时间
-        /// 默认值:
-        ///</summary>
-        [SugarColumn(ColumnName="ModifiedOn" ) ]
-        public DateTime? ModifiedOn  { get; set;  } 
-     
+         
+         
+         
+         
+         
+        
         /// <summary>
         /// 备  注:是否生效
         /// 默认值:
         ///</summary>
         [SugarColumn(ColumnName="IsEffective" ) ]
         public int? IsEffective  { get; set;  } 
-     
+        
          
         
         /// <summary>
@@ -58,7 +34,7 @@ namespace PigRunner.Entitys.Basic
         ///</summary>
         [SugarColumn(ColumnName="Code" ) ]
         public string? Code  { get; set;  } 
-     
+        
          
         
         /// <summary>
@@ -67,7 +43,7 @@ namespace PigRunner.Entitys.Basic
         ///</summary>
         [SugarColumn(ColumnName="Name" ) ]
         public string? Name  { get; set;  } 
-     
+        
          
         
         /// <summary>
@@ -76,8 +52,8 @@ namespace PigRunner.Entitys.Basic
         ///</summary>
         [SugarColumn(ColumnName="RuleText" ) ]
         public string? RuleText  { get; set;  } 
-    
-
+        
+         
         
 
     }
