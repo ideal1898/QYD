@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using PigRunner.Public.Abstract;
 using SqlSugar;
 namespace PigRunner.Entitys.Basic
 {
@@ -8,16 +9,9 @@ namespace PigRunner.Entitys.Basic
     /// 物料主表
     ///</summary>
     [SugarTable("QYD_Basic_Item")]
-    public class Item
+    public class Item : BaseEntity<Item>
     {
         
-     
-        /// <summary>
-        /// 备  注:物料ID
-        /// 默认值:
-        ///</summary>
-        [SugarColumn(ColumnName="ID" ,IsPrimaryKey = true,IsIdentity = true) ]
-        public long ID  { get; set;  } 
      
         /// <summary>
         /// 备  注:物料编码
