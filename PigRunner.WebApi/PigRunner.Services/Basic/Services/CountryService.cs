@@ -115,6 +115,18 @@ namespace PigRunner.Services.Basic.Services
                     }
                     response.data = JArray.FromObject(list);
                 }
+                else if (request.OptType == 4)
+                {
+                    List<EnumVo> lst= new List<EnumVo>();
+                    for (int i = 0; i < 3; i++)
+                    {
+                        EnumVo dto = new EnumVo();
+                        dto.value = i.ToString();
+                        dto.label = "币种" + i.ToString();
+                        lst.Add(dto);
+                    }
+                    response.data= JArray.FromObject(lst);
+                }
                 response.success = true;
                 response.code = 200;
                 response.msg = "操作成功";
