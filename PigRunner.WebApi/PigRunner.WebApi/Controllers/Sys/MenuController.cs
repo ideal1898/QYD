@@ -14,7 +14,7 @@ namespace PigRunner.WebApi.Controllers.Sys
     /// <summary>
     /// 菜单
     /// </summary>
-    [Route("api/[controller]/[Action]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class MenuController : ControllerBase
     {
@@ -59,8 +59,7 @@ namespace PigRunner.WebApi.Controllers.Sys
             else
                 response.msg = "上传失败";
 
-            response.code = 200;
-           
+            response.code = 200;         
             response.data = new JArray();
             return response;
         }

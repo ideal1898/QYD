@@ -13,6 +13,9 @@ namespace PigRunner.Services.Sys
     /// </summary>
     public interface IUserService: IScopedService
     {
+
+
+
         /// <summary>
         /// 获取用户信息
         /// </summary>

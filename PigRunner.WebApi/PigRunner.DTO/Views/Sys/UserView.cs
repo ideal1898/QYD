@@ -1,17 +1,38 @@
-﻿using PigRunner.Public.Abstract;
+﻿
+#region << 版 本 注 释 >>
+/*----------------------------------------------------------------
+ * 版权所有 (c) 2024 P R C  保留所有权利。
+ * CLR版本：4.0.30319.42000
+ * 机器名称：NXBY
+ * 命名空间：PigRunner.DTO.Views.Sys
+ * 唯一标识：ca3fbd07-85cb-4132-8e69-2a4d207dfd9c
+ * 文件名：UserView
+ * 
+ * 创建者：Administrator
+ * 电子邮箱：1003590782@qq.com
+ * 创建时间：2024/10/26 16:06:43
+ * 版本：V1.0.0
+ * 描述：
+ *
+ * ----------------------------------------------------------------
+ * 修改人：
+ * 时间：
+ * 修改说明：
+ *
+ * 版本：V1.0.1
+ *----------------------------------------------------------------*/
+#endregion << 版 本 注 释 >>
+
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PigRunner.Entitys.Sys
+namespace PigRunner.DTO.Views.Sys
 {
-    /// <summary>
-    /// 用户信息
-    /// </summary>
-    [SqlSugar.SugarTable("Base_Sys_User")]
-    public class SysUser:BaseEntity<SysUser>
+    public class UserView:BaseView
     {
         /// <summary>
         /// 用户名
@@ -25,9 +46,9 @@ namespace PigRunner.Entitys.Sys
         /// 密码
         /// </summary>
         public string Password { get; set; } = string.Empty;
-       /// <summary>
-       /// 是否启用
-       /// </summary>
+        /// <summary>
+        /// 是否启用
+        /// </summary>
         public int IsActive { get; set; }
         /// <summary>
         /// 管理员
@@ -40,7 +61,7 @@ namespace PigRunner.Entitys.Sys
         /// <summary>
         /// 手机号
         /// </summary>
-        public string Phone { get; set;} = string.Empty;
+        public string Phone { get; set; } = string.Empty;
         /// <summary>
         /// 主页
         /// </summary>
@@ -49,6 +70,5 @@ namespace PigRunner.Entitys.Sys
         /// 头像
         /// </summary>
         public string Avatar { get; set; } = string.Empty;
-
     }
 }

@@ -12,6 +12,7 @@ using Microsoft.Extensions.FileProviders;
 using PigRunner.Public.Helpers;
 using Newtonsoft.Json;
 using PigRunner.Public.Common.Views;
+using PigRunner.Services.Common;
 
 var builder = WebApplication.CreateBuilder(args);
 //ÈÕÖ¾
@@ -177,6 +178,7 @@ SugarIocServices.ConfigurationSugar(db =>
 
 builder.Services.InjectionAllServices();
 builder.Services.AddScoped<WebSession>();
+builder.Services.AddAutoMapper(typeof(SysAutoMapperProfile));
 
 #endregion
 
