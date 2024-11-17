@@ -41,7 +41,7 @@ namespace PigRunner.Public.Common.Views
         /// <summary>
         /// 查询返回的数据
         /// </summary>
-        public object data { get; set; } = null;
+        public JArray data { get; set; } = new JArray();
 
     }
 }

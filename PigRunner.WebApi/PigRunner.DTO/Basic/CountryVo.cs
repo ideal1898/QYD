@@ -8,6 +8,8 @@ namespace PigRunner.DTO.Basic
 {
     public class CountryVo
     {
+
+        public int LineNum { get; set; } = -1;
         /// <summary>
         /// 国家/地区编码
         /// </summary>
@@ -19,29 +21,59 @@ namespace PigRunner.DTO.Basic
         public string Name { get; set; } = string.Empty;
 
         /// <summary>
-        /// 时区
+        /// 时区名称
         /// </summary>
-        public int TimeZone { get; set; } = -1;
+        public string TimeZone { get; set; } = string.Empty;
 
         /// <summary>
         /// 时区
         /// </summary>
-        public int CountryFormat { get; set; } = -1;
+        public int TimeZoneV { get; set; } = -1;
+
+        /// <summary>
+        /// 地区格式名称
+        /// </summary>
+        public string CountryFormat { get; set; } =string.Empty;
+
+        /// <summary>
+        /// 地区格式名称
+        /// </summary>
+        public int CountryFormatV { get; set; } = -1;
+
+        /// <summary>
+        /// 币种名称
+        /// </summary>
+        public string Currency { get; set; } = string.Empty ;
 
         /// <summary>
         /// 币种
         /// </summary>
-        public int Currency { get; set; } = -1;
+        public int CurrencyV { get; set; } = -1;
 
         /// <summary>
         /// 语言
         /// </summary>
-        public int Language { get; set; } = -1;
+        public string Language { get; set; } = string.Empty;
+
+        /// <summary>
+        /// 语言
+        /// </summary>
+        public int LanguageV { get; set; } = -1;
+
+        /// <summary>
+        /// id
+        /// </summary>
+        public long ID { get; set; } = -1;
 
         /// <summary>
         /// 姓名格式
         /// </summary>
-        public int NameFormat { get; set; } = -1;
+        public string NameFormat { get; set; } =string.Empty;
+
+        /// <summary>
+        /// 姓名格式
+        /// </summary>
+        public int NameFormatV { get; set; } = -1;
 
 
         /// <summary>
