@@ -11,14 +11,7 @@ namespace PigRunner.Entitys.Basic
     [SugarTable("QYD_Basic_SupplierCategory")]
     public class SupplierCategory : BaseEntity<SupplierCategory>
     {
-        
-         
-         
-         
-         
-         
-         
-        
+          
         /// <summary>
         /// 备  注:是否生效
         /// 默认值:
