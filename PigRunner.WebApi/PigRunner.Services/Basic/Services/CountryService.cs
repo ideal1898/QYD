@@ -38,8 +38,6 @@ namespace PigRunner.Services.Basic.Services
 
             try
             {
-
-
                 if (request.OptType == 0 || request.OptType == 1)
                 {
                     if (string.IsNullOrEmpty(request.Code))
@@ -117,10 +115,10 @@ namespace PigRunner.Services.Basic.Services
                 }
                 else if (request.OptType == 4)
                 {
-                    List<EnumVo> lst= new List<EnumVo>();
+                    List<EnumView> lst= new List<EnumView>();
                     for (int i = 0; i < 3; i++)
                     {
-                        EnumVo dto = new EnumVo();
+                        EnumView dto = new EnumView();
                         dto.value = i.ToString();
                         dto.label = "币种" + i.ToString();
                         lst.Add(dto);

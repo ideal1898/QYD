@@ -1,5 +1,4 @@
-﻿using PigRunner.Entitys.Basic;
-using PigRunner.Public.Interface;
+﻿using PigRunner.Public.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +8,9 @@ using System.Threading.Tasks;
 namespace PigRunner.Repository.Basic
 {
     /// <summary>
-    /// 国家
+    /// 时区
     /// </summary>
-    public class CountryRepository : BaseRepository<Country>, IScopedService
+    public class TimeZoneRepository : BaseRepository<PigRunner.Entitys.Basic.TimeZone>, IScopedService
     {
     }
 }
