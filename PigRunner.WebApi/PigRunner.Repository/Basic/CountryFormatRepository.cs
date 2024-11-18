@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 namespace PigRunner.Repository.Basic
 {
     /// <summary>
-    /// 国家
+    /// 地址格式
     /// </summary>
-    public class CountryRepository : BaseRepository<Country>, IScopedService
+    public class CountryFormatRepository : BaseRepository<CountryFormat>, IScopedService
     {
     }
 }

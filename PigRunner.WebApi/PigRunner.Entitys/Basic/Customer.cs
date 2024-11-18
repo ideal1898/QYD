@@ -11,14 +11,6 @@ namespace PigRunner.Entitys.Basic
     [SugarTable("QYD_Basic_Customer")]
     public class Customer : BaseEntity<Customer>
     {
-        
-         
-         
-         
-         
-         
-         
-        
         /// <summary>
         /// 备  注:客户编码
         /// 默认值:
