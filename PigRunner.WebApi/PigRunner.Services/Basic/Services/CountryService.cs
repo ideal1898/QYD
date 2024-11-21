@@ -4,11 +4,7 @@ using PigRunner.Entitys.Basic;
 using PigRunner.Public.Common.Views;
 using PigRunner.Repository.Basic;
 using PigRunner.Services.Basic.IServices;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace PigRunner.Services.Basic.Services
 {
@@ -32,22 +28,22 @@ namespace PigRunner.Services.Basic.Services
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public PubResponse ActionCountry(CountryVo request)
+        public PubResponse ActionCountry(CountryView request)
         {
             PubResponse response = new PubResponse();
 
             try
             {
-                if (request.OptType == 0 || request.OptType == 1)
+                if (request.OptType.Equals("AddCountry") || request.OptType.Equals("UpdateCountry"))
                 {
                     if (string.IsNullOrEmpty(request.Code))
                         throw new Exception("编码不能为空！");
                     Country head = repository.GetFirst(q => q.Code == request.Code);
 
-                    if(request.OptType == 0)
+                    if (request.OptType.Equals("AddCountry"))
                     {
-                        if(head != null)
-                        throw new Exception(string.Format("编码为【{0}】的国家地区已存在，不能再新增！",request.Code));
+                        if (head != null)
+                            throw new Exception(string.Format("编码为【{0}】的国家地区已存在，不能再新增！", request.Code));
                         else
                             head = Country.Create();
                     }
@@ -56,75 +52,79 @@ namespace PigRunner.Services.Basic.Services
                         if (request.ID <= 0)
                             throw new Exception("修改ID要大于零！");
                         head = repository.GetFirst(q => q.ID == request.ID);
-                            if (head == null)
-                                throw new Exception(string.Format("ID为【{0}】的国家地区不存在，请检查！", request.ID));
+                        if (head == null)
+                            throw new Exception(string.Format("ID为【{0}】的国家地区不存在，请检查！", request.ID));
                     }
-                    
+
                     head.Code = request.Code;
                     head.Name = request.Name;
-                    head.CountryFormat = request.CountryFormatV;
-                    head.Currency = request.CurrencyV;
-                    head.Language = request.LanguageV;
-                    head.NameFormat = request.NameFormatV;
-                    head.TimeZone = request.TimeZoneV;
+                    head.CountryFormat = request.CountryFormat;
+                    head.Currency = request.Currency;
+                    head.Language = request.Language;
+                    head.NameFormat = request.NameFormat;
+                    head.TimeZone = request.TimeZone;
                     response.id = head.ID;
 
                     bool isSuccess = repository.InsertOrUpdate(head);
                     if (!isSuccess)
                         throw new Exception("国家地区新增/修改操作失败！");
                 }
-                else if (request.OptType == 2)
+                else if (request.OptType.Equals("DelCountry"))
                 {
-                    if (string.IsNullOrEmpty(request.Code))
+                    if (string.IsNullOrEmpty(request.Code) &&( request.Codes == null || request.Codes.Count <= 0))
                         throw new Exception("编码不能为空！");
-                    Country head = repository.GetFirst(q => q.Code == request.Code);
-                    if (head == null)
-                        throw new Exception(string.Format("编码为【{0}】的国家地区不存在！", request.Code));
-
-                    bool isSuccess = repository.Delete(head);
-                    if (!isSuccess)
-                        throw new Exception("删除失败！");
-                }
-                else if (request.OptType == 3)
-                {
-                    List<CountryVo> list = new List<CountryVo>();
-
                     if (!string.IsNullOrEmpty(request.Code))
                     {
-                        Country item = repository.GetFirst(q => q.Code == request.Code);
-                        if (item == null)
+                        Country head = repository.GetFirst(q => q.Code == request.Code);
+                        if (head == null)
                             throw new Exception(string.Format("编码为【{0}】的国家地区不存在！", request.Code));
-                        CountryVo dto = SetValue(item);
-                        dto.LineNum = 10;
-                        list.Add(dto);
+
+                        bool isSuccess = repository.Delete(head);
+                        if (!isSuccess)
+                            throw new Exception("删除失败！");
                     }
                     else
                     {
+                        foreach (var item in request.Codes)
+                        {
+                            Country head = repository.GetFirst(q => q.Code == item);
+                            if (head == null)
+                                throw new Exception(string.Format("编码为【{0}】的国家地区不存在！", request.Code));
 
-                        var lst = repository.Context.Queryable<Country>().ToList();
+                            bool isSuccess = repository.Delete(head);
+                            if (!isSuccess)
+                                throw new Exception("删除失败！");
+                        }
+                    }
+                }
+                else if (request.OptType.Equals("QueryCountry"))
+                {
+                    int total = 0;
+                    List<CountryView> list = new List<CountryView>();
+                    var lst = repository.AsQueryable().ToOffsetPage(request.Current,request.Size,ref total);
+
+                    if(!string.IsNullOrEmpty(request.Code)&& !string.IsNullOrEmpty(request.Name))
+                        lst = repository.AsQueryable().Where(q=>q.Code.Contains(request.Code)&&q.Name.Contains(request.Name)).ToOffsetPage(request.Current, request.Size, ref total);
+                    else if (!string.IsNullOrEmpty(request.Code))
+                        lst = repository.AsQueryable().Where(q => q.Code.Contains(request.Code)).ToOffsetPage(request.Current, request.Size, ref total);
+                    else if (!string.IsNullOrEmpty(request.Name))
+                        lst = repository.AsQueryable().Where(q =>  q.Name.Contains(request.Name)).ToOffsetPage(request.Current, request.Size, ref total);
+
+                    if (lst != null && lst.Count > 0)
+                    {
                         int lineNum = 10;
                         foreach (var item in lst)
                         {
-                            CountryVo dto = SetValue(item);
+                            CountryView dto = SetValue(item);
                             dto.LineNum = lineNum;
                             list.Add(dto);
                             lineNum += 10;
                         }
                     }
                     response.data = JArray.FromObject(list);
+                    response.total = total;
                 }
-                else if (request.OptType == 4)
-                {
-                    List<EnumView> lst= new List<EnumView>();
-                    for (int i = 0; i < 3; i++)
-                    {
-                        EnumView dto = new EnumView();
-                        dto.value = i.ToString();
-                        dto.label = "币种" + i.ToString();
-                        lst.Add(dto);
-                    }
-                    response.data= JArray.FromObject(lst);
-                }
+
                 response.success = true;
                 response.code = 200;
                 response.msg = "操作成功";
@@ -136,42 +136,38 @@ namespace PigRunner.Services.Basic.Services
             return response;
         }
 
-        private CountryVo SetValue(Country item)
+        private CountryView SetValue(Country item)
         {
-            CountryVo dto = new CountryVo();
-            dto.OptType = 1;
+            CountryView dto = new CountryView();
+            dto.OptType = "UpdateCountry";
             dto.Code = item.Code;
             dto.Name = item.Name;
             dto.ID = item.ID;
-            dto.LanguageV = item.Language;
-            if (dto.LanguageV == 0)
-                dto.Language = "中文";
-            else if (dto.LanguageV == 1)
-                dto.Language = "外语";
+            dto.Language = item.Language;
+            var lg = repository.Context.Queryable<Language>().Where(q => q.ID == item.Language)?.First();
+            if (lg != null)
+                dto.LanguageName = lg.Name;
 
-            dto.CountryFormatV = item.CountryFormat;
-            if (dto.CountryFormatV == 0)
-                dto.CountryFormat = "中国大陆";
-            else if (dto.CountryFormatV == 1)
-                dto.CountryFormat = "境外地址";
+            dto.CountryFormat = item.CountryFormat;
+            var cf = repository.Context.Queryable<CountryFormat>().Where(q => q.ID == item.CountryFormat)?.First();
+            if (cf != null)
+                dto.CountryFormatName = cf.Name;
 
-            dto.CurrencyV = item.Currency;
-            if (dto.CurrencyV == 0)
-                dto.Currency = "人民币";
-            else if (dto.CurrencyV == 1)
-                dto.Currency = "外币";
+            dto.Currency = item.Currency;
+            var cy = repository.Context.Queryable<Currency>().Where(q => q.ID == item.Currency)?.First();
+            if (cy != null)
+                dto.CurrencyName = cy.Name;
 
-            dto.NameFormatV = item.NameFormat;
-            if (dto.NameFormatV == 0)
-                dto.NameFormat = "先姓后名";
-            else if (dto.NameFormatV == 1)
-                dto.NameFormat = "先名后姓";
+            dto.NameFormat = item.NameFormat;
+            var nf = repository.Context.Queryable<NameFormat>().Where(q => q.ID == item.NameFormat)?.First();
+            if (nf != null)
+                dto.NameFormatName = nf.Name;
 
-            dto.TimeZoneV = item.TimeZone;
-            if (dto.TimeZoneV == 0)
-                dto.TimeZone = "东八区";
-            else if (dto.TimeZoneV == 1)
-                dto.TimeZone = "UTC+8:00（北京、上海、重庆、乌鲁木齐）";
+            dto.TimeZone = item.TimeZone;
+            var tz = repository.Context.Queryable<Entitys.Basic.TimeZone>().Where(q => q.ID == item.TimeZone)?.First();
+            if (tz != null)
+                dto.TimeZoneName = tz.Name;
+
             return dto;
         }
 

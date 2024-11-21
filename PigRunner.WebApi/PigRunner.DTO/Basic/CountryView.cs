@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PigRunner.DTO.Basic
 {
-    public class CountryVo
+    public class CountryView
     {
 
         public int LineNum { get; set; } = -1;
@@ -14,6 +14,8 @@ namespace PigRunner.DTO.Basic
         /// 国家/地区编码
         /// </summary>
         public string Code { get; set; } = string.Empty;
+
+     
 
         /// <summary>
         /// 国家/地区名称
@@ -23,42 +25,42 @@ namespace PigRunner.DTO.Basic
         /// <summary>
         /// 时区名称
         /// </summary>
-        public string TimeZone { get; set; } = string.Empty;
+        public string TimeZoneName { get; set; } = string.Empty;
 
         /// <summary>
         /// 时区
         /// </summary>
-        public int TimeZoneV { get; set; } = -1;
+        public int TimeZone { get; set; } = -1;
 
         /// <summary>
         /// 地区格式名称
         /// </summary>
-        public string CountryFormat { get; set; } =string.Empty;
+        public string CountryFormatName { get; set; } =string.Empty;
 
         /// <summary>
         /// 地区格式名称
         /// </summary>
-        public int CountryFormatV { get; set; } = -1;
+        public int CountryFormat { get; set; } = -1;
 
         /// <summary>
         /// 币种名称
         /// </summary>
-        public string Currency { get; set; } = string.Empty ;
+        public string CurrencyName{ get; set; } = string.Empty ;
 
         /// <summary>
         /// 币种
         /// </summary>
-        public int CurrencyV { get; set; } = -1;
+        public int Currency { get; set; } = -1;
 
         /// <summary>
         /// 语言
         /// </summary>
-        public string Language { get; set; } = string.Empty;
+        public int Language { get; set; } =  -1;
 
         /// <summary>
         /// 语言
         /// </summary>
-        public int LanguageV { get; set; } = -1;
+        public string LanguageName { get; set; } = string.Empty;
 
         /// <summary>
         /// id
@@ -68,17 +70,32 @@ namespace PigRunner.DTO.Basic
         /// <summary>
         /// 姓名格式
         /// </summary>
-        public string NameFormat { get; set; } =string.Empty;
+        public string NameFormatName { get; set; } =string.Empty;
 
         /// <summary>
         /// 姓名格式
         /// </summary>
-        public int NameFormatV { get; set; } = -1;
+        public int NameFormat { get; set; } = -1;
 
 
         /// <summary>
         /// 操作类型
         /// </summary>
-        public int OptType { get; set; } = -1;
+        public string OptType { get; set; } =string.Empty;
+
+        /// <summary>
+        /// 当前页
+        /// </summary>
+        public int Current { get; set; } = 1;
+
+        /// <summary>
+        /// 每页几行
+        /// </summary>
+        public int Size { get; set; } = 2;
+
+        /// <summary>
+        /// 编号集合
+        /// </summary>
+        public List<string> Codes { get; set; } = new List<string>();
     }
 }

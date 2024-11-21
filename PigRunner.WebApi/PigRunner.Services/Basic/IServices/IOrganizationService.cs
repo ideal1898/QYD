@@ -1,21 +1,16 @@
 ﻿using PigRunner.DTO.Basic;
 using PigRunner.Public.Common.Views;
 using PigRunner.Public.Interface;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PigRunner.Services.Basic.IServices
 {
-    public interface ICountryService : IScopedService
+   public interface IOrganizationService : IScopedService
     {
         /// <summary>
-        /// 国家地区
+        /// 组织
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        PubResponse ActionCountry(CountryView request);
+        PubResponse ActionOrganization(OrganizationView request);
     }
 }

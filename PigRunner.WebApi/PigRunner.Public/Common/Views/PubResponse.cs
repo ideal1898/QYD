@@ -26,6 +26,10 @@ namespace PigRunner.Public.Common.Views
         /// </summary>
         public int code { get; set; }= 0;
 
+        /// <summary>
+        /// 总条数
+        /// </summary>
+        public int total { get; set; } = 0;
 
         /// <summary>
         /// 单据ID
