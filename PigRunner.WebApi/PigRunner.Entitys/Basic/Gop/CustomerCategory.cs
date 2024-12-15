@@ -11,29 +11,13 @@ namespace PigRunner.Entitys.Basic
     [SugarTable("QYD_Basic_CustomerCategory")]
     public class CustomerCategory : BaseEntity<CustomerCategory>
     {
-        
-         
-         
-         
-         
-         
-         
-        
-        /// <summary>
-        /// 备  注:是否生效
-        /// 默认值:
-        ///</summary>
-        [SugarColumn(ColumnName="IsEffective" ) ]
-        public int? IsEffective  { get; set;  } 
-        
-         
-        
+
         /// <summary>
         /// 备  注:客户分类编码
         /// 默认值:
         ///</summary>
-        [SugarColumn(ColumnName="Code" ) ]
-        public string? Code  { get; set;  } 
+        [SugarColumn(ColumnName = "Code")]
+        public string Code { get; set; } = string.Empty;
         
          
         
@@ -42,29 +26,35 @@ namespace PigRunner.Entitys.Basic
         /// 默认值:
         ///</summary>
         [SugarColumn(ColumnName="Name" ) ]
-        public string? Name  { get; set;  } 
-        
-         
-        
+        public string Name  { get; set;  } = string.Empty;
+
+
+
         /// <summary>
         /// 备  注:上级分类ID
         /// 默认值:
         ///</summary>
-        [SugarColumn(ColumnName="ParentNode" ) ]
-        public long? ParentNode  { get; set;  } 
-        
-         
-        
+        [SugarColumn(ColumnName = "ParentNode")]
+        public long ParentNode { get; set; } = -1;
+
+
+
         /// <summary>
         /// 备  注:备注
         /// 默认值:
         ///</summary>
         [SugarColumn(ColumnName="Remark" ) ]
-        public string? Remark  { get; set;  } 
-        
-         
-        
+        public string Remark  { get; set;  } = string.Empty;
 
+        /// <summary>
+        /// 修改日期
+        /// </summary>
+        public DateTime ModifiedTime { get; set; }= DateTime.Now;
+
+        /// <summary>
+        /// 修改人
+        /// </summary>
+        public string ModifiedBy { get; set; } = string.Empty;
     }
     
 }

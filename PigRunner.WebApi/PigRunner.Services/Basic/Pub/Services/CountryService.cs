@@ -57,7 +57,6 @@ namespace PigRunner.Services.Basic.Services
                         head = repository.GetFirst(q => q.ID == request.ID);
                         if (head == null)
                             throw new Exception(string.Format("ID为【{0}】的国家/地区不存在，请检查！", request.ID));
-
                     }
 
                     Country oldHead = repository.GetFirst(q => (q.Code == request.Code||q.Name==request.Name)&& q.ID!=head.ID);
