@@ -108,13 +108,13 @@ namespace PigRunner.Services.Basic.Services
 
                     if (lst != null && lst.Count > 0)
                     {
-                        int lineNum = 10;
+                        int lineNum = 1;
                         foreach (var item in lst)
                         {
                             CountryView dto = SetValue(item);
                             dto.LineNum = lineNum;
                             list.Add(dto);
-                            lineNum += 10;
+                            lineNum += 1;
                         }
                     }
                     response.data = JArray.FromObject(list);

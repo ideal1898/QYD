@@ -134,13 +134,13 @@ namespace PigRunner.Services.Basic.Pub.Services
 
                     if (lst != null && lst.Count > 0)
                     {
-                        int lineNum = 10;
+                        int lineNum = 1;
                         foreach (var item in lst)
                         {
                             ProvinceView dto = SetValue(item);
                             dto.LineNum = lineNum;
                             list.Add(dto);
-                            lineNum += 10;
+                            lineNum += 1;
                         }
                     }
                     response.data = JArray.FromObject(list);
