@@ -1,48 +1,47 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PigRunner.DTO.Basic;
+using PigRunner.DTO.Basic.Pub;
 using PigRunner.Public.Common.Views;
-using PigRunner.Services.Basic.IServices;
-using PigRunner.Services.Sys.IServices;
+using PigRunner.Services.Basic.Pub.IServices;
 
-namespace PigRunner.WebApi.Controllers.Basic
+namespace PigRunner.WebApi.Controllers.Basic.Pub
 {
-    /// <summary>
-    /// 国家/地区
-    /// </summary>
+     /// <summary>
+     /// 省/自治区
+     /// </summary>
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class CountryController : ControllerBase
+    public class ProvinceController : ControllerBase
     {
-        private ICountryService services;
+        private IProvinceService services;
         /// <summary>
         /// 服务注册
         /// </summary>
         /// <param name="_services"></param>
-        public CountryController(ICountryService _services)
+        public ProvinceController(IProvinceService _services)
         {
             this.services = _services;
         }
         /// <summary>
-        /// 国家地区
+        /// 省/自治区
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
         [AllowAnonymous]
         [HttpPost]
-        public PubResponse ActionCountry(CountryView request)
+        public PubResponse ActionProvince(ProvinceView request)
         {
-            return services.ActionCountry(request);
+            return services.ActionProvince(request);
         }
 
         /// <summary>
-        /// 上传国家/地区
+        /// 上传省/自治区
         /// </summary>
         /// <param name="file"></param>
         /// <returns></returns>
         [AllowAnonymous]
         [HttpPost]
-        public PubResponse UploadCountry(IFormFile file)
+        public PubResponse UploadProvince(IFormFile file)
         {
             PubResponse response = new PubResponse();
             try
@@ -51,7 +50,7 @@ namespace PigRunner.WebApi.Controllers.Basic
                 {
                     file.CopyTo(stream);
                     stream.Position = 0;
-                    response = services.UploadCountry(stream);
+                    response = services.UploadProvince(stream);
                 }
             }
             catch (Exception ex)

@@ -71,3 +71,33 @@ CREATE TABLE [QYD_Base_Organization] (
 	PRIMARY KEY([ID])
 );
 GO
+
+
+/**
+省/自治区
+*/
+IF OBJECT_ID('QYD_Base_Province') IS NOT NULL
+DROP TABLE QYD_Base_Province
+GO
+
+CREATE TABLE [QYD_Base_Province] (
+	[ID] BIGINT NOT NULL UNIQUE,
+	-- 版本号
+	[SysVersion] BIGINT DEFAULT 0,
+	-- 创建时间
+	[CreatedTime] DATETIME DEFAULT GETDATE(),
+	-- 创建人
+	[CreatedBy] VARCHAR(50),
+	-- 编码
+	[Code] VARCHAR(50),
+	-- 名称
+	[Name] VARCHAR(50),
+	--修改人
+	[ModifiedBy] VARCHAR(50),
+	--修改时间
+	[ModifiedTime] datetime,
+	--省
+	[Country] bigint,
+	PRIMARY KEY([ID])
+);
+GO

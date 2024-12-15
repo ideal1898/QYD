@@ -151,6 +151,7 @@ insert into QYD_Basic_TimeZone values(105,0,GETDATE(),'系统管理员','W. Europe St
 insert into QYD_Basic_TimeZone values(106,0,GETDATE(),'系统管理员','West Asia Standard Time','(UTC+05:00)阿什哈巴德，塔什干')
 insert into QYD_Basic_TimeZone values(107,0,GETDATE(),'系统管理员','West Pacific Standard Time','(UTC+10:00)关岛，莫尔兹比港')
 insert into QYD_Basic_TimeZone values(108,0,GETDATE(),'系统管理员','Yakutsk Standard Time','(UTC+09:00)雅库茨克(RTZ 8)')
+insert into QYD_Basic_TimeZone values(109,0,GETDATE(),'系统管理员','UTC','UTC+8:00(北京、上海、重庆、乌鲁木齐)')
 
 
 

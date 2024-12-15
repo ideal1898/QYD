@@ -1,10 +1,11 @@
 ﻿using Newtonsoft.Json.Linq;
+using OfficeOpenXml;
 using PigRunner.DTO.Basic;
 using PigRunner.Entitys.Basic;
 using PigRunner.Public.Common.Views;
 using PigRunner.Repository.Basic;
 using PigRunner.Services.Basic.IServices;
-
+using System.IO;
 
 namespace PigRunner.Services.Basic.Services
 {
@@ -38,12 +39,14 @@ namespace PigRunner.Services.Basic.Services
                 {
                     if (string.IsNullOrEmpty(request.Code))
                         throw new Exception("编码不能为空！");
+                    if (string.IsNullOrEmpty(request.Name))
+                        throw new Exception("名称不能为空！");
                     Country head = repository.GetFirst(q => q.Code == request.Code);
 
                     if (request.OptType.Equals("AddCountry"))
                     {
                         if (head != null)
-                            throw new Exception(string.Format("编码为【{0}】的国家地区已存在，不能再新增！", request.Code));
+                            throw new Exception(string.Format("编码为【{0}】的国家/地区已存在，不能再新增！", request.Code));
                         else
                             head = Country.Create();
                     }
@@ -53,8 +56,13 @@ namespace PigRunner.Services.Basic.Services
                             throw new Exception("修改ID要大于零！");
                         head = repository.GetFirst(q => q.ID == request.ID);
                         if (head == null)
-                            throw new Exception(string.Format("ID为【{0}】的国家地区不存在，请检查！", request.ID));
+                            throw new Exception(string.Format("ID为【{0}】的国家/地区不存在，请检查！", request.ID));
+
                     }
+
+                    Country oldHead = repository.GetFirst(q => (q.Code == request.Code||q.Name==request.Name)&& q.ID!=head.ID);
+                    if(oldHead != null)
+                        throw new Exception(string.Format("编码为【{0}】或者名称为【{1}】的国家/地区已存在，请检查！", request.Code,request.Name));
 
                     head.Code = request.Code;
                     head.Name = request.Name;
@@ -67,7 +75,7 @@ namespace PigRunner.Services.Basic.Services
 
                     bool isSuccess = repository.InsertOrUpdate(head);
                     if (!isSuccess)
-                        throw new Exception("国家地区新增/修改操作失败！");
+                        throw new Exception("国家/地区新增/修改操作失败！");
                 }
                 else if (request.OptType.Equals("DelCountry"))
                 {
@@ -75,25 +83,13 @@ namespace PigRunner.Services.Basic.Services
                         throw new Exception("编码不能为空！");
                     if (!string.IsNullOrEmpty(request.Code))
                     {
-                        Country head = repository.GetFirst(q => q.Code == request.Code);
-                        if (head == null)
-                            throw new Exception(string.Format("编码为【{0}】的国家地区不存在！", request.Code));
-
-                        bool isSuccess = repository.Delete(head);
-                        if (!isSuccess)
-                            throw new Exception("删除失败！");
+                        deleteCountry(request.Code);
                     }
                     else
                     {
                         foreach (var item in request.Codes)
                         {
-                            Country head = repository.GetFirst(q => q.Code == item);
-                            if (head == null)
-                                throw new Exception(string.Format("编码为【{0}】的国家地区不存在！", request.Code));
-
-                            bool isSuccess = repository.Delete(head);
-                            if (!isSuccess)
-                                throw new Exception("删除失败！");
+                            deleteCountry(item);
                         }
                     }
                 }
@@ -135,6 +131,21 @@ namespace PigRunner.Services.Basic.Services
             }
             return response;
         }
+        private void deleteCountry(string Code)
+        {
+            Country head = repository.GetFirst(q => q.Code == Code);
+            if (head == null)
+                throw new Exception(string.Format("编码为【{0}】的国家/地区不存在！", Code));
+
+            //检查是否被省份引用
+            var oldData = repository.Context.Queryable<Province>().Where(q => q.Country == head.ID)?.First();
+            if (oldData != null)
+                throw new Exception(string.Format("国家/地区【{0}】已被省份及自治区所引用，不能删除！", head.Name));
+
+            bool isSuccess = repository.Delete(head);
+            if (!isSuccess)
+                throw new Exception("删除失败！");
+        }
 
         private CountryView SetValue(Country item)
         {
@@ -171,5 +182,128 @@ namespace PigRunner.Services.Basic.Services
             return dto;
         }
 
+        public PubResponse UploadCountry(MemoryStream stream)
+        {
+            PubResponse response = new PubResponse();
+            try
+            {
+                using (var package = new ExcelPackage(stream))
+                {
+                    ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+                    if (package.Workbook == null || package.Workbook.Worksheets == null || package.Workbook.Worksheets.Count <= 0)
+                        throw new Exception("Excel内容不能为空！");
+                    var lst=package.Workbook.Worksheets.Cast<ExcelWorksheet>().Where(q=>q.Dimension!=null).ToList();
+                    if (lst == null || lst.Count <= 0)
+                        throw new Exception("Excel的sheet内容不能为空！");
+                    List<Country> lstCtry = new List<Country>();
+                    Dictionary<string, string> dic = new Dictionary<string, string>();
+                    foreach (var worksheet in lst)
+                    {
+                        var rowCount = worksheet.Dimension.Rows;//行
+                        var columnCount = worksheet.Dimension.Columns;//列
+                        if (rowCount < 2)
+                            throw new Exception(string.Format("Sheet[{0}]数据不能为空！",worksheet.Name));
+                        for (int row = 2; row <= rowCount; row++)
+                        {
+                            //第一列：编码
+                            string Code = string.Empty;
+                            //第二列：名称
+                            string Name = string.Empty;
+                            //第三列：时区
+                            string TimeZoneName = string.Empty;
+                            //第四列：地址格式
+                            string CountryFormatName = string.Empty;
+                            //第5列：币种
+                            string CurrencyName = string.Empty;
+                            //第6列：语言
+                            string LanguageName = string.Empty;
+
+                            for (int col = 1; col <= columnCount; col++)
+                            {
+                                var cellValue = worksheet.GetValue(row, col) != null ? worksheet.GetValue(row, col).ToString() : "";
+                                if (cellValue == null)
+                                    continue;
+                                if (col == 1)
+                                    Code = cellValue.ToString();
+                                else if (col == 2)
+                                    Name = cellValue.ToString();
+                                else if (col == 3)
+                                    TimeZoneName = cellValue.ToString();
+                                else if (col == 4)
+                                    CountryFormatName = cellValue.ToString();
+                                else if (col == 5)
+                                    CurrencyName = cellValue.ToString();
+                                else if (col == 6)
+                                    LanguageName = cellValue.ToString();
+                            }
+
+                            if (string.IsNullOrEmpty(Code) || string.IsNullOrEmpty(Name))
+                                continue;
+                            if (dic.ContainsKey(Code) || dic.ContainsValue(Name))
+                                throw new Exception(string.Format("Sheet[{0}]编码或名称已重复，请检查！", worksheet.Name));
+                            dic.Add(Code, Name);
+                            Country head = repository.GetFirst(q => q.Code == Code|| q.Name == Name);
+                            if (head != null)
+                                throw new Exception(string.Format("编码为【{0}】的国家/地区已存在！", Code));
+                            head = Country.Create();
+                            head.Code = Code;
+                            head.Name = Name;
+                            long CountryFormatV = 0;
+                            if (!string.IsNullOrEmpty(CountryFormatName))
+                            {
+                                var cf = repository.Context.Queryable<CountryFormat>().Where(q => q.Name == CountryFormatName)?.First();
+                                if (cf == null)
+                                    throw new Exception(string.Format("Sheet[{0}]地址格式【{1}】不存在，请检查！", worksheet.Name, CountryFormatName));
+                                CountryFormatV = cf.ID;
+                            }
+                            head.CountryFormat = (int)CountryFormatV;
+                            long CurrencyV = 0;
+                            if (!string.IsNullOrEmpty(CurrencyName))
+                            {
+                                var cf = repository.Context.Queryable<Currency>().Where(q => q.Name == CurrencyName)?.First();
+                                if (cf == null)
+                                    throw new Exception(string.Format("Sheet[{0}]币种【{1}】不存在，请检查！", worksheet.Name, CurrencyName));
+                                CurrencyV = cf.ID;
+                            }
+                            head.Currency = (int)CurrencyV;
+                            long LanguageV = 0;
+                            if (!string.IsNullOrEmpty(LanguageName))
+                            {
+                                var cf = repository.Context.Queryable<Language>().Where(q => q.Name == LanguageName)?.First();
+                                if (cf == null)
+                                    throw new Exception(string.Format("Sheet[{0}]语言【{1}】不存在，请检查！", worksheet.Name, LanguageName));
+                                LanguageV = cf.ID;
+                            }
+                            head.Language = (int)LanguageV;
+
+                            long TimeZoneV = 0;
+                            if (!string.IsNullOrEmpty(TimeZoneName))
+                            {
+                                var cf = repository.Context.Queryable<Entitys.Basic.TimeZone>().Where(q => q.Name == TimeZoneName)?.First();
+                                if (cf == null)
+                                    throw new Exception(string.Format("Sheet[{0}]时区【{1}】不存在，请检查！", worksheet.Name, TimeZoneName));
+                                TimeZoneV = cf.ID;
+                            }
+                            head.TimeZone = (int)TimeZoneV;
+
+                            lstCtry.Add(head);
+                        }
+                    }
+                    int rtn = repository.Context.Insertable(lstCtry).ExecuteCommand();
+                    if (rtn != lstCtry.Count)
+                        throw new Exception("写入数据失败！");
+                }
+                response.code = 200;
+                response.success = true;
+                response.msg = "导入成功！";
+            }
+            catch (Exception ex)
+            {
+                response.code = 400;
+                response.msg = ex.Message;
+            }
+            return response;
+        }
     }
 }
