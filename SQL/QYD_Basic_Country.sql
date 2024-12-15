@@ -101,3 +101,35 @@ CREATE TABLE [QYD_Base_Province] (
 	PRIMARY KEY([ID])
 );
 GO
+
+
+/**
+客户分类
+*/
+IF OBJECT_ID('QYD_Basic_CustomerCategory') IS NOT NULL
+DROP TABLE QYD_Basic_CustomerCategory
+GO
+
+CREATE TABLE [QYD_Basic_CustomerCategory] (
+	[ID] BIGINT NOT NULL UNIQUE,
+	-- 版本号
+	[SysVersion] BIGINT DEFAULT 0,
+	-- 创建时间
+	[CreatedTime] DATETIME DEFAULT GETDATE(),
+	-- 创建人
+	[CreatedBy] VARCHAR(50),
+	-- 编码
+	[Code] VARCHAR(50),
+	-- 名称
+	[Name] VARCHAR(50),
+	--修改人
+	[ModifiedBy] VARCHAR(50),
+	--修改时间
+	[ModifiedTime] datetime,
+	--备注
+	[Remark] nvarchar(255),
+	--上级分类
+	[ParentNode] bigint,
+	PRIMARY KEY([ID])
+);
+GO
