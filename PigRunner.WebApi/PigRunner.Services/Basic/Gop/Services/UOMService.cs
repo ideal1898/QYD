@@ -1,83 +1,50 @@
-﻿
-#region << 版 本 注 释 >>
-/*----------------------------------------------------------------
- * 版权所有 (c) 2024 P R C  保留所有权利。
- * CLR版本：4.0.30319.42000
- * 机器名称：NXBY
- * 命名空间：PigRunner.Services.Basic.Services
- * 唯一标识：0ca131f5-2ddb-4b5c-9ce6-2136ba9f5fe6
- * 文件名：SupplierCategoryService
- * 
- * 创建者：Administrator
- * 电子邮箱：1003590782@qq.com
- * 创建时间：2024/11/17 10:44:53
- * 版本：V1.0.0
- * 描述：
- *
- * ----------------------------------------------------------------
- * 修改人：
- * 时间：
- * 修改说明：
- *
- * 版本：V1.0.1
- *----------------------------------------------------------------*/
-#endregion << 版 本 注 释 >>
-
-
-using AutoMapper;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 using OfficeOpenXml;
-using PigRunner.DTO.Basic;
+using PigRunner.DTO.Basic.Gop;
 using PigRunner.Entitys.Basic;
 using PigRunner.Public.Common.Views;
-using PigRunner.Public.Helpers;
-using PigRunner.Repository.Basic;
-using PigRunner.Services.Basic.IServices;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using PigRunner.Repository.Basic.Gop;
+using PigRunner.Services.Basic.Gop.IServices;
 
-namespace PigRunner.Services.Basic.Services
+namespace PigRunner.Services.Basic.Gop.Services
 {
-    public class SupplierCategoryService : ISupplierCategoryService
+    public class UOMService : IUOMService
     {
-        private SupplierCategoryRepository repository;
+        private UOMRepository repository;
         /// <summary>
         /// 服务
         /// </summary>
         /// <param name="_lotMasterRepository"></param>
-        public SupplierCategoryService(SupplierCategoryRepository _repository)
+        public UOMService(UOMRepository _repository)
         {
             this.repository = _repository;
         }
 
         /// <summary>
-        /// 供应商分类增删改查
+        /// 计量单位增删改查
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public PubResponse ActionSupplierCategory(SupplierCategoryView request)
+        public PubResponse ActionUOM(UOMView request)
         {
             PubResponse response = new PubResponse();
             try
             {
-                if (request.OptType.Equals("AddSupplierCategory") || request.OptType.Equals("UpdateSupplierCategory"))
+                if (request.OptType.Equals("AddUOM") || request.OptType.Equals("UpdateUOM"))
                 {
                     if (string.IsNullOrEmpty(request.Code))
                         throw new Exception("编码不能为空！");
                     if (string.IsNullOrEmpty(request.Name))
                         throw new Exception("名称不能为空！");
 
-                    SupplierCategory head = repository.GetFirst(q => q.Code == request.Code);
+                    UOM head = repository.GetFirst(q => q.Code == request.Code);
 
-                    if (request.OptType.Equals("AddSupplierCategory"))
+                    if (request.OptType.Equals("AddUOM"))
                     {
                         if (head != null)
-                            throw new Exception(string.Format("编码为【{0}】的供应商分类已存在，不能再新增！", request.Code));
+                            throw new Exception(string.Format("编码为【{0}】的计量单位已存在，不能再新增！", request.Code));
                         else
-                            head = SupplierCategory.Create();
+                            head = UOM.Create();
                     }
                     else
                     {
@@ -85,43 +52,40 @@ namespace PigRunner.Services.Basic.Services
                             throw new Exception("修改ID要大于零！");
                         head = repository.GetFirst(q => q.ID == request.ID);
                         if (head == null)
-                            throw new Exception(string.Format("ID为【{0}】的供应商分类不存在，请检查！", request.ID));
+                            throw new Exception(string.Format("ID为【{0}】的计量单位不存在，请检查！", request.ID));
 
                         head.ModifiedTime = DateTime.Now;
                     }
 
-                    SupplierCategory oldHead = repository.GetFirst(q => (q.Code == request.Code || q.Name == request.Name) && q.ID != head.ID);
+                    UOM oldHead = repository.GetFirst(q => (q.Code == request.Code || q.Name == request.Name) && q.ID != head.ID);
                     if (oldHead != null)
-                        throw new Exception(string.Format("编码为【{0}】或者名称为【{1}】的供应商分类已存在，请检查！", request.Code, request.Name));
+                        throw new Exception(string.Format("编码为【{0}】或者名称为【{1}】的计量单位已存在，请检查！", request.Code, request.Name));
 
                     head.Code = request.Code;
                     head.Name = request.Name;
                     response.id = head.ID;
                     head.Remark = request.Remark;
-                    head.IsEffective = request.IsEffective ? 1 : 0;
-                    long ParentNode = -1;
 
-                    //根据供应商分类编码查找实体
-                    if (!string.IsNullOrEmpty(request.ParentCode))
-                    {
-                        var lg = repository.GetFirst(q => q.Code == request.ParentCode);
-                        if (lg != null)
-                            ParentNode = lg.ID;
-                    }
-                    head.ParentNode = ParentNode;
+                    int IsBase = request.IsBase ? 1 : 0;
+                    head.IsBase = IsBase;
+
+                    head.RatioToBase = request.RatioToBase;
+                    head.RoundWay = request.RoundWay;
+                    head.UomPrecision = request.UomPrecision;
+
                     bool isSuccess = repository.InsertOrUpdate(head);
                     if (!isSuccess)
-                        throw new Exception("供应商分类新增/修改操作失败！");
+                        throw new Exception("计量单位新增/修改操作失败！");
                 }
-                else if (request.OptType.Equals("DelSupplierCategory"))
+                else if (request.OptType.Equals("DelUOM"))
                 {
                     if (string.IsNullOrEmpty(request.Code) && (request.Codes == null || request.Codes.Count <= 0))
                         throw new Exception("编码不能为空！");
                     if (!string.IsNullOrEmpty(request.Code))
                     {
-                        SupplierCategory head = repository.GetFirst(q => q.Code == request.Code);
+                        UOM head = repository.GetFirst(q => q.Code == request.Code);
                         if (head == null)
-                            throw new Exception(string.Format("编码为【{0}】的供应商分类不存在！", request.Code));
+                            throw new Exception(string.Format("编码为【{0}】的计量单位不存在！", request.Code));
 
                         bool isSuccess = repository.Delete(head);
                         if (!isSuccess)
@@ -131,9 +95,9 @@ namespace PigRunner.Services.Basic.Services
                     {
                         foreach (var item in request.Codes)
                         {
-                            SupplierCategory head = repository.GetFirst(q => q.Code == item);
+                            UOM head = repository.GetFirst(q => q.Code == item);
                             if (head == null)
-                                throw new Exception(string.Format("编码为【{0}】的供应商分类不存在！", request.Code));
+                                throw new Exception(string.Format("编码为【{0}】的计量单位不存在！", request.Code));
 
                             bool isSuccess = repository.Delete(head);
                             if (!isSuccess)
@@ -141,10 +105,10 @@ namespace PigRunner.Services.Basic.Services
                         }
                     }
                 }
-                else if (request.OptType.Equals("QuerySupplierCategory"))
+                else if (request.OptType.Equals("QueryUOM"))
                 {
                     int total = 0;
-                    List<SupplierCategoryView> list = new List<SupplierCategoryView>();
+                    List<UOMView> list = new List<UOMView>();
                     var lst = repository.AsQueryable().ToOffsetPage(request.Current, request.Size, ref total);
 
                     if (!string.IsNullOrEmpty(request.Code) && !string.IsNullOrEmpty(request.Name) && request.ID > 0)
@@ -162,7 +126,7 @@ namespace PigRunner.Services.Basic.Services
                         int lineNum = 1;
                         foreach (var item in lst)
                         {
-                            SupplierCategoryView dto = SetValue(item);
+                            UOMView dto = SetValue(item);
                             dto.LineNum = lineNum;
                             list.Add(dto);
                             lineNum += 1;
@@ -183,30 +147,32 @@ namespace PigRunner.Services.Basic.Services
             return response;
         }
 
-        private SupplierCategoryView SetValue(SupplierCategory item)
+        private UOMView SetValue(UOM item)
         {
-            SupplierCategoryView dto = new SupplierCategoryView();
+            UOMView dto = new UOMView();
             dto.Code = item.Code;
             dto.Name = item.Name;
             dto.Remark = item.Remark;
             dto.ID = item.ID;
-            dto.IsEffective = item.IsEffective == 1 ? true : false;
-            if (dto.IsEffective)
-                dto.Effective = "生效";
+            dto.IsBase = item.IsBase == 1 ? true : false;
+            if (dto.IsBase)
+                dto.IsBaseName = "是";
             else
-                dto.Effective = "停用";
+                dto.IsBaseName = "否";
+            dto.RatioToBase = item.RatioToBase;
+            dto.RoundWay = item.RoundWay;
+            if (dto.RoundWay == 1)
+                dto.RoundWayName = "四舍五入";
+            else if (dto.RoundWay == 2)
+                dto.RoundWayName = "舍位";
+            else if (dto.RoundWay == 3)
+                dto.RoundWayName = "入位";
+            dto.UomPrecision = item.UomPrecision;
 
-            //根据供应商分类编码查找实体
-            var lg = repository.GetFirst(q => q.ID == item.ParentNode);
-            if (lg != null)
-            {
-                dto.ParentCode = lg.Code;
-                dto.ParentName = lg.Name;
-            }
             return dto;
         }
 
-        public PubResponse UploadSupplierCategory(MemoryStream stream)
+        public PubResponse UploadUOM(MemoryStream stream)
         {
             PubResponse response = new PubResponse();
             try
@@ -220,7 +186,7 @@ namespace PigRunner.Services.Basic.Services
                     var lst = package.Workbook.Worksheets.Cast<ExcelWorksheet>().Where(q => q.Dimension != null).ToList();
                     if (lst == null || lst.Count <= 0)
                         throw new Exception("Excel的sheet内容不能为空！");
-                    List<SupplierCategory> lstCtry = new List<SupplierCategory>();
+                    List<UOM> lstCtry = new List<UOM>();
                     Dictionary<string, string> dic = new Dictionary<string, string>();
                     foreach (var worksheet in lst)
                     {
@@ -243,44 +209,60 @@ namespace PigRunner.Services.Basic.Services
                             if (worksheet.GetValue(row, 2) != null)
                                 Name = worksheet.GetValue(row, 2).ToString();
 
-                            //第3列：供应商分类
-                            string CountryName = string.Empty;
-                            if (worksheet.GetValue(row, 3) != null)
-                                CountryName = worksheet.GetValue(row, 3).ToString();
 
-                            //第4列：状态
+
+                            //第3列：是否基准单位
                             string Effective = string.Empty;
+                            if (worksheet.GetValue(row, 3) != null)
+                                Effective = worksheet.GetValue(row, 3).ToString();
+
+                            //第4列：转换系数
+                            decimal RatioToBase = 0;
                             if (worksheet.GetValue(row, 4) != null)
-                                Effective = worksheet.GetValue(row, 4).ToString();
+                                decimal.TryParse(worksheet.GetValue(row, 4).ToString(), out RatioToBase);
+
+                            //第5列：转换系数
+                            int RoundWay = 0;
+                            if (worksheet.GetValue(row, 5) != null)
+                            {
+                                string RtName= worksheet.GetValue(row, 5).ToString();
+                                if(RtName.Equals("四舍五入"))
+                                    RoundWay = 1;
+                                else if (RtName.Equals("舍位"))
+                                    RoundWay = 2;
+                                else if (RtName.Equals("入位"))
+                                    RoundWay = 3;
+                            }
+                            //第6列：精度
+                            decimal UomPrecision = 0;
+                            if (worksheet.GetValue(row, 6) != null)
+                                decimal.TryParse(worksheet.GetValue(row, 6).ToString(), out UomPrecision);
 
                             //第5列：备注
                             string Remark = string.Empty;
-                            if (worksheet.GetValue(row, 5) != null)
-                                Remark = worksheet.GetValue(row, 5).ToString();
+                            if (worksheet.GetValue(row, 7) != null)
+                                Remark = worksheet.GetValue(row, 7).ToString();
 
-                            int IsEffective = 0;
+                            int IsBase = 0;
                             if (!string.IsNullOrEmpty(Effective) && (Effective.Equals("生效") || Effective.Equals("1")))
-                                IsEffective = 1;
+                                IsBase = 1;
 
                             if (string.IsNullOrEmpty(Code) || string.IsNullOrEmpty(Name))
                                 continue;
                             if (dic.ContainsKey(Code) || dic.ContainsValue(Name))
                                 throw new Exception(string.Format("Sheet[{0}]编码或名称已重复，请检查！", worksheet.Name));
                             dic.Add(Code, Name);
-                            SupplierCategory head = repository.GetFirst(q => q.Code == Code || q.Name == Name);
+                            UOM head = repository.GetFirst(q => q.Code == Code || q.Name == Name);
                             if (head != null)
-                                throw new Exception(string.Format("编码为【{0}】的供应商分类已存在！", Code));
-                            head = SupplierCategory.Create();
+                                throw new Exception(string.Format("编码为【{0}】的计量单位已存在！", Code));
+                            head = UOM.Create();
                             head.Code = Code;
                             head.Name = Name;
-                            long CountryID = 0;
-                            var lg = repository.Context.Queryable<SupplierCategory>().Where(q => q.Name == CountryName)?.First();
-                            if (lg == null)
-                                throw new Exception(string.Format("供应商分类【{0}】不存在！", CountryName));
-                            CountryID = lg.ID;
-                            head.ParentNode = CountryID;
                             head.Remark = Remark;
-                            head.IsEffective = IsEffective;
+                            head.IsBase = IsBase;
+                            head.RatioToBase = RatioToBase;
+                            head.RoundWay = RoundWay;
+                            head.UomPrecision = UomPrecision;
                             lstCtry.Add(head);
                         }
                     }

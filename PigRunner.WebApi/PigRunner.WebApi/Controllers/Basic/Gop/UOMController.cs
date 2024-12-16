@@ -1,48 +1,47 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json.Linq;
-using PigRunner.DTO.Basic;
+using PigRunner.DTO.Basic.Gop;
 using PigRunner.Public.Common.Views;
-using PigRunner.Services.Basic.IServices;
+using PigRunner.Services.Basic.Gop.IServices;
 
-namespace PigRunner.WebApi.Controllers.Basic
+namespace PigRunner.WebApi.Controllers.Basic.Gop
 {
-    /// <summary>
-    /// 供应商分类
-    /// </summary>
+     /// <summary>
+     /// 计量单位
+     /// </summary>
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class SupplierCategoryController : ControllerBase
+    public class UOMController : ControllerBase
     {
-        private ISupplierCategoryService services;
+        private IUOMService services;
         /// <summary>
         /// 服务注册
         /// </summary>
         /// <param name="_services"></param>
-        public SupplierCategoryController(ISupplierCategoryService _services)
+        public UOMController(IUOMService _services)
         {
             this.services = _services;
         }
         /// <summary>
-        /// 供应商分类
+        /// 计量单位
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
         [AllowAnonymous]
         [HttpPost]
-        public PubResponse ActionSupplierCategory(SupplierCategoryView request)
+        public PubResponse ActionUOM(UOMView request)
         {
-            return services.ActionSupplierCategory(request);
+            return services.ActionUOM(request);
         }
 
         /// <summary>
-        /// 上传供应商分类
+        /// 上传计量单位
         /// </summary>
         /// <param name="file"></param>
         /// <returns></returns>
         [AllowAnonymous]
         [HttpPost]
-        public PubResponse UploadSupplierCategory(IFormFile file)
+        public PubResponse UploadUOM(IFormFile file)
         {
             PubResponse response = new PubResponse();
             try
@@ -51,7 +50,7 @@ namespace PigRunner.WebApi.Controllers.Basic
                 {
                     file.CopyTo(stream);
                     stream.Position = 0;
-                    response = services.UploadSupplierCategory(stream);
+                    response = services.UploadUOM(stream);
                 }
             }
             catch (Exception ex)

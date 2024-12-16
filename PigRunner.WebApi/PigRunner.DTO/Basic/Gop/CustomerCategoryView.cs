@@ -27,5 +27,15 @@ namespace PigRunner.DTO.Basic.Gop
         /// 备注
         /// </summary>
         public string Remark { get; set; } = string.Empty;
+
+        /// <summary>
+        /// 是否生效
+        /// </summary>
+        public bool IsEffective { get; set; } = false;
+
+        /// <summary>
+        /// 生效名称
+        /// </summary>
+        public string Effective { get; set; } = string.Empty;
     }
 }

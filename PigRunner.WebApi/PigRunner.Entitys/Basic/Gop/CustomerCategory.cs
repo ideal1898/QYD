@@ -55,6 +55,11 @@ namespace PigRunner.Entitys.Basic
         /// 修改人
         /// </summary>
         public string ModifiedBy { get; set; } = string.Empty;
+
+        /// <summary>
+        /// 是否生效
+        /// </summary>
+        public int IsEffective { get; set; }= 0;
     }
     
 }

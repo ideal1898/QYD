@@ -65,6 +65,7 @@ namespace PigRunner.Services.Basic.Gop.Services
                     head.Name = request.Name;
                     response.id = head.ID;
                     head.Remark = request.Remark;
+                    head.IsEffective = request.IsEffective? 1 : 0;
                     long ParentNode = -1;
 
                     //根据客户分类编码查找实体
@@ -156,6 +157,12 @@ namespace PigRunner.Services.Basic.Gop.Services
             dto.Name = item.Name;
             dto.Remark = item.Remark;
             dto.ID = item.ID;
+            dto.IsEffective = item.IsEffective == 1 ? true : false;
+            if (dto.IsEffective)
+                dto.Effective = "生效";
+            else
+                dto.Effective = "停用";
+
             //根据客户分类编码查找实体
             var lg = repository.GetFirst(q => q.ID == item.ParentNode);
             if (lg != null)
@@ -188,7 +195,7 @@ namespace PigRunner.Services.Basic.Gop.Services
                         var columnCount = worksheet.Dimension.Columns;//列
                         if (rowCount < 2)
                             throw new Exception(string.Format("Sheet[{0}]数据不能为空！", worksheet.Name));
-                        if (columnCount < 3)
+                        if (columnCount < 5)
                             throw new Exception(string.Format("Sheet[{0}]数据列不能为空！", worksheet.Name));
 
                         for (int row = 2; row <= rowCount; row++)
@@ -208,6 +215,19 @@ namespace PigRunner.Services.Basic.Gop.Services
                             if (worksheet.GetValue(row, 3) != null)
                                 CountryName = worksheet.GetValue(row, 3).ToString();
 
+                            //第4列：状态
+                            string Effective = string.Empty;
+                            if (worksheet.GetValue(row, 4) != null)
+                                Effective = worksheet.GetValue(row, 4).ToString();
+
+                            //第5列：备注
+                            string Remark = string.Empty;
+                            if (worksheet.GetValue(row, 5) != null)
+                                Remark = worksheet.GetValue(row, 5).ToString();
+
+                            int IsEffective = 0;
+                            if(!string.IsNullOrEmpty(Effective)&&(Effective.Equals("生效")|| Effective.Equals("1")))
+                                IsEffective = 1;
 
                             if (string.IsNullOrEmpty(Code) || string.IsNullOrEmpty(Name))
                                 continue;
@@ -226,6 +246,8 @@ namespace PigRunner.Services.Basic.Gop.Services
                                 throw new Exception(string.Format("客户分类【{0}】不存在！", CountryName));
                             CountryID = lg.ID;
                             head.ParentNode = CountryID;
+                            head.Remark = Remark;
+                            head.IsEffective = IsEffective;
                             lstCtry.Add(head);
                         }
                     }

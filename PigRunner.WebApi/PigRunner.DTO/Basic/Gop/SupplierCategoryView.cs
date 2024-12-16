@@ -25,6 +25,7 @@
 
 
 using Newtonsoft.Json;
+using PigRunner.DTO.Basic.Pub;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,25 +35,31 @@ using System.Threading.Tasks;
 
 namespace PigRunner.DTO.Basic
 {
-    public class SupplierCategoryView
+    public class SupplierCategoryView : PubView
     {
-       // [JsonProperty("id")]
-        //public long ID { get; set; }
         /// <summary>
-        /// 创建日期
+        /// 上级分类编码
         /// </summary>
-        public DateTime? CreatedTime { get; set; }
+        public string ParentCode { get; set; } = string.Empty;
+
         /// <summary>
-        /// 创建人
+        /// 上级分类名称
         /// </summary>
-        public string? CreatedBy { get; set; }
+        public string ParentName { get; set; } = string.Empty;
+
         /// <summary>
-        /// 版本
+        /// 备注
         /// </summary>
-        public long SysVersion { get; set; } = 0;
-        public int? IsEffective { get; set; }
-        public string? Code { get; set; }
-        public string? Name { get; set; }
-        public long? ParentNode { get; set; }
+        public string Remark { get; set; } = string.Empty;
+
+        /// <summary>
+        /// 是否生效
+        /// </summary>
+        public bool IsEffective { get; set; } = false;
+
+        /// <summary>
+        /// 生效名称
+        /// </summary>
+        public string Effective { get; set; } = string.Empty;
     }
 }
