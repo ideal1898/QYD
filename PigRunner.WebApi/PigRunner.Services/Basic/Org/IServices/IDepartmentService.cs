@@ -1,11 +1,6 @@
 ﻿using PigRunner.DTO.Basic;
 using PigRunner.Public.Common.Views;
 using PigRunner.Public.Interface;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PigRunner.Services.Basic.IServices
 {
@@ -19,8 +14,14 @@ namespace PigRunner.Services.Basic.IServices
         /// <param name=request></param>
         /// <returns></returns>
         
-        PubResponse ActionDepartment(DepartmentVo request);
+        PubResponse ActionDepartment(DepartmentView request);
 
+        /// <summary>
+        /// 导入
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns></returns>
+        PubResponse UploadDepartment(MemoryStream file);
     }
     
 }

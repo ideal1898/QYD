@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 namespace PigRunner.Repository.Basic.Gop
 {
     /// <summary>
-    /// 计量单位
+    /// 客户存储
     /// </summary>
-    public class UOMRepository : BaseRepository<UOM>, IScopedService
+    public class CustomerRepository : BaseRepository<Customer>, IScopedService
     {
     }
 }

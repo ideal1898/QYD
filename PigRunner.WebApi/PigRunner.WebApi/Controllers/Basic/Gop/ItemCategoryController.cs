@@ -1,52 +1,47 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PigRunner.DTO.Basic;
+using PigRunner.DTO.Basic.Gop;
 using PigRunner.Public.Common.Views;
-using PigRunner.Services.Basic.IServices;
-using PigRunner.Services.Sys.IServices;
+using PigRunner.Services.Basic.Gop.IServices;
 
-namespace PigRunner.WebApi.Controllers.Basic
+namespace PigRunner.WebApi.Controllers.Basic.Gop
 {
     /// <summary>
-    /// 业务员
+    /// 物料分类
     /// </summary>
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class OperatorsController : ControllerBase
+    public class ItemCategoryController : ControllerBase
     {
-        
-        private IOperatorsService services;
-        
+        private IItemCategoryService services;
         /// <summary>
         /// 服务注册
         /// </summary>
         /// <param name="_services"></param>
-        public OperatorsController(IOperatorsService _services)
+        public ItemCategoryController(IItemCategoryService _services)
         {
             this.services = _services;
         }
-
         /// <summary>
-        /// 业务员
+        /// 物料分类
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
         [AllowAnonymous]
         [HttpPost]
-        
-        public PubResponse ActionOperators(OperatorsView request)
+        public PubResponse ActionItemCategory(ItemCategoryView request)
         {
-            return services.ActionOperators(request);
+            return services.ActionItemCategory(request);
         }
 
         /// <summary>
-        /// 上传业务员
+        /// 上传物料分类
         /// </summary>
         /// <param name="file"></param>
         /// <returns></returns>
         [AllowAnonymous]
         [HttpPost]
-        public PubResponse UploadOperators(IFormFile file)
+        public PubResponse UploadItemCategory(IFormFile file)
         {
             PubResponse response = new PubResponse();
             try
@@ -55,7 +50,7 @@ namespace PigRunner.WebApi.Controllers.Basic
                 {
                     file.CopyTo(stream);
                     stream.Position = 0;
-                    response = services.UploadOperators(stream);
+                    response = services.UploadItemCategory(stream);
                 }
             }
             catch (Exception ex)
@@ -66,8 +61,4 @@ namespace PigRunner.WebApi.Controllers.Basic
             return response;
         }
     }
-
-
-    
-    
 }

@@ -35,6 +35,9 @@ using System.Threading.Tasks;
 
 namespace PigRunner.DTO.Basic
 {
+    /// <summary>
+    /// 供应商分类
+    /// </summary>
     public class SupplierCategoryView : PubView
     {
         /// <summary>

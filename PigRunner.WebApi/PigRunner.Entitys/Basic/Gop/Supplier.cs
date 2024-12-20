@@ -23,8 +23,7 @@ namespace PigRunner.Entitys.Basic
         /// 备  注:供应商编码
         /// 默认值:
         ///</summary>
-        [SugarColumn(ColumnName="Code" ) ]
-        public string? Code  { get; set;  } 
+        public string Code  { get; set;  } =string.Empty;
         
          
         
@@ -32,11 +31,10 @@ namespace PigRunner.Entitys.Basic
         /// 备  注:供应商名称
         /// 默认值:
         ///</summary>
-        [SugarColumn(ColumnName="Name" ) ]
-        public string? Name  { get; set;  } 
-        
-         
-        
+        public string Name  { get; set;  } = string.Empty;
+
+
+
         /// <summary>
         /// 备  注:供应商分类ID
         /// 默认值:
