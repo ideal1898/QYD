@@ -1,56 +1,51 @@
 ﻿using Newtonsoft.Json.Linq;
 using OfficeOpenXml;
-using PigRunner.DTO.Basic;
+using PigRunner.DTO.Basic.Gop;
 using PigRunner.Entitys.Basic;
 using PigRunner.Entitys.Basic.Gop;
 using PigRunner.Public.Common.Views;
 using PigRunner.Repository.Basic.Gop;
 using PigRunner.Services.Basic.Gop.IServices;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PigRunner.Services.Basic.Gop.Services
 {
-    public class CustomerService : ICustomerService
+   public class SupplierService : ISupplierService
     {
-        private CustomerRepository repository;
+        private SupplierRepository repository;
         /// <summary>
         /// 服务
         /// </summary>
         /// <param name="_lotMasterRepository"></param>
-        public CustomerService(CustomerRepository _repository)
+        public SupplierService(SupplierRepository _repository)
         {
             this.repository = _repository;
         }
 
         /// <summary>
-        /// 客户增删改查
+        /// 供应商增删改查
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public PubResponse ActionCustomer(CustomerView request)
+        public PubResponse ActionSupplier(SupplierView request)
         {
             PubResponse response = new PubResponse();
             try
             {
-                if (request.OptType.Equals("AddCustomer") || request.OptType.Equals("UpdateCustomer"))
+                if (request.OptType.Equals("AddSupplier") || request.OptType.Equals("UpdateSupplier"))
                 {
                     if (string.IsNullOrEmpty(request.Code))
                         throw new Exception("编码不能为空！");
                     if (string.IsNullOrEmpty(request.Name))
                         throw new Exception("名称不能为空！");
 
-                    Customer head = repository.GetFirst(q => q.Code == request.Code);
+                    PigRunner.Entitys.Basic.Gop.Supplier head = repository.GetFirst(q => q.Code == request.Code);
 
-                    if (request.OptType.Equals("AddCustomer"))
+                    if (request.OptType.Equals("AddSupplier"))
                     {
                         if (head != null)
-                            throw new Exception(string.Format("编码为【{0}】的客户已存在，不能再新增！", request.Code));
+                            throw new Exception(string.Format("编码为【{0}】的供应商已存在，不能再新增！", request.Code));
                         else
-                            head = Customer.Create();
+                            head = Entitys.Basic.Gop.Supplier.Create();
                     }
                     else
                     {
@@ -58,14 +53,14 @@ namespace PigRunner.Services.Basic.Gop.Services
                             throw new Exception("修改ID要大于零！");
                         head = repository.GetFirst(q => q.ID == request.ID);
                         if (head == null)
-                            throw new Exception(string.Format("ID为【{0}】的客户不存在，请检查！", request.ID));
+                            throw new Exception(string.Format("ID为【{0}】的供应商不存在，请检查！", request.ID));
 
                         head.ModifiedTime = DateTime.Now;
                     }
 
-                    Customer oldHead = repository.GetFirst(q => (q.Code == request.Code || q.Name == request.Name) && q.ID != head.ID);
+                    Entitys.Basic.Gop.Supplier oldHead = repository.GetFirst(q => (q.Code == request.Code || q.Name == request.Name) && q.ID != head.ID);
                     if (oldHead != null)
-                        throw new Exception(string.Format("编码为【{0}】或者名称为【{1}】的客户已存在，请检查！", request.Code, request.Name));
+                        throw new Exception(string.Format("编码为【{0}】或者名称为【{1}】的供应商已存在，请检查！", request.Code, request.Name));
 
                     head.Code = request.Code;
                     head.Name = request.Name;
@@ -75,19 +70,19 @@ namespace PigRunner.Services.Basic.Gop.Services
                     head.ShortName = request.ShortName;
                     long ParentNode = -1;
 
-                    //根据客户编码查找实体
-                    if (!string.IsNullOrEmpty(request.ParentCustCode))
+                    //根据供应商编码查找实体
+                    if (!string.IsNullOrEmpty(request.ParentSupCode))
                     {
-                        var lg = repository.GetFirst(q => q.Code == request.ParentCustCode);
+                        var lg = repository.GetFirst(q => q.Code == request.ParentSupCode);
                         if (lg != null)
                             ParentNode = lg.ID;
                     }
-                    head.ParentCustomer = ParentNode;
+                    head.ParentSuppiler = ParentNode;
 
                     long Category = -1;
-                    if(!string.IsNullOrEmpty(request.CategoryCode))
+                    if (!string.IsNullOrEmpty(request.CategoryCode))
                     {
-                        var cate=repository.Context.Queryable<CustomerCategory>().Where(q=>q.Code==request.CategoryCode).ToList()?.FirstOrDefault();
+                        var cate = repository.Context.Queryable<SupplierCategory>().Where(q => q.Code == request.CategoryCode).ToList()?.FirstOrDefault();
                         if (cate != null)
                             Category = cate.ID;
                     }
@@ -102,16 +97,16 @@ namespace PigRunner.Services.Basic.Gop.Services
                     }
                     head.Country = Country;
 
-                    long Supplier = -1;
-                    if (!string.IsNullOrEmpty(request.SupplierCode))
+                    long CustomerID = -1;
+                    if (!string.IsNullOrEmpty(request.CustomerCode))
                     {
-                        var data = repository.Context.Queryable<Supplier>().Where(q => q.Code == request.SupplierCode).ToList()?.FirstOrDefault();
+                        var data = repository.Context.Queryable<Customer>().Where(q => q.Code == request.CustomerCode).ToList()?.FirstOrDefault();
                         if (data != null)
-                            Supplier = data.ID;
+                            CustomerID = data.ID;
                     }
-                    head.Supplier = Supplier;
+                    head.Customer = CustomerID;
 
-                    head.RcvAddress=request.RcvAddress;
+                    head.WeChat = request.WeChat;
                     head.IsInerOrg = request.IsInerOrg ? 1 : 0;
 
                     long Dept = -1;
@@ -142,17 +137,17 @@ namespace PigRunner.Services.Basic.Gop.Services
 
                     bool isSuccess = repository.InsertOrUpdate(head);
                     if (!isSuccess)
-                        throw new Exception("客户新增/修改操作失败！");
+                        throw new Exception("供应商新增/修改操作失败！");
                 }
-                else if (request.OptType.Equals("DelCustomer"))
+                else if (request.OptType.Equals("DelSupplier"))
                 {
                     if (string.IsNullOrEmpty(request.Code) && (request.Codes == null || request.Codes.Count <= 0))
                         throw new Exception("编码不能为空！");
                     if (!string.IsNullOrEmpty(request.Code))
                     {
-                        Customer head = repository.GetFirst(q => q.Code == request.Code);
+                        Supplier head = repository.GetFirst(q => q.Code == request.Code);
                         if (head == null)
-                            throw new Exception(string.Format("编码为【{0}】的客户不存在！", request.Code));
+                            throw new Exception(string.Format("编码为【{0}】的供应商不存在！", request.Code));
 
                         bool isSuccess = repository.Delete(head);
                         if (!isSuccess)
@@ -162,9 +157,9 @@ namespace PigRunner.Services.Basic.Gop.Services
                     {
                         foreach (var item in request.Codes)
                         {
-                            Customer head = repository.GetFirst(q => q.Code == item);
+                            Supplier head = repository.GetFirst(q => q.Code == item);
                             if (head == null)
-                                throw new Exception(string.Format("编码为【{0}】的客户不存在！", request.Code));
+                                throw new Exception(string.Format("编码为【{0}】的供应商不存在！", request.Code));
 
                             bool isSuccess = repository.Delete(head);
                             if (!isSuccess)
@@ -172,10 +167,10 @@ namespace PigRunner.Services.Basic.Gop.Services
                         }
                     }
                 }
-                else if (request.OptType.Equals("QueryCustomer"))
+                else if (request.OptType.Equals("QuerySupplier"))
                 {
                     int total = 0;
-                    List<CustomerView> list = new List<CustomerView>();
+                    List<SupplierView> list = new List<SupplierView>();
                     var lst = repository.AsQueryable().ToOffsetPage(request.Current, request.Size, ref total);
 
                     if (!string.IsNullOrEmpty(request.Code) && !string.IsNullOrEmpty(request.Name) && request.ID > 0)
@@ -193,7 +188,7 @@ namespace PigRunner.Services.Basic.Gop.Services
                         int lineNum = 1;
                         foreach (var item in lst)
                         {
-                            CustomerView dto = SetValue(item);
+                            SupplierView dto = SetValue(item);
                             dto.LineNum = lineNum;
                             list.Add(dto);
                             lineNum += 1;
@@ -214,25 +209,25 @@ namespace PigRunner.Services.Basic.Gop.Services
             return response;
         }
 
-        private CustomerView SetValue(Customer item)
+        private SupplierView SetValue(Supplier item)
         {
-            CustomerView dto = new CustomerView();
+            SupplierView dto = new SupplierView();
             dto.Code = item.Code;
             dto.Name = item.Name;
             dto.Remark = item.Remark;
             dto.ID = item.ID;
             dto.ShortName = item.ShortName;
 
-            var lg = repository.GetFirst(q => q.ID == item.ParentCustomer);
+            var lg = repository.GetFirst(q => q.ID == item.ParentSuppiler);
             if (lg != null)
             {
-                dto.ParentCustCode = lg.Code;
-                dto.ParentCustName = lg.Name;
+                dto.ParentSupCode = lg.Code;
+                dto.ParentSupName = lg.Name;
             }
 
             if (item.Category > 0)
             {
-                var cate = repository.Context.Queryable<CustomerCategory>().Where(q => q.ID == item.Category).ToList()?.FirstOrDefault();
+                var cate = repository.Context.Queryable<SupplierCategory>().Where(q => q.ID == item.Category).ToList()?.FirstOrDefault();
                 if (cate != null)
                 {
                     dto.CategoryName = cate.Name;
@@ -250,22 +245,23 @@ namespace PigRunner.Services.Basic.Gop.Services
                 }
             }
 
-            if (item.Supplier > 0)
+            if (item.Customer > 0)
             {
-                var data = repository.Context.Queryable<Supplier>().Where(q => q.ID == item.Supplier).ToList()?.FirstOrDefault();
+                var data = repository.Context.Queryable<Customer>().Where(q => q.ID == item.Customer).ToList()?.FirstOrDefault();
                 if (data != null)
                 {
-                    dto.SupplierCode = data.Code;
-                    dto.SupplierName = data.Name;
+                    dto.CustomerCode = data.Code;
+                    dto.CustomerName = data.Name;
                 }
             }
 
-            dto.RcvAddress = item.RcvAddress;
+            dto.WeChat = item.WeChat;
             dto.IsInerOrg = item.IsInerOrg == 1 ? true : false;
             if (dto.IsInerOrg)
                 dto.InerOrgName = "是";
             else
                 dto.InerOrgName = "否";
+
             if (item.Dept > 0)
             {
                 var data = repository.Context.Queryable<Department>().Where(q => q.ID == item.Dept).ToList()?.FirstOrDefault();
@@ -293,15 +289,16 @@ namespace PigRunner.Services.Basic.Gop.Services
             dto.AccrueTerm = item.AccrueTerm;
             dto.ShipRule = item.ShipRule;
 
-            dto.Status = item.Status==1?true:false;
+            dto.Status = item.Status == 1 ? true : false;
             if (item.Status == 1)
                 dto.StatusName = "生效";
             else
                 dto.StatusName = "失效";
+
             return dto;
         }
 
-        public PubResponse UploadCustomer(MemoryStream stream)
+        public PubResponse UploadSupplier(MemoryStream stream)
         {
             PubResponse response = new PubResponse();
             try
@@ -315,7 +312,7 @@ namespace PigRunner.Services.Basic.Gop.Services
                     var lst = package.Workbook.Worksheets.Cast<ExcelWorksheet>().Where(q => q.Dimension != null).ToList();
                     if (lst == null || lst.Count <= 0)
                         throw new Exception("Excel的sheet内容不能为空！");
-                    List<Customer> lstCtry = new List<Customer>();
+                    List<Supplier> lstCtry = new List<Supplier>();
                     Dictionary<string, string> dic = new Dictionary<string, string>();
                     foreach (var worksheet in lst)
                     {
@@ -349,24 +346,24 @@ namespace PigRunner.Services.Basic.Gop.Services
                             if (worksheet.GetValue(row, 4) != null)
                                 CategoryName = worksheet.GetValue(row, 4).ToString();
 
-                            if(!string.IsNullOrEmpty(CategoryName))
+                            if (!string.IsNullOrEmpty(CategoryName))
                             {
-                                var data = repository.Context.Queryable<CustomerCategory>().Where(q => q.Name == CategoryName)?.First();
+                                var data = repository.Context.Queryable<SupplierCategory>().Where(q => q.Name == CategoryName)?.First();
                                 if (data != null)
                                     Category = data.ID;
                             }
 
-                          
+
 
                             if (string.IsNullOrEmpty(Code) || string.IsNullOrEmpty(Name))
                                 continue;
                             if (dic.ContainsKey(Code) || dic.ContainsValue(Name))
                                 throw new Exception(string.Format("Sheet[{0}]编码或名称已重复，请检查！", worksheet.Name));
                             dic.Add(Code, Name);
-                            Customer head = repository.GetFirst(q => q.Code == Code || q.Name == Name);
+                            Supplier head = repository.GetFirst(q => q.Code == Code || q.Name == Name);
                             if (head != null)
-                                throw new Exception(string.Format("编码为【{0}】的客户已存在！", Code));
-                            head = Customer.Create();
+                                throw new Exception(string.Format("编码为【{0}】的供应商已存在！", Code));
+                            head = Supplier.Create();
                             head.Code = Code;
                             head.Name = Name;
 
@@ -380,14 +377,14 @@ namespace PigRunner.Services.Basic.Gop.Services
                             if (worksheet.GetValue(row, 5) != null)
                                 ParentCustCode = worksheet.GetValue(row, 5).ToString();
 
-                            //根据客户编码查找实体
+                            //根据供应商编码查找实体
                             if (!string.IsNullOrEmpty(ParentCustCode))
                             {
-                                var lg = repository.GetFirst(q => q.Code == ParentCustCode||q.Name==ParentCustCode);
+                                var lg = repository.GetFirst(q => q.Code == ParentCustCode || q.Name == ParentCustCode);
                                 if (lg != null)
                                     ParentNode = lg.ID;
                             }
-                            head.ParentCustomer = ParentNode;
+                            head.ParentSuppiler = ParentNode;
 
                             //第6列：地区
                             string CountryCode = string.Empty;
@@ -397,7 +394,7 @@ namespace PigRunner.Services.Basic.Gop.Services
                             long Country = -1;
                             if (!string.IsNullOrEmpty(CountryCode))
                             {
-                                var cate = repository.Context.Queryable<Country>().Where(q => q.Code == CountryCode||q.Name==CountryCode).ToList()?.FirstOrDefault();
+                                var cate = repository.Context.Queryable<Country>().Where(q => q.Code == CountryCode || q.Name == CountryCode).ToList()?.FirstOrDefault();
                                 if (cate != null)
                                     Country = cate.ID;
                             }
@@ -409,21 +406,21 @@ namespace PigRunner.Services.Basic.Gop.Services
                             if (worksheet.GetValue(row, 7) != null)
                                 SupplierCode = worksheet.GetValue(row, 7).ToString();
 
-                            long Supplier = -1;
+                            long CustomerID = -1;
                             if (!string.IsNullOrEmpty(SupplierCode))
                             {
-                                var data = repository.Context.Queryable<Supplier>().Where(q => q.Code == SupplierCode || q.Name == SupplierCode).ToList()?.FirstOrDefault();
+                                var data = repository.Context.Queryable<Customer>().Where(q => q.Code == SupplierCode || q.Name == SupplierCode).ToList()?.FirstOrDefault();
                                 if (data != null)
-                                    Supplier = data.ID;
+                                    CustomerID = data.ID;
                             }
-                            head.Supplier = Supplier;
+                            head.Customer = CustomerID;
 
                             //第8列：收货地址
                             string RcvAddress = string.Empty;
                             if (worksheet.GetValue(row, 8) != null)
                                 RcvAddress = worksheet.GetValue(row, 8).ToString();
 
-                            head.RcvAddress = RcvAddress;
+                            head.WeChat = RcvAddress;
 
                             //第9列：是否内部组织
                             string IsInerOrgName = string.Empty;

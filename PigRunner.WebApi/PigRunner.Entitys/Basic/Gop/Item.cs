@@ -1,8 +1,4 @@
 ﻿using PigRunner.Public.Abstract;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using PigRunner.Public.Abstract;
 using SqlSugar;
 namespace PigRunner.Entitys.Basic
 {
@@ -16,8 +12,7 @@ namespace PigRunner.Entitys.Basic
         /// 备  注:物料编码
         /// 默认值:
         ///</summary>
-        [SugarColumn(ColumnName="Code" ) ]
-        public string? Code  { get; set;  } 
+        public string Code { get; set; } = string.Empty;
         
          
         
@@ -25,60 +20,53 @@ namespace PigRunner.Entitys.Basic
         /// 备  注:物料名称
         /// 默认值:
         ///</summary>
-        [SugarColumn(ColumnName="Name" ) ]
-        public string? Name  { get; set;  } 
-        
+        public string Name  { get; set;  } = string.Empty;
+
         /// <summary>
         /// 备  注:是否生效
         /// 默认值:
         ///</summary>
-        [SugarColumn(ColumnName="IsEffective" ) ]
-        public int? IsEffective  { get; set;  } 
-        
-         
-        
+        public int IsEffective  { get; set;  } = 0;
+
+
+
         /// <summary>
         /// 备  注:规格
         /// 默认值:
         ///</summary>
-        [SugarColumn(ColumnName="SPECS" ) ]
-        public string? SPECS  { get; set;  } 
-        
-         
-        
+        public string SPECS  { get; set;  } = string.Empty;
+
+
+
         /// <summary>
         /// 备  注:库存物料分类ID
         /// 默认值:
         ///</summary>
-        [SugarColumn(ColumnName="StockCategory" ) ]
-        public int? StockCategory  { get; set;  } 
-        
-         
-        
+        public long StockCategory { get; set; } = 0;
+
+
+
         /// <summary>
         /// 备  注:组织ID
         /// 默认值:
         ///</summary>
-        [SugarColumn(ColumnName="Org" ) ]
-        public int? Org  { get; set;  } 
-        
-         
-        
+        public long Org { get; set; } = 0;
+
+
+
         /// <summary>
         /// 备  注:主单位
         /// 默认值:
         ///</summary>
-        [SugarColumn(ColumnName="UOM" ) ]
-        public long? UOM  { get; set;  } 
-        
-         
-        
+        public long UOM { get; set; } = 0;
+
+
+
         /// <summary>
         /// 备  注:副单位
         /// 默认值:
         ///</summary>
-        [SugarColumn(ColumnName="BaseUOM" ) ]
-        public long? BaseUOM  { get; set;  } 
+        public long BaseUOM { get; set; } = 0;
         
          
         
@@ -86,44 +74,29 @@ namespace PigRunner.Entitys.Basic
         /// 备  注:主副单位转化系数
         /// 默认值:
         ///</summary>
-        [SugarColumn(ColumnName="RatioToBase" ) ]
-        public decimal? RatioToBase  { get; set;  } 
-        
-         
-        
+        public decimal RatioToBase  { get; set;  }
+
+
+
         /// <summary>
-        /// 备  注:参考编码1
-        /// 默认值:
+        /// 旧编码
         ///</summary>
-        [SugarColumn(ColumnName="Code1" ) ]
-        public string? Code1  { get; set;  } 
+        public string Code1 { get; set; } = string.Empty;
         
-         
-        
-        /// <summary>
-        /// 备  注:参考编码2
-        /// 默认值:
-        ///</summary>
-        [SugarColumn(ColumnName="Code2" ) ]
-        public string? Code2  { get; set;  } 
-        
-         
         
         /// <summary>
         /// 备  注:描述
         /// 默认值:
         ///</summary>
-        [SugarColumn(ColumnName="Description" ) ]
-        public string? Description  { get; set;  } 
-        
-         
-        
+        public string Description  { get; set;  } = string.Empty;
+
+
+
         /// <summary>
         /// 备  注:物料形态属性
         /// 默认值:
         ///</summary>
-        [SugarColumn(ColumnName="ItemFormAttribute" ) ]
-        public string? ItemFormAttribute  { get; set;  } 
+        public int ItemFormAttribute { get; set; } = 0;
         
          
         
@@ -131,44 +104,39 @@ namespace PigRunner.Entitys.Basic
         /// 备  注:可销售
         /// 默认值:
         ///</summary>
-        [SugarColumn(ColumnName="IsSalesEnable" ) ]
-        public int? IsSalesEnable  { get; set;  } 
-        
-         
-        
+        public int IsSalesEnable  { get; set;  } = 0;
+
+
+
         /// <summary>
         /// 备  注:可生产
         /// 默认值:
         ///</summary>
-        [SugarColumn(ColumnName="IsBuildEnable" ) ]
-        public int? IsBuildEnable  { get; set;  } 
-        
-         
-        
+        public int IsBuildEnable  { get; set;  } = 0;
+
+
+
         /// <summary>
         /// 备  注:可采购
         /// 默认值:
         ///</summary>
-        [SugarColumn(ColumnName="IsPurchaseEnable" ) ]
-        public int? IsPurchaseEnable  { get; set;  } 
-        
-         
-        
+        public int IsPurchaseEnable  { get; set;  } = 0;
+
+
+
         /// <summary>
         /// 备  注:可委外
         /// 默认值:
         ///</summary>
-        [SugarColumn(ColumnName="IsOutsideOperationEnable" ) ]
-        public int? IsOutsideOperationEnable  { get; set;  } 
-        
-         
-        
+        public int IsOutsideOperationEnable  { get; set;  } = 0;
+
+
+
         /// <summary>
         /// 备  注:物料图片
         /// 默认值:
         ///</summary>
-        [SugarColumn(ColumnName="Picture" ) ]
-        public string? Picture  { get; set;  } 
+        public string Picture { get; set; } = string.Empty; 
         
          
         
@@ -176,35 +144,31 @@ namespace PigRunner.Entitys.Basic
         /// 备  注:是否批次管理
         /// 默认值:
         ///</summary>
-        [SugarColumn(ColumnName="IsLot" ) ]
-        public int? IsLot  { get; set;  } 
-        
-         
-        
+        public int IsLot  { get; set;  } = 0;
+
+
+
         /// <summary>
         /// 备  注:是否质检
         /// 默认值:
         ///</summary>
-        [SugarColumn(ColumnName="IsQc" ) ]
-        public int? IsQc  { get; set;  } 
-        
-         
-        
+        public int IsQc  { get; set;  } = 0;
+
+
+
         /// <summary>
         /// 备  注:是否质保期管理
         /// 默认值:
         ///</summary>
-        [SugarColumn(ColumnName="IsQgPeriod" ) ]
-        public int? IsQgPeriod  { get; set;  } 
-        
-         
-        
+        public int IsQgPeriod  { get; set; } = 0;
+
+
+
         /// <summary>
         /// 备  注:质保天数
         /// 默认值:
         ///</summary>
-        [SugarColumn(ColumnName="QgDay" ) ]
-        public string? QgDay  { get; set;  } 
+        public int QgDay { get; set; } = 0;
         
          
         
@@ -212,71 +176,64 @@ namespace PigRunner.Entitys.Basic
         /// 备  注:质保预警天数
         /// 默认值:
         ///</summary>
-        [SugarColumn(ColumnName="QgAlterDay" ) ]
-        public string? QgAlterDay  { get; set;  } 
-        
-         
-        
+        public int QgAlterDay  { get; set;  } = 0;
+
+
+
         /// <summary>
-        /// 备  注:质保预警日期单位
+        /// 备  注:质保期单位
         /// 默认值:
         ///</summary>
-        [SugarColumn(ColumnName="QgAlterDayUom" ) ]
-        public string? QgAlterDayUom  { get; set;  } 
-        
-         
-        
+        [SugarColumn(ColumnName = "QgAlterDayUom")]
+        public long QgAlterDayUom { get; set; } = 0;
+
+
+
         /// <summary>
         /// 备  注:默认存储地点
         /// 默认值:
         ///</summary>
-        [SugarColumn(ColumnName="Warehouse" ) ]
-        public long? Warehouse  { get; set;  } 
-        
-         
-        
+        public long Warehouse { get; set; } = 0;
+
+
+
         /// <summary>
         /// 备  注:标准包装数量
         /// 默认值:
         ///</summary>
-        [SugarColumn(ColumnName="PackagQty" ) ]
-        public string? PackagQty  { get; set;  } 
-        
-         
-        
+        public decimal PackagQty { get; set; } = 0;
+
+
+
         /// <summary>
         /// 备  注:最小采购量
         /// 默认值:
         ///</summary>
-        [SugarColumn(ColumnName="MinRcvQty" ) ]
-        public string? MinRcvQty  { get; set;  } 
-        
-         
-        
+        public decimal MinRcvQty { get; set; } = 0;
+
+
+
         /// <summary>
         /// 备  注:采购周期
         /// 默认值:
         ///</summary>
-        [SugarColumn(ColumnName="PurPeriod" ) ]
-        public string? PurPeriod  { get; set;  } 
-        
-         
-        
+        public int PurPeriod { get; set; } = 0;
+
+
+
         /// <summary>
         /// 备  注:供应商
         /// 默认值:
         ///</summary>
-        [SugarColumn(ColumnName="Supplier" ) ]
-        public long? Supplier  { get; set;  } 
-        
-         
-        
+        public long Supplier { get; set; } = 0;
+
+
+
         /// <summary>
         /// 备  注:采购周期单位
         /// 默认值:
         ///</summary>
-        [SugarColumn(ColumnName="PurPeriodUom" ) ]
-        public string? PurPeriodUom  { get; set;  } 
+        public long PurPeriodUom { get; set; } = 0;
         
          
         
@@ -284,20 +241,27 @@ namespace PigRunner.Entitys.Basic
         /// 备  注:生产批量
         /// 默认值:
         ///</summary>
-        [SugarColumn(ColumnName="MoBatch" ) ]
-        public string? MoBatch  { get; set;  } 
-        
-         
-        
+        public long MoBatch  { get; set;  }
+
+
+
         /// <summary>
         /// 备  注:生产部门
         /// 默认值:
         ///</summary>
-        [SugarColumn(ColumnName="MoDep" ) ]
-        public long? MoDep  { get; set;  } 
-        
-         
-        
+        public long MoDept { get; set; } = 0;
+
+
+
+        /// <summary>
+        /// 修改日期
+        /// </summary>
+        public DateTime ModifiedTime { get; set; } = DateTime.Now;
+
+        /// <summary>
+        /// 修改人
+        /// </summary>
+        public string ModifiedBy { get; set; } = string.Empty;
 
     }
     

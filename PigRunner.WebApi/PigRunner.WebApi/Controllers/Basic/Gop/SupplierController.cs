@@ -1,49 +1,47 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using PigRunner.DTO.Basic;
+using PigRunner.DTO.Basic.Gop;
 using PigRunner.Public.Common.Views;
-using PigRunner.Services.Basic.IServices;
+using PigRunner.Services.Basic.Gop.IServices;
 
-
-namespace PigRunner.WebApi.Controllers.Basic
+namespace PigRunner.WebApi.Controllers.Basic.Gop
 {
-    /// <summary>
-    /// 料品服务
-    /// </summary>
+      /// <summary>
+      /// 供应商
+      /// </summary>
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class ItemController : ControllerBase
+    public class SupplierController : ControllerBase
     {
-        private IItemService services;
+        private ISupplierService services;
         /// <summary>
         /// 服务注册
         /// </summary>
         /// <param name="_services"></param>
-        public ItemController(IItemService _services)
+        public SupplierController(ISupplierService _services)
         {
             this.services = _services;
         }
         /// <summary>
-        /// 物料
+        /// 供应商
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
         [AllowAnonymous]
         [HttpPost]
-        public PubResponse ActionItem(ItemView request)
+        public PubResponse ActionSupplier(SupplierView request)
         {
-            return services.ActionItem(request);
+            return services.ActionSupplier(request);
         }
 
         /// <summary>
-        /// 上传物料
+        /// 上传供应商
         /// </summary>
         /// <param name="file"></param>
         /// <returns></returns>
         [AllowAnonymous]
         [HttpPost]
-        public PubResponse UploadItem(IFormFile file)
+        public PubResponse UploadSupplier(IFormFile file)
         {
             PubResponse response = new PubResponse();
             try
@@ -52,7 +50,7 @@ namespace PigRunner.WebApi.Controllers.Basic
                 {
                     file.CopyTo(stream);
                     stream.Position = 0;
-                    response = services.UploadItem(stream);
+                    response = services.UploadSupplier(stream);
                 }
             }
             catch (Exception ex)

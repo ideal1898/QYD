@@ -10,16 +10,23 @@ using System.Threading.Tasks;
 namespace PigRunner.Services.Basic.IServices
 {
 
-    public interface IWhBinService : IScopedService
+    public interface IWhShService : IScopedService
     {
         
         /// <summary>
-        /// 备  注:库位
+        /// 货位
         ///</summary>
         /// <param name=request></param>
         /// <returns></returns>
         
-        PubResponse ActionWhBin(WhBinVo request);
+        PubResponse ActionWhSh(WhShView request);
+
+        /// <summary>
+        /// 导入货位
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns></returns>
+        PubResponse UploadWhSh(MemoryStream file);
 
     }
     

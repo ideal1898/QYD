@@ -2,7 +2,6 @@
 using OfficeOpenXml;
 using PigRunner.DTO.Basic;
 using PigRunner.Entitys.Basic;
-using PigRunner.Entitys.Basic.Gop;
 using PigRunner.Public.Common.Views;
 using PigRunner.Repository.Basic;
 using PigRunner.Services.Basic.IServices;
@@ -15,43 +14,43 @@ using System.Threading.Tasks;
 namespace PigRunner.Services.Basic.Services
 {
 
-    public class WhService : IWhService
+    public class WhShService : IWhShService
     {
-        private WhRepository repository;
+        private WhShRepository repository;
         /// <summary>
         /// 服务
         /// </summary>
         /// <param name="_lotMasterRepository"></param>
-        public WhService(WhRepository _repository)
+        public WhShService(WhShRepository _repository)
         {
             this.repository = _repository;
         }
 
         /// <summary>
-        /// 仓库增删改查
+        /// 货位增删改查
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public PubResponse ActionWh(WhView request)
+        public PubResponse ActionWhSh(WhShView request)
         {
             PubResponse response = new PubResponse();
             try
             {
-                if (request.OptType.Equals("AddWh") || request.OptType.Equals("UpdateWh"))
+                if (request.OptType.Equals("AddWhSh") || request.OptType.Equals("UpdateWhSh"))
                 {
                     if (string.IsNullOrEmpty(request.Code))
                         throw new Exception("编码不能为空！");
                     if (string.IsNullOrEmpty(request.Name))
                         throw new Exception("名称不能为空！");
 
-                    Wh head = repository.GetFirst(q => q.Code == request.Code);
+                    WhSh head = repository.GetFirst(q => q.Code == request.Code);
 
-                    if (request.OptType.Equals("AddWh"))
+                    if (request.OptType.Equals("AddWhSh"))
                     {
                         if (head != null)
-                            throw new Exception(string.Format("编码为【{0}】的仓库已存在，不能再新增！", request.Code));
+                            throw new Exception(string.Format("编码为【{0}】的货位已存在，不能再新增！", request.Code));
                         else
-                            head = Wh.Create();
+                            head = WhSh.Create();
                     }
                     else
                     {
@@ -59,22 +58,22 @@ namespace PigRunner.Services.Basic.Services
                             throw new Exception("修改ID要大于零！");
                         head = repository.GetFirst(q => q.ID == request.ID);
                         if (head == null)
-                            throw new Exception(string.Format("ID为【{0}】的仓库不存在，请检查！", request.ID));
+                            throw new Exception(string.Format("ID为【{0}】的货位不存在，请检查！", request.ID));
 
                         head.ModifiedTime = DateTime.Now;
                     }
 
-                    Wh oldHead = repository.GetFirst(q => (q.Code == request.Code || q.Name == request.Name) && q.ID != head.ID);
+                    WhSh oldHead = repository.GetFirst(q => (q.Code == request.Code || q.Name == request.Name) && q.ID != head.ID);
                     if (oldHead != null)
-                        throw new Exception(string.Format("编码为【{0}】或者名称为【{1}】的仓库已存在，请检查！", request.Code, request.Name));
+                        throw new Exception(string.Format("编码为【{0}】或者名称为【{1}】的货位已存在，请检查！", request.Code, request.Name));
 
                     head.Code = request.Code;
                     head.Name = request.Name;
                     response.id = head.ID;
                     head.Remark = request.Remark;
                     head.IsEffective = request.IsEffective ? 1 : 0;
-                    head.IsStoreBin = request.IsStoreBin ? 1 : 0;
-                  
+                    head.IsWhSh = request.IsWhSh ? 1 : 0;
+
 
                     long OrgID = 0;
                     //根据编码查找实体
@@ -87,44 +86,43 @@ namespace PigRunner.Services.Basic.Services
                     }
                     head.Org = OrgID;
 
-                    long CustomerID = 0;
+                    long WHID = 0;
                     //根据编码查找实体
-                    if (!string.IsNullOrEmpty(request.CustomerCode))
+                    if (!string.IsNullOrEmpty(request.WhCode))
                     {
-                        var lg = repository.Context.Queryable<Customer>().Where(q => q.Code == request.CustomerCode)?.First();
+                        var lg = repository.Context.Queryable<Wh>().Where(q => q.Code == request.WhCode)?.First();
                         if (lg == null)
-                            throw new Exception(string.Format("编码为【{0}】的客户不存在，请检查！", request.CustomerCode));
-                        CustomerID = lg.ID;
+                            throw new Exception(string.Format("编码为【{0}】的仓库不存在，请检查！", request.WhCode));
+                        WHID = lg.ID;
                     }
-                    head.Customer = CustomerID;
+                    head.Wh = WHID;
 
-                    long SupplierID = 0;
+                    long WhBinGroupID = 0;
                     //根据编码查找实体
-                    if (!string.IsNullOrEmpty(request.SupplierCode))
+                    if (!string.IsNullOrEmpty(request.WhBinGroupCode))
                     {
-                        var lg = repository.Context.Queryable<Supplier>().Where(q => q.Code == request.SupplierCode)?.First();
+                        var lg = repository.Context.Queryable<WhBinGroup>().Where(q => q.Code == request.WhBinGroupCode)?.First();
                         if (lg == null)
-                            throw new Exception(string.Format("编码为【{0}】的客户不存在，请检查！", request.SupplierCode));
-                        SupplierID = lg.ID;
+                            throw new Exception(string.Format("编码为【{0}】的库区不存在，请检查！", request.WhBinGroupCode));
+                        WhBinGroupID = lg.ID;
                     }
-                    head.Supplier = SupplierID;
-                    head.Address = request.Address;
-                    head.Area= request.Area;
+                    head.WhBinGroup = WhBinGroupID;
+                    head.Area = request.Area;
                     head.Volume = request.Volume;
 
                     bool isSuccess = repository.InsertOrUpdate(head);
                     if (!isSuccess)
-                        throw new Exception("仓库新增/修改操作失败！");
+                        throw new Exception("货位新增/修改操作失败！");
                 }
-                else if (request.OptType.Equals("DelWh"))
+                else if (request.OptType.Equals("DelWhSh"))
                 {
                     if (string.IsNullOrEmpty(request.Code) && (request.Codes == null || request.Codes.Count <= 0))
                         throw new Exception("编码不能为空！");
                     if (!string.IsNullOrEmpty(request.Code))
                     {
-                        Wh head = repository.GetFirst(q => q.Code == request.Code);
+                        WhSh head = repository.GetFirst(q => q.Code == request.Code);
                         if (head == null)
-                            throw new Exception(string.Format("编码为【{0}】的仓库不存在！", request.Code));
+                            throw new Exception(string.Format("编码为【{0}】的货位不存在！", request.Code));
 
                         bool isSuccess = repository.Delete(head);
                         if (!isSuccess)
@@ -134,9 +132,9 @@ namespace PigRunner.Services.Basic.Services
                     {
                         foreach (var item in request.Codes)
                         {
-                            Wh head = repository.GetFirst(q => q.Code == item);
+                            WhSh head = repository.GetFirst(q => q.Code == item);
                             if (head == null)
-                                throw new Exception(string.Format("编码为【{0}】的仓库不存在！", request.Code));
+                                throw new Exception(string.Format("编码为【{0}】的货位不存在！", request.Code));
 
                             bool isSuccess = repository.Delete(head);
                             if (!isSuccess)
@@ -144,28 +142,56 @@ namespace PigRunner.Services.Basic.Services
                         }
                     }
                 }
-                else if (request.OptType.Equals("QueryWh"))
+                else if (request.OptType.Equals("QueryWhSh"))
                 {
                     int total = 0;
-                    List<WhView> list = new List<WhView>();
+                    List<WhShView> list = new List<WhShView>();
                     var lst = repository.AsQueryable().ToOffsetPage(request.Current, request.Size, ref total);
 
-                    if (!string.IsNullOrEmpty(request.Code) && !string.IsNullOrEmpty(request.Name) && request.ID > 0)
-                        lst = repository.AsQueryable().Where(q => q.Code.Contains(request.Code) && q.Name.Contains(request.Name) && q.ID != request.ID).ToOffsetPage(request.Current, request.Size, ref total);
+                    long WhID = 0;
+                    long WHbinG = 0;
+                    if(!string.IsNullOrEmpty(request.WhCode))
+                    {
+                        var lg = repository.Context.Queryable<Wh>().Where(q => q.Code == request.WhCode)?.First();
+                        if (lg == null)
+                            throw new Exception(string.Format("编码为【{0}】的仓库不存在，请检查！", request.WhCode));
+                        WhID = lg.ID;
+                    }
+
+                    if (!string.IsNullOrEmpty(request.WhBinGroupCode))
+                    {
+                        var lg = repository.Context.Queryable<WhBinGroup>().Where(q => q.Code == request.WhBinGroupCode)?.First();
+                        if (lg == null)
+                            throw new Exception(string.Format("编码为【{0}】的库区不存在，请检查！", request.WhBinGroupCode));
+                        WHbinG = lg.ID;
+                    }
+
+                    if (!string.IsNullOrEmpty(request.Code) && !string.IsNullOrEmpty(request.Name) && WhID > 0 && WHbinG > 0)
+                        lst = repository.AsQueryable().Where(q => q.Code.Contains(request.Code) && q.Name.Contains(request.Name) && q.Wh == WhID && q.WhBinGroup == WHbinG).ToOffsetPage(request.Current, request.Size, ref total);
+
+                    else if (!string.IsNullOrEmpty(request.Code) && !string.IsNullOrEmpty(request.Name) && WhID > 0)
+                        lst = repository.AsQueryable().Where(q => q.Code.Contains(request.Code) && q.Name.Contains(request.Name) && q.Wh == WhID).ToOffsetPage(request.Current, request.Size, ref total);
+
+                    else if (!string.IsNullOrEmpty(request.Code) && !string.IsNullOrEmpty(request.Name) && WHbinG > 0)
+                        lst = repository.AsQueryable().Where(q => q.Code.Contains(request.Code) && q.Name.Contains(request.Name) && q.WhBinGroup == WHbinG).ToOffsetPage(request.Current, request.Size, ref total);
+
                     else if (!string.IsNullOrEmpty(request.Code) && !string.IsNullOrEmpty(request.Name))
                         lst = repository.AsQueryable().Where(q => q.Code.Contains(request.Code) && q.Name.Contains(request.Name)).ToOffsetPage(request.Current, request.Size, ref total);
+
                     else if (!string.IsNullOrEmpty(request.Code))
                         lst = repository.AsQueryable().Where(q => q.Code.Contains(request.Code)).ToOffsetPage(request.Current, request.Size, ref total);
                     else if (!string.IsNullOrEmpty(request.Name))
                         lst = repository.AsQueryable().Where(q => q.Name.Contains(request.Name)).ToOffsetPage(request.Current, request.Size, ref total);
-                    else if (request.ID > 0)
-                        lst = repository.AsQueryable().Where(q => q.ID != request.ID).ToOffsetPage(request.Current, request.Size, ref total);
+                    else if (WhID > 0)
+                        lst = repository.AsQueryable().Where(q => q.Wh == WhID).ToOffsetPage(request.Current, request.Size, ref total);
+                    else if (WHbinG > 0)
+                        lst = repository.AsQueryable().Where(q => q.WhBinGroup == WHbinG).ToOffsetPage(request.Current, request.Size, ref total);
                     if (lst != null && lst.Count > 0)
                     {
                         int lineNum = 1;
                         foreach (var item in lst)
                         {
-                            WhView dto = SetValue(item);
+                            WhShView dto = SetValue(item);
                             dto.LineNum = lineNum;
                             list.Add(dto);
                             lineNum += 1;
@@ -186,9 +212,9 @@ namespace PigRunner.Services.Basic.Services
             return response;
         }
 
-        private WhView SetValue(Wh item)
+        private WhShView SetValue(WhSh item)
         {
-            WhView dto = new WhView();
+            WhShView dto = new WhShView();
             dto.Code = item.Code;
             dto.Name = item.Name;
             dto.Remark = item.Remark;
@@ -199,11 +225,11 @@ namespace PigRunner.Services.Basic.Services
             else
                 dto.Effective = "停用";
 
-            dto.IsStoreBin = item.IsStoreBin == 1 ? true : false;
-            if (dto.IsStoreBin)
-                dto.StoreBinName = "是";
+            dto.IsWhSh = item.IsWhSh == 1 ? true : false;
+            if (dto.IsWhSh)
+                dto.WhSh = "是";
             else
-                dto.StoreBinName = "否";
+                dto.WhSh = "否";
             if (item.Org > 0)
             {
                 var lg = repository.Context.Queryable<Organization>().Where(q => q.ID == item.Org)?.First();
@@ -214,33 +240,32 @@ namespace PigRunner.Services.Basic.Services
                 }
             }
 
-            if (item.Customer > 0)
+            if (item.Wh > 0)
             {
-                var lg = repository.Context.Queryable<Customer>().Where(q => q.ID == item.Customer)?.First();
+                var lg = repository.Context.Queryable<Wh>().Where(q => q.ID == item.Wh)?.First();
                 if (lg != null)
                 {
-                    dto.CustomerCode = lg.Code;
-                    dto.CustomerName = lg.Name;
+                    dto.WhCode = lg.Code;
+                    dto.WhName = lg.Name;
                 }
             }
 
             //根据编码查找实体
-            if (item.Supplier > 0)
+            if (item.WhBinGroup > 0)
             {
-                var lg = repository.Context.Queryable<Supplier>().Where(q => q.ID == item.Supplier)?.First();
+                var lg = repository.Context.Queryable<WhBinGroup>().Where(q => q.ID == item.WhBinGroup)?.First();
                 if (lg != null)
                 {
-                    dto.SupplierCode = lg.Code;
-                    dto.SupplierName = lg.Name;
+                    dto.WhBinGroupCode = lg.Code;
+                    dto.WhBinGroupName = lg.Name;
                 }
             }
-            dto.Address = item.Address;
             dto.Area = item.Area;
             dto.Volume = item.Volume;
             return dto;
         }
 
-        public PubResponse UploadWh(MemoryStream stream)
+        public PubResponse UploadWhSh(MemoryStream stream)
         {
             PubResponse response = new PubResponse();
             try
@@ -254,7 +279,7 @@ namespace PigRunner.Services.Basic.Services
                     var lst = package.Workbook.Worksheets.Cast<ExcelWorksheet>().Where(q => q.Dimension != null).ToList();
                     if (lst == null || lst.Count <= 0)
                         throw new Exception("Excel的sheet内容不能为空！");
-                    List<Wh> lstCtry = new List<Wh>();
+                    List<WhSh> lstCtry = new List<WhSh>();
                     Dictionary<string, string> dic = new Dictionary<string, string>();
                     foreach (var worksheet in lst)
                     {
@@ -277,18 +302,44 @@ namespace PigRunner.Services.Basic.Services
                             if (worksheet.GetValue(row, 2) != null)
                                 Name = worksheet.GetValue(row, 2).ToString();
 
-                            //第3列：是否货位
-                            string IsPurerName = string.Empty;
+                            //第3列：仓库
+                            string WHCode = string.Empty;
                             if (worksheet.GetValue(row, 3) != null)
-                                IsPurerName = worksheet.GetValue(row, 3).ToString();
+                                WHCode = worksheet.GetValue(row, 3).ToString();
+                            long WhID = 0;
+                            if (!string.IsNullOrEmpty(WHCode))
+                            {
+                                var lg = repository.Context.Queryable<Wh>().Where(q => q.Name == WHCode || q.Code == WHCode)?.First();
+                                if (lg == null)
+                                    throw new Exception(string.Format("编码/名称为【{0}】的仓库不存在！", WHCode));
+                                WhID = lg.ID;
+                            }
+
+                            //第4列：库区
+                            string WhBinGroupCode = string.Empty;
+                            if (worksheet.GetValue(row, 4) != null)
+                                WhBinGroupCode = worksheet.GetValue(row, 4).ToString();
+                            long WhBinGroupID = 0;
+                            if (!string.IsNullOrEmpty(WhBinGroupCode))
+                            {
+                                var lg = repository.Context.Queryable<WhBinGroup>().Where(q => q.Name == WhBinGroupCode || q.Code == WhBinGroupCode)?.First();
+                                if (lg == null)
+                                    throw new Exception(string.Format("编码/名称为【{0}】的库区不存在！", WhBinGroupCode));
+                                WhBinGroupID = lg.ID;
+                            }
+
+                            //第5列：是否拣货货位
+                            string IsPurerName = string.Empty;
+                            if (worksheet.GetValue(row, 5) != null)
+                                IsPurerName = worksheet.GetValue(row, 5).ToString();
                             int IsStoreBin = 0;
                             if (!string.IsNullOrEmpty(IsPurerName) && (IsPurerName.Equals("是") || IsPurerName.Equals("1")))
                                 IsStoreBin = 1;
 
-                            //第4列：组织
+                            //第6列：组织
                             string OrgCode = string.Empty;
-                            if (worksheet.GetValue(row, 4) != null)
-                                OrgCode = worksheet.GetValue(row, 4).ToString();
+                            if (worksheet.GetValue(row, 6) != null)
+                                OrgCode = worksheet.GetValue(row, 6).ToString();
                             long OrgID = 0;
                             if (!string.IsNullOrEmpty(OrgCode))
                             {
@@ -296,56 +347,24 @@ namespace PigRunner.Services.Basic.Services
                                 if (lg != null)
                                     OrgID = lg.ID;
                             }
-                            //第5列：面积
+                            //第7列：面积
                             string strArea = string.Empty;
-                            if (worksheet.GetValue(row, 5) != null)
-                                strArea = worksheet.GetValue(row, 5).ToString();
+                            if (worksheet.GetValue(row, 7) != null)
+                                strArea = worksheet.GetValue(row, 7).ToString();
                             decimal Area = 0m;
                             decimal.TryParse(strArea, out Area);
 
-                            //第6列：容积
+                            //第8列：容积
                             string strVolume = string.Empty;
-                            if (worksheet.GetValue(row, 6) != null)
-                                strVolume = worksheet.GetValue(row, 6).ToString();
+                            if (worksheet.GetValue(row, 8) != null)
+                                strVolume = worksheet.GetValue(row, 8).ToString();
                             decimal Volume = 0m;
                             decimal.TryParse(strVolume, out Volume);
 
-                            long SupplierID = 0;
-                            //第7列：供应商
-                            string SupplierName = string.Empty;
-                            if (worksheet.GetValue(row, 7) != null)
-                                SupplierName = worksheet.GetValue(row, 7).ToString();
-
-                            if (!string.IsNullOrEmpty(SupplierName))
-                            {
-                                var dept = repository.Context.Queryable<Supplier>().Where(q => q.Name == SupplierName || q.Code == SupplierName).ToList()?.FirstOrDefault();
-                                if (dept == null)
-                                    throw new Exception(string.Format("编码/名称为【{0}】的供应商不存在！", SupplierName));
-                                SupplierID = dept.ID;
-                            }
-                            long CustomerID = 0;
-                            //第8列：客户
-                            string CustomerName = string.Empty;
-                            if (worksheet.GetValue(row, 8) != null)
-                                CustomerName = worksheet.GetValue(row, 8).ToString();
-
-                            if (!string.IsNullOrEmpty(CustomerName))
-                            {
-                                var dept = repository.Context.Queryable<Customer>().Where(q => q.Name == CustomerName || q.Code == CustomerName).ToList()?.FirstOrDefault();
-                                if (dept == null)
-                                    throw new Exception(string.Format("编码/名称为【{0}】的供应商不存在！", CustomerName));
-                                CustomerID = dept.ID;
-                            }
-
-                            //第9列：地址
-                            string Address = string.Empty;
-                            if (worksheet.GetValue(row, 9) != null)
-                                Address = worksheet.GetValue(row, 9).ToString();
-
-                            //第10列：状态
+                            //第9列：状态
                             string Effective = string.Empty;
-                            if (worksheet.GetValue(row, 10) != null)
-                                Effective = worksheet.GetValue(row, 10).ToString();
+                            if (worksheet.GetValue(row, 9) != null)
+                                Effective = worksheet.GetValue(row, 9).ToString();
 
                             int IsEffective = 0;
                             if (!string.IsNullOrEmpty(Effective) && (Effective.Equals("生效") || Effective.Equals("1")))
@@ -362,18 +381,17 @@ namespace PigRunner.Services.Basic.Services
                             if (dic.ContainsKey(Code) || dic.ContainsValue(Name))
                                 throw new Exception(string.Format("Sheet[{0}]编码或名称已重复，请检查！", worksheet.Name));
                             dic.Add(Code, Name);
-                            Wh head = repository.GetFirst(q => q.Code == Code || q.Name == Name);
+                            WhSh head = repository.GetFirst(q => q.Code == Code || q.Name == Name);
                             if (head != null)
-                                throw new Exception(string.Format("编码为【{0}】的仓库已存在！", Code));
-                            head = Wh.Create();
+                                throw new Exception(string.Format("编码为【{0}】的货位已存在！", Code));
+                            head = WhSh.Create();
                             head.Code = Code;
                             head.Name = Name;
-                            head.IsStoreBin = IsStoreBin;
+                            head.IsWhSh = IsStoreBin;
                             head.Remark = Remark;
                             head.IsEffective = IsEffective;
-                            head.Customer = CustomerID;
-                            head.Supplier = SupplierID;
-                            head.Address = Address;
+                            head.Wh = WhID;
+                            head.WhBinGroup = WhBinGroupID;
                             head.Area = Area;
                             head.Volume = Volume;
                             head.Org = OrgID;
@@ -397,5 +415,6 @@ namespace PigRunner.Services.Basic.Services
         }
     }
 
+
 }
-    
+

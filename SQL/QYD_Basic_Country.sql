@@ -423,3 +423,201 @@ CREATE TABLE [QYD_Basic_Customer] (
 	PRIMARY KEY([ID])
 );
 GO
+
+
+
+/**
+供应商
+*/
+IF OBJECT_ID('QYD_Basic_Supplier') IS NOT NULL
+DROP TABLE QYD_Basic_Supplier
+GO
+
+CREATE TABLE [QYD_Basic_Supplier] (
+	[ID] BIGINT NOT NULL UNIQUE,
+	-- 版本号
+	[SysVersion] BIGINT DEFAULT 0,
+	-- 创建时间
+	[CreatedTime] DATETIME DEFAULT GETDATE(),
+	-- 创建人
+	[CreatedBy] VARCHAR(50),
+	-- 编码
+	[Code] VARCHAR(50),
+	-- 名称
+	[Name] VARCHAR(50),
+	--修改人
+	[ModifiedBy] VARCHAR(50),
+	--修改时间
+	[ModifiedTime] datetime,
+	--备注
+	[Remark] nvarchar(255),
+		--简称
+	[ShortName] VARCHAR(50),
+	--分类
+	[Category] bigint,
+	--地区
+	[Country] bigint,
+	--供应商
+	[Customer] bigint,
+	--公众号
+	[WeChat] nvarchar(100),
+	--是否内部组织
+	[IsInerOrg] int DEFAULT 0,
+		--部门
+	[Dept] bigint,
+		--业务员
+	[Operators] bigint,
+		--税率
+	[TaxRate] decimal(24,9),
+	--税号
+	[TaxNum] nvarchar(100),
+	--上级供应商
+	[ParentSuppiler] bigint,
+	--收货人电话
+	[RcvManTell] nvarchar(50),
+	--收款条件
+	[RecTerm] nvarchar(50),
+	--立账条件
+	[AccrueTerm] nvarchar(50),
+	--出货原则
+	[ShipRule] nvarchar(50),
+	--组织
+	[Org] bigint,
+	--状态
+	[Status] int DEFAULT 0,
+	PRIMARY KEY([ID])
+);
+GO
+
+
+
+/**
+仓库
+*/
+IF OBJECT_ID('QYD_Basic_Wh') IS NOT NULL
+DROP TABLE QYD_Basic_Wh
+GO
+
+CREATE TABLE [QYD_Basic_Wh] (
+	[ID] BIGINT NOT NULL UNIQUE,
+	-- 版本号
+	[SysVersion] BIGINT DEFAULT 0,
+	-- 创建时间
+	[CreatedTime] DATETIME DEFAULT GETDATE(),
+	-- 创建人
+	[CreatedBy] VARCHAR(50),
+	-- 编码
+	[Code] VARCHAR(50),
+	-- 名称
+	[Name] VARCHAR(50),
+	--修改人
+	[ModifiedBy] VARCHAR(50),
+	--修改时间
+	[ModifiedTime] datetime,
+	--备注
+	[Remark] nvarchar(255),
+		--是否生效
+	[IsEffective] int DEFAULT 0,
+		--是否是否库位
+	[IsStoreBin] int DEFAULT 0,
+		--面积
+	[Area] decimal(24,9),
+	--容积
+	[Volume] decimal(24,9),
+	--供应商
+	[Supplier] bigint,
+		--客户
+	[Customer] bigint,
+		--组织
+	[Org] bigint,
+	--地址
+	[Address] nvarchar(100),
+	PRIMARY KEY([ID])
+);
+GO
+
+
+/**
+库区
+*/
+IF OBJECT_ID('QYD_Basic_WhBinGroup') IS NOT NULL
+DROP TABLE QYD_Basic_WhBinGroup
+GO
+
+CREATE TABLE [QYD_Basic_WhBinGroup] (
+	[ID] BIGINT NOT NULL UNIQUE,
+	-- 版本号
+	[SysVersion] BIGINT DEFAULT 0,
+	-- 创建时间
+	[CreatedTime] DATETIME DEFAULT GETDATE(),
+	-- 创建人
+	[CreatedBy] VARCHAR(50),
+	-- 编码
+	[Code] VARCHAR(50),
+	-- 名称
+	[Name] VARCHAR(50),
+	--修改人
+	[ModifiedBy] VARCHAR(50),
+	--修改时间
+	[ModifiedTime] datetime,
+	--备注
+	[Remark] nvarchar(255),
+		--是否生效
+	[IsEffective] int DEFAULT 0,
+		--面积
+	[Area] decimal(24,9),
+	--容积
+	[Volume] decimal(24,9),
+	--仓库
+	[Wh] bigint,
+		--组织
+	[Org] bigint,
+	--地址
+	PRIMARY KEY([ID])
+);
+GO
+
+
+
+/**
+货位
+*/
+IF OBJECT_ID('QYD_Basic_WhSh') IS NOT NULL
+DROP TABLE QYD_Basic_WhSh
+GO
+
+CREATE TABLE [QYD_Basic_WhSh] (
+	[ID] BIGINT NOT NULL UNIQUE,
+	-- 版本号
+	[SysVersion] BIGINT DEFAULT 0,
+	-- 创建时间
+	[CreatedTime] DATETIME DEFAULT GETDATE(),
+	-- 创建人
+	[CreatedBy] VARCHAR(50),
+	-- 编码
+	[Code] VARCHAR(50),
+	-- 名称
+	[Name] VARCHAR(50),
+	--修改人
+	[ModifiedBy] VARCHAR(50),
+	--修改时间
+	[ModifiedTime] datetime,
+	--备注
+	[Remark] nvarchar(255),
+		--是否生效
+	[IsEffective] int DEFAULT 0,
+		--是否拣货货位
+	[IsWhSh] int DEFAULT 0,
+		--面积
+	[Area] decimal(24,9),
+	--容积
+	[Volume] decimal(24,9),
+	--仓库
+	[Wh] bigint,
+	--库位
+	[WhBinGroup] bigint,
+		--组织
+	[Org] bigint,
+	PRIMARY KEY([ID])
+);
+GO

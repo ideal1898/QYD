@@ -12,14 +12,21 @@ namespace PigRunner.Services.Basic.IServices
 
     public interface IWhService : IScopedService
     {
-        
+
         /// <summary>
-        /// 备  注:仓库
+        /// 仓库
         ///</summary>
         /// <param name=request></param>
         /// <returns></returns>
-        
-        PubResponse ActionWh(WhVo request);
+
+        PubResponse ActionWh(WhView request);
+
+        /// <summary>
+        /// 导入
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns></returns>
+        PubResponse UploadWh(MemoryStream file);
 
     }
     

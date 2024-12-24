@@ -1,44 +1,16 @@
-﻿
-#region << 版 本 注 释 >>
-/*----------------------------------------------------------------
- * 版权所有 (c) 2024 P R C  保留所有权利。
- * CLR版本：4.0.30319.42000
- * 机器名称：NXBY
- * 命名空间：PigRunner.DTO.Basic
- * 唯一标识：1f417ad6-9534-474a-96cb-640ebda52d3f
- * 文件名：SupplierCategoryVo
- * 
- * 创建者：Administrator
- * 电子邮箱：1003590782@qq.com
- * 创建时间：2024/11/17 10:38:58
- * 版本：V1.0.0
- * 描述：
- *
- * ----------------------------------------------------------------
- * 修改人：
- * 时间：
- * 修改说明：
- *
- * 版本：V1.0.1
- *----------------------------------------------------------------*/
-#endregion << 版 本 注 释 >>
-
-
-using Newtonsoft.Json;
-using PigRunner.DTO.Basic.Pub;
+﻿using PigRunner.DTO.Basic.Pub;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace PigRunner.DTO.Basic
+namespace PigRunner.DTO.Basic.Gop
 {
     /// <summary>
-    /// 客户
+    /// 供应商
     /// </summary>
-    public class CustomerView : PubView
+     public class SupplierView : PubView
     {
 
         /// <summary>
@@ -73,20 +45,20 @@ namespace PigRunner.DTO.Basic
         public string Remark { get; set; } = string.Empty;
 
         /// <summary>
-        ///供应商编码
+        ///客户编码
         ///</summary>
-        public string SupplierCode { get; set; } = string.Empty;
+        public string CustomerCode { get; set; } = string.Empty;
 
         /// <summary>
-        ///供应商名称
+        ///客户名称
         ///</summary>
-        public string SupplierName { get; set; } = string.Empty;
+        public string CustomerName { get; set; } = string.Empty;
 
 
         /// <summary>
-        /// 收货地址
+        /// 微信公众号
         ///</summary>
-        public string RcvAddress { get; set; } = string.Empty;
+        public string WeChat { get; set; } = string.Empty;
 
 
         /// <summary>
@@ -133,12 +105,12 @@ namespace PigRunner.DTO.Basic
         /// <summary>
         /// 上级客户
         ///</summary>
-        public string ParentCustCode { get; set; } = string.Empty;
+        public string ParentSupCode { get; set; } = string.Empty;
 
         /// <summary>
         /// 上级客户名称
         ///</summary>
-        public string ParentCustName { get; set; } = string.Empty;
+        public string ParentSupName { get; set; } = string.Empty;
 
         /// <summary>
         /// 收货人电话

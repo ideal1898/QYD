@@ -75,9 +75,10 @@ namespace PigRunner.Services.Basic.Gop.Services
                     DateTime QAExpireDate = DateTime.MinValue;
                     if (!string.IsNullOrEmpty(request.QAExpireDate))
                         DateTime.TryParse(request.QAExpireDate, out QAExpireDate);
-
-                    head.AcceptDate = AcceptDate;
-                    head.QAExpireDate = QAExpireDate;
+                    if (AcceptDate != DateTime.MinValue)
+                        head.AcceptDate = AcceptDate;
+                    if (QAExpireDate != DateTime.MinValue)
+                        head.QAExpireDate = QAExpireDate;
 
                     bool isSuccess = repository.InsertOrUpdate(head);
                     if (!isSuccess)

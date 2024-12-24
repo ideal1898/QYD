@@ -1,49 +1,52 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PigRunner.DTO.Basic;
 using PigRunner.Public.Common.Views;
 using PigRunner.Services.Basic.IServices;
-
+using PigRunner.Services.Sys.IServices;
 
 namespace PigRunner.WebApi.Controllers.Basic
 {
     /// <summary>
-    /// 料品服务
+    /// Model.ClassName
     /// </summary>
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class ItemController : ControllerBase
+    public class WhShController : ControllerBase
     {
-        private IItemService services;
+        
+        private IWhShService services;
+        
         /// <summary>
         /// 服务注册
         /// </summary>
         /// <param name="_services"></param>
-        public ItemController(IItemService _services)
+        public WhShController(IWhShService _services)
         {
             this.services = _services;
         }
+
         /// <summary>
-        /// 物料
+        /// 库位
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
         [AllowAnonymous]
         [HttpPost]
-        public PubResponse ActionItem(ItemView request)
+        
+        public PubResponse ActionWhSh(WhShView request)
         {
-            return services.ActionItem(request);
+            return services.ActionWhSh(request);
         }
 
         /// <summary>
-        /// 上传物料
+        /// 上传货位
         /// </summary>
         /// <param name="file"></param>
         /// <returns></returns>
         [AllowAnonymous]
         [HttpPost]
-        public PubResponse UploadItem(IFormFile file)
+        public PubResponse UploadWhSh(IFormFile file)
         {
             PubResponse response = new PubResponse();
             try
@@ -52,7 +55,7 @@ namespace PigRunner.WebApi.Controllers.Basic
                 {
                     file.CopyTo(stream);
                     stream.Position = 0;
-                    response = services.UploadItem(stream);
+                    response = services.UploadWhSh(stream);
                 }
             }
             catch (Exception ex)
@@ -63,4 +66,8 @@ namespace PigRunner.WebApi.Controllers.Basic
             return response;
         }
     }
+
+
+    
+    
 }

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace PigRunner.Repository.Basic
 {
 
-    public class WhBinRepository : BaseRepository<WhBin>, IScopedService
+    public class WhShRepository : BaseRepository<WhSh>, IScopedService
     {
 
 

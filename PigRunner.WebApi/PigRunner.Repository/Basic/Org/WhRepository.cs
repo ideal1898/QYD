@@ -11,8 +11,5 @@ namespace PigRunner.Repository.Basic
 
     public class WhRepository : BaseRepository<Wh>, IScopedService
     {
-
-
     }
-    
 }
