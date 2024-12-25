@@ -267,6 +267,10 @@ namespace PigRunner.Services.Basic.Services
             dto.ID = item.ID;
             dto.Description = item.Description;
             dto.IsEffective = item.IsEffective == 1 ? true : false;
+            if (dto.IsEffective)
+                dto.Effective = "启用";
+            else
+                dto.Effective = "停用";
             dto.SPECS = item.SPECS;
             if (item.StockCategory > 0)
             {
@@ -308,6 +312,13 @@ namespace PigRunner.Services.Basic.Services
 
             dto.Code1 = item.Code1;
             dto.ItemFormAttribute = item.ItemFormAttribute;
+
+            if (dto.ItemFormAttribute == 1)
+                dto.ItemFormAttributeName = "采购件";
+            else if (dto.ItemFormAttribute == 2)
+                dto.ItemFormAttributeName = "制造件";
+
+
             dto.IsSalesEnable = item.IsSalesEnable == 1 ? true : false;
             dto.IsBuildEnable = item.IsBuildEnable == 1 ? true : false;
             dto.IsPurchaseEnable = item.IsPurchaseEnable == 1 ? true : false;

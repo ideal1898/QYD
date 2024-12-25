@@ -621,3 +621,90 @@ CREATE TABLE [QYD_Basic_WhSh] (
 	PRIMARY KEY([ID])
 );
 GO
+
+
+
+/**
+物料
+*/
+IF OBJECT_ID('QYD_Basic_Item') IS NOT NULL
+DROP TABLE QYD_Basic_Item
+GO
+
+CREATE TABLE [QYD_Basic_Item] (
+	[ID] BIGINT NOT NULL UNIQUE,
+	-- 版本号
+	[SysVersion] BIGINT DEFAULT 0,
+	-- 创建时间
+	[CreatedTime] DATETIME DEFAULT GETDATE(),
+	-- 创建人
+	[CreatedBy] VARCHAR(50),
+	-- 编码
+	[Code] VARCHAR(50),
+		-- 旧编码
+	[Code1] VARCHAR(50),
+	-- 名称
+	[Name] VARCHAR(50),
+	--修改人
+	[ModifiedBy] VARCHAR(50),
+	--修改时间
+	[ModifiedTime] datetime,
+	--规格
+	[SPECS] nvarchar(100),
+		--是否生效
+	[IsEffective] int DEFAULT 0,
+		--库存分类
+	[StockCategory] bigint,
+	--单位
+	[UOM] bigint,
+	--副单位
+	[BaseUOM] bigint,
+		--组织
+	[Org] bigint,
+	--主副单位转化系数
+	[RatioToBase] decimal(24,9),
+	--描述
+	[Description] VARCHAR(255),
+		--物料形态属性
+	[ItemFormAttribute] int DEFAULT 0,
+		--可销售
+	[IsSalesEnable] int DEFAULT 0,
+			--可生产
+	[IsBuildEnable] int DEFAULT 0,
+			--可采购
+	[IsPurchaseEnable] int DEFAULT 0,
+			--可委外
+	[IsOutsideOperationEnable] int DEFAULT 0,
+	--图片
+	[Picture] VARCHAR(255),
+				--是否批次管理
+	[IsLot] int DEFAULT 0,
+				--是否质检
+	[IsQc] int DEFAULT 0,
+				--是否质保期管理
+	[IsQgPeriod] int DEFAULT 0,
+		--质保天数
+	[QgDay] int,
+		--质保预警天数
+	[QgAlterDay] int,
+		--质保期单位
+	[QgAlterDayUom] bigint,
+		--默认存储地点
+	[Warehouse] bigint,
+		--标准包装数量
+	[PackagQty] decimal(24,9),
+		--最小采购量
+	[MinRcvQty] decimal(24,9),
+		--采购周期
+	[PurPeriod] int,
+		--供应商
+	[Supplier] bigint,
+		--采购周期单位
+	[PurPeriodUom] bigint,
+		--生产批量
+	[MoBatch] int,
+		--生产部门
+	[MoDept] bigint,
+	PRIMARY KEY([ID])
+);
+GO

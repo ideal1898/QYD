@@ -136,6 +136,11 @@ namespace PigRunner.DTO.Basic
         ///</summary>
         public int ItemFormAttribute { get; set; } = 0;
 
+        /// <summary>
+        /// 形态属性名称
+        /// </summary>
+        public string ItemFormAttributeName { get; set; } = string.Empty;
+
 
 
         /// <summary>
@@ -299,7 +304,7 @@ namespace PigRunner.DTO.Basic
         /// 备  注:生产批量
         /// 默认值:
         ///</summary>
-        public long MoBatch { get; set; }
+        public int MoBatch { get; set; }
 
 
 

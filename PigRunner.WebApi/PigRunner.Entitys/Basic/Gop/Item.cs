@@ -184,7 +184,6 @@ namespace PigRunner.Entitys.Basic
         /// 备  注:质保期单位
         /// 默认值:
         ///</summary>
-        [SugarColumn(ColumnName = "QgAlterDayUom")]
         public long QgAlterDayUom { get; set; } = 0;
 
 
@@ -241,7 +240,7 @@ namespace PigRunner.Entitys.Basic
         /// 备  注:生产批量
         /// 默认值:
         ///</summary>
-        public long MoBatch  { get; set;  }
+        public int MoBatch  { get; set;  }
 
 
 
