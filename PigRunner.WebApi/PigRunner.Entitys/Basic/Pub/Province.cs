@@ -11,29 +11,14 @@ namespace PigRunner.Entitys.Basic
     [SugarTable("QYD_Base_Province")]
     public class Province : BaseEntity<Province>
     {
-        
-         
-         
-         
-         
-         
-         
-        
-        /// <summary>
-        /// 备  注:是否生效
-        /// 默认值:
-        ///</summary>
-        [SugarColumn(ColumnName="IsEffective" ) ]
-        public int? IsEffective  { get; set;  } 
-        
-         
-        
+
+
         /// <summary>
         /// 备  注:省自治区编码
         /// 默认值:
         ///</summary>
-        [SugarColumn(ColumnName="Code" ) ]
-        public string? Code  { get; set;  } 
+        [SugarColumn(ColumnName = "Code")]
+        public string Code { get; set; } = string.Empty; 
         
          
         
@@ -42,19 +27,19 @@ namespace PigRunner.Entitys.Basic
         /// 默认值:
         ///</summary>
         [SugarColumn(ColumnName="Name" ) ]
-        public string? Name  { get; set;  } 
-        
-         
-        
+        public string Name  { get; set;  } = string.Empty;
+
+
+
         /// <summary>
         /// 备  注:国家ID
         /// 默认值:
         ///</summary>
         [SugarColumn(ColumnName="Country" ) ]
-        public long? Country  { get; set;  } 
-        
-         
-        
+        public long Country  { get; set;  } = -1;
+
+
+
 
     }
     

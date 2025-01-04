@@ -19,8 +19,14 @@ namespace PigRunner.Services.Basic.IServices
         /// <param name=request></param>
         /// <returns></returns>
         
-        PubResponse ActionOperators(OperatorsVo request);
+        PubResponse ActionOperators(OperatorsView request);
 
+        /// <summary>
+        /// 导入
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns></returns>
+        PubResponse UploadOperators(MemoryStream file);
     }
     
 }

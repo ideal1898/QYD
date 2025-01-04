@@ -6,13 +6,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PigRunner.Repository.Basic
+namespace PigRunner.Repository.Basic.Pub
 {
-
-    public class WhBinRepository : BaseRepository<WhBin>, IScopedService
+     /// <summary>
+     /// 省/自治区
+     /// </summary>
+    public class ProvinceRepository : BaseRepository<Province>, IScopedService
     {
-
-
     }
-    
 }

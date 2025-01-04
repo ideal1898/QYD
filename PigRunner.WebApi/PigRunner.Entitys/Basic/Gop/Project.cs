@@ -11,76 +11,58 @@ namespace PigRunner.Entitys.Basic
     [SugarTable("QYD_Basic_Project")]
     public class Project : BaseEntity<Project>
     {
-        
-         
-         
-         
-         
-         
-         
-        
         /// <summary>
         /// 备  注:项目状态
         /// 默认值:
         ///</summary>
-        [SugarColumn(ColumnName="Status" ) ]
-        public string? Status  { get; set;  } 
-        
-         
-        
+        public int Status { get; set; } = 0;
+
+
+
         /// <summary>
         /// 备  注:项目编码
         /// 默认值:
         ///</summary>
-        [SugarColumn(ColumnName="Code" ) ]
-        public string? Code  { get; set;  } 
+        public string Code { get; set; } = string.Empty;
         
-         
         
         /// <summary>
         /// 备  注:项目名称
         /// 默认值:
         ///</summary>
-        [SugarColumn(ColumnName="Name" ) ]
-        public string? Name  { get; set;  } 
-        
-         
-        
+        public string Name  { get; set;  } = string.Empty;
+
+
+
         /// <summary>
         /// 备  注:描述
         /// 默认值:
         ///</summary>
-        [SugarColumn(ColumnName="Description" ) ]
-        public string? Description  { get; set;  } 
-        
-         
-        
-        /// <summary>
-        /// 备  注:是否生效
-        /// 默认值:
-        ///</summary>
-        [SugarColumn(ColumnName="IsEffective" ) ]
-        public int? IsEffective  { get; set;  } 
-        
-         
+        public string Description  { get; set;  } = string.Empty;
+
         
         /// <summary>
         /// 备  注:验收日期
         /// 默认值:
         ///</summary>
-        [SugarColumn(ColumnName="AcceptDate" ) ]
-        public DateTime? AcceptDate  { get; set;  } 
-        
+        public DateTime AcceptDate  { get; set;  } 
          
         
         /// <summary>
         /// 备  注:质保到期日
         /// 默认值:
         ///</summary>
-        [SugarColumn(ColumnName="QAExpireDate" ) ]
-        public DateTime? QAExpireDate  { get; set;  } 
-        
-        
+        public DateTime QAExpireDate  { get; set;  }
+
+        /// <summary>
+        /// 修改日期
+        /// </summary>
+        public DateTime ModifiedTime { get; set; } = DateTime.Now;
+
+        /// <summary>
+        /// 修改人
+        /// </summary>
+        public string ModifiedBy { get; set; } = string.Empty;
 
     }
     

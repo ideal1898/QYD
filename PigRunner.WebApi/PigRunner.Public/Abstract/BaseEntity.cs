@@ -30,7 +30,13 @@ namespace PigRunner.Public.Abstract
         /// <summary>
         /// 版本
         /// </summary>
+<<<<<<< HEAD
         public long SysVersion { get; set; } = 0;
+=======
+        public long SysVersion { get; set; }
+       
+
+>>>>>>> 163cba787badb9b240dea49c927e9512bb53087f
         /// <summary>
         /// 创建实体
         /// </summary>

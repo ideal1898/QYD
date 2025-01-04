@@ -34,9 +34,36 @@ namespace PigRunner.WebApi.Controllers.Basic
         [AllowAnonymous]
         [HttpPost]
         
-        public PubResponse ActionWh(WhVo request)
+        public PubResponse ActionWh(WhView request)
         {
             return services.ActionWh(request);
+        }
+
+        /// <summary>
+        /// 上传仓库
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns></returns>
+        [AllowAnonymous]
+        [HttpPost]
+        public PubResponse UploadWh(IFormFile file)
+        {
+            PubResponse response = new PubResponse();
+            try
+            {
+                using (var stream = new MemoryStream())
+                {
+                    file.CopyTo(stream);
+                    stream.Position = 0;
+                    response = services.UploadWh(stream);
+                }
+            }
+            catch (Exception ex)
+            {
+                response.code = 400;
+                response.msg = ex.Message;
+            }
+            return response;
         }
     }
 

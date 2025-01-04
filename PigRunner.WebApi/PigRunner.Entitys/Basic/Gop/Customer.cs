@@ -15,174 +15,123 @@ namespace PigRunner.Entitys.Basic
         /// 备  注:客户编码
         /// 默认值:
         ///</summary>
-        [SugarColumn(ColumnName="Code" ) ]
-        public string? Code  { get; set;  } 
-        
-         
+        public string Code { get; set; } = string.Empty; 
         
         /// <summary>
         /// 备  注:客户名称
         /// 默认值:
         ///</summary>
-        [SugarColumn(ColumnName="Name" ) ]
-        public string? Name  { get; set;  } 
-        
-         
-        
+        public string Name  { get; set;  } = string.Empty;
+
+
+
         /// <summary>
         /// 备  注:客户简称
         /// 默认值:
         ///</summary>
-        [SugarColumn(ColumnName="ShortName" ) ]
-        public string? ShortName  { get; set;  } 
-        
-         
-        
-        /// <summary>
-        /// 备  注:立账条件名称
-        /// 默认值:
-        ///</summary>
-        [SugarColumn(ColumnName="ARConfirmTermName" ) ]
-        public string? ARConfirmTermName  { get; set;  } 
-        
-         
-        
-        /// <summary>
-        /// 备  注:税率数值
-        /// 默认值:
-        ///</summary>
-        [SugarColumn(ColumnName="TaxData" ) ]
-        public decimal? TaxData  { get; set;  } 
-        
-         
-        
-        /// <summary>
-        /// 备  注:业务员ID
-        /// 默认值:
-        ///</summary>
-        [SugarColumn(ColumnName="Saleser" ) ]
-        public long? Saleser  { get; set;  } 
-        
-         
-        
-        /// <summary>
-        /// 备  注:部门ID
-        /// 默认值:
-        ///</summary>
-        [SugarColumn(ColumnName="Department" ) ]
-        public long? Department  { get; set;  } 
-        
-         
-        
-        /// <summary>
-        /// 备  注:税号
-        /// 默认值:
-        ///</summary>
-        [SugarColumn(ColumnName="TaxNo" ) ]
-        public string? TaxNo  { get; set;  } 
-        
-         
-        
+        public string ShortName  { get; set;  } = string.Empty;
+
         /// <summary>
         /// 备  注:客户分类ID
         /// 默认值:
         ///</summary>
-        [SugarColumn(ColumnName="Category" ) ]
-        public long? Category  { get; set;  } 
-        
-         
-        
+        public long Category { get; set; }
+
         /// <summary>
-        /// 备  注:组织ID
+        /// 备  注:地区
         /// 默认值:
         ///</summary>
-        [SugarColumn(ColumnName="Org" ) ]
-        public byte? Org  { get; set;  } 
-        
-         
-        
+        public long Country { get; set; }
+
         /// <summary>
-        /// 备  注:省/自治区ID
+        /// 备  注:备注
         /// 默认值:
         ///</summary>
-        [SugarColumn(ColumnName="Province" ) ]
-        public long? Province  { get; set;  } 
-        
-         
-        
-        /// <summary>
-        /// 备  注:收货地址
-        /// 默认值:
-        ///</summary>
-        [SugarColumn(ColumnName="RcvAddress" ) ]
-        public string? RcvAddress  { get; set;  } 
-        
-         
-        
-        /// <summary>
-        /// 备  注:收货电话
-        /// 默认值:
-        ///</summary>
-        [SugarColumn(ColumnName="RcvTel" ) ]
-        public string? RcvTel  { get; set;  } 
-        
-         
-        
-        /// <summary>
-        /// 备  注:上级客户ID
-        /// 默认值:
-        ///</summary>
-        [SugarColumn(ColumnName="ParentNodeCus" ) ]
-        public long? ParentNodeCus  { get; set;  } 
-        
-         
-        
-        /// <summary>
-        /// 备  注:是否内部组织
-        /// 默认值:
-        ///</summary>
-        [SugarColumn(ColumnName="IsOrg" ) ]
-        public int? IsOrg  { get; set;  } 
-        
-         
-        
-        /// <summary>
-        /// 备  注:客户状态
-        /// 默认值:
-        ///</summary>
-        [SugarColumn(ColumnName="Status" ) ]
-        public string? Status  { get; set;  } 
-        
-         
-        
-        /// <summary>
-        /// 备  注:出货原则
-        /// 默认值:
-        ///</summary>
-        [SugarColumn(ColumnName="ShipRule" ) ]
-        public string? ShipRule  { get; set;  } 
-        
-         
-        
-        /// <summary>
-        /// 备  注:收款条件名称
-        /// 默认值:
-        ///</summary>
-        [SugarColumn(ColumnName="RcvPayRule" ) ]
-        public string? RcvPayRule  { get; set;  } 
-        
-         
-        
+        public string Remark { get; set; } = string.Empty;
+
         /// <summary>
         /// 备  注:供应商ID
         /// 默认值:
         ///</summary>
-        [SugarColumn(ColumnName="Supplier" ) ]
-        public long? Supplier  { get; set;  } 
-        
-         
-        
+        public long Supplier { get; set; } = 0;
 
+
+        /// <summary>
+        /// 收货地址
+        ///</summary>
+        public string RcvAddress { get; set; } = string.Empty;
+
+
+        /// <summary>
+        /// 是否内部组织
+        ///</summary>
+        public int IsInerOrg { get; set; } = 0;
+
+
+        /// <summary>
+        /// 部门
+        ///</summary>
+        public long Dept { get; set; } = 0;
+
+        /// <summary>
+        /// 业务员
+        ///</summary>
+        public long Operators { get; set; } = 0;
+
+        /// <summary>
+        /// 税率
+        ///</summary>
+        public decimal TaxRate { get; set; } = 0;
+
+        /// <summary>
+        /// 税号
+        ///</summary>
+        public string TaxNum { get; set; } = string.Empty;
+
+        /// <summary>
+        /// 上级客户
+        ///</summary>
+        public long ParentCustomer { get; set; } = 0;
+
+        /// <summary>
+        /// 收货人电话
+        ///</summary>
+        public string RcvManTell { get; set; } = string.Empty;
+
+        /// <summary>
+        /// 收款条件
+        ///</summary>
+        public string RecTerm { get; set; } = string.Empty;
+
+        /// <summary>
+        /// 立账条件
+        ///</summary>
+        public string AccrueTerm { get; set; } = string.Empty;
+
+        /// <summary>
+        /// 出货原则
+        ///</summary>
+        public string ShipRule { get; set; } = string.Empty;
+
+        /// <summary>
+        /// 组织ID
+        ///</summary>
+        public long Org { get; set; } = 0;
+
+        /// <summary>
+        /// 状态：1-开立；2-核准中；3-已核准
+        ///</summary>
+        public int Status { get; set; } = 0;
+
+        /// <summary>
+        /// 修改日期
+        /// </summary>
+        public DateTime ModifiedTime { get; set; } = DateTime.Now;
+
+        /// <summary>
+        /// 修改人
+        /// </summary>
+        public string ModifiedBy { get; set; } = string.Empty;
     }
-    
+
 }

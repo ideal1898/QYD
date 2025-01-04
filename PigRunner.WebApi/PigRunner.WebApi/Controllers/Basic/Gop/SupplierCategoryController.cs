@@ -12,45 +12,54 @@ namespace PigRunner.WebApi.Controllers.Basic
     /// </summary>
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class SupplierCategoryController: ControllerBase
+    public class SupplierCategoryController : ControllerBase
     {
-        private ISupplierCategoryService supplierCategoryService;
-
+        private ISupplierCategoryService services;
         /// <summary>
         /// 服务注册
         /// </summary>
-        /// <param name="_supplierCategoryService"></param>
-        public SupplierCategoryController(ISupplierCategoryService _supplierCategoryService)
+        /// <param name="_services"></param>
+        public SupplierCategoryController(ISupplierCategoryService _services)
         {
-            this.supplierCategoryService = _supplierCategoryService;
+            this.services = _services;
         }
         /// <summary>
-        /// 新增供应商分类
+        /// 供应商分类
         /// </summary>
-        /// <param name="view"></param>
+        /// <param name="request"></param>
         /// <returns></returns>
         [AllowAnonymous]
         [HttpPost]
-        public ResponseBody insert([FromBody] SupplierCategoryView view)
+        public PubResponse ActionSupplierCategory(SupplierCategoryView request)
         {
-            ResponseBody body = new ResponseBody();
-            bool success = supplierCategoryService.InsertSupplierCategory(view);
-            body.code = success?200:400;
-            body.total = 1;
-            body.data = new JArray();
-            return body;
+            return services.ActionSupplierCategory(request);
         }
 
-
         /// <summary>
-        /// 查询所有供应商分类
+        /// 上传供应商分类
         /// </summary>
+        /// <param name="file"></param>
         /// <returns></returns>
         [AllowAnonymous]
-        [HttpGet]
-        public OkObjectResult querySupplierCategory(int current=1,int size=20 )
+        [HttpPost]
+        public PubResponse UploadSupplierCategory(IFormFile file)
         {
-            return Ok(supplierCategoryService.GetAllSupplierCategories(current, size));
+            PubResponse response = new PubResponse();
+            try
+            {
+                using (var stream = new MemoryStream())
+                {
+                    file.CopyTo(stream);
+                    stream.Position = 0;
+                    response = services.UploadSupplierCategory(stream);
+                }
+            }
+            catch (Exception ex)
+            {
+                response.code = 400;
+                response.msg = ex.Message;
+            }
+            return response;
         }
     }
 }

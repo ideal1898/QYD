@@ -27,6 +27,7 @@
 
 using PigRunner.DTO.Basic;
 using PigRunner.Entitys.Basic;
+using PigRunner.Public.Common.Views;
 using PigRunner.Public.Interface;
 using System;
 using System.Collections.Generic;
@@ -37,9 +38,11 @@ using System.Threading.Tasks;
 
 namespace PigRunner.Services.Basic.IServices
 {
-     public interface IItemService : IScopedService
+    public interface IItemService : IScopedService
     {
-       bool Add(ItemVo vo);
-        ItemVo Update(ItemVo vo);
+        PubResponse ActionItem(ItemView request);
+
+
+        PubResponse UploadItem(MemoryStream file);
     }
 }

@@ -19,8 +19,16 @@ namespace PigRunner.Services.Basic.IServices
         /// <param name=request></param>
         /// <returns></returns>
         
-        PubResponse ActionWhBinGroup(WhBinGroupVo request);
+        PubResponse ActionWhBinGroup(WhBinGroupView request);
 
+
+
+        /// <summary>
+        /// 导入
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns></returns>
+        PubResponse UploadWhBinGroup(MemoryStream file);
     }
     
 }

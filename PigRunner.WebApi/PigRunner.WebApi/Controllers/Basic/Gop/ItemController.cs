@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PigRunner.DTO.Basic;
+using PigRunner.Public.Common.Views;
 using PigRunner.Services.Basic.IServices;
 
 
@@ -13,24 +15,52 @@ namespace PigRunner.WebApi.Controllers.Basic
     [ApiController]
     public class ItemController : ControllerBase
     {
-        private IItemService itemService;
+        private IItemService services;
         /// <summary>
-        /// 注入
+        /// 服务注册
         /// </summary>
-        /// <param name="_itemService"></param>
-        public ItemController(IItemService _itemService) { 
-        this.itemService = _itemService;
-        
+        /// <param name="_services"></param>
+        public ItemController(IItemService _services)
+        {
+            this.services = _services;
         }
         /// <summary>
-        /// 
+        /// 物料
         /// </summary>
-        /// <param name="vo"></param>
+        /// <param name="request"></param>
         /// <returns></returns>
+        [AllowAnonymous]
         [HttpPost]
-        public string Add([FromBody]ItemVo vo) {
-            itemService.Add(vo);
-            return "创建成功";
+        public PubResponse ActionItem(ItemView request)
+        {
+            return services.ActionItem(request);
+        }
+
+        /// <summary>
+        /// 上传物料
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns></returns>
+        [AllowAnonymous]
+        [HttpPost]
+        public PubResponse UploadItem(IFormFile file)
+        {
+            PubResponse response = new PubResponse();
+            try
+            {
+                using (var stream = new MemoryStream())
+                {
+                    file.CopyTo(stream);
+                    stream.Position = 0;
+                    response = services.UploadItem(stream);
+                }
+            }
+            catch (Exception ex)
+            {
+                response.code = 400;
+                response.msg = ex.Message;
+            }
+            return response;
         }
     }
 }

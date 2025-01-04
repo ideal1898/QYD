@@ -11,56 +11,38 @@ namespace PigRunner.Entitys.Basic
     [SugarTable("QYD_Basic_WhBinGroup")]
     public class WhBinGroup : BaseEntity<WhBinGroup>
     {
-        
-         
-         
-        
         /// <summary>
         /// 备  注:库区编码
         /// 默认值:
         ///</summary>
-        [SugarColumn(ColumnName="Code" ) ]
-        public string? Code  { get; set;  } 
-        
-         
+        public string Code { get; set; } = string.Empty;
         
         /// <summary>
         /// 备  注:库区名称
         /// 默认值:
         ///</summary>
-        [SugarColumn(ColumnName="Name" ) ]
-        public string? Name  { get; set;  } 
-        
-         
-        
+        public string Name  { get; set;  } = string.Empty;
+
+
         /// <summary>
         /// 备  注:仓库
         /// 默认值:
         ///</summary>
-        [SugarColumn(ColumnName="wh" ) ]
-        public long? Wh  { get; set;  } 
-        
-         
-        
+        public long Wh { get; set; } = 0;
+
+
         /// <summary>
         /// 备  注:组织
         /// 默认值:
         ///</summary>
-        [SugarColumn(ColumnName="org" ) ]
-        public long? Org  { get; set;  } 
+        public long Org { get; set; } = 0;
         
-         
-         
-         
-         
-         
         
         /// <summary>
         /// 备  注:面积
         /// 默认值:
         ///</summary>
-        [SugarColumn(ColumnName="area" ) ]
-        public string? Area  { get; set;  } 
+        public decimal Area  { get; set;  } 
         
          
         
@@ -68,29 +50,32 @@ namespace PigRunner.Entitys.Basic
         /// 备  注:体积
         /// 默认值:
         ///</summary>
-        [SugarColumn(ColumnName="volume" ) ]
-        public string? Volume  { get; set;  } 
-        
-         
-        
+        public decimal Volume  { get; set;  }
+
         /// <summary>
         /// 备  注:备注
         /// 默认值:
         ///</summary>
-        [SugarColumn(ColumnName="remark" ) ]
-        public string? Remark  { get; set;  } 
-        
-         
-        
+        public string Remark { get; set; } = string.Empty;
+
+
+
         /// <summary>
         /// 备  注:有效性
         /// 默认值:
         ///</summary>
-        [SugarColumn(ColumnName="IsEffective" ) ]
-        public int? IsEffective  { get; set;  } 
-        
-         
-        
+        public int IsEffective { get; set; } = 0;
+
+        /// <summary>
+        /// 修改日期
+        /// </summary>
+        public DateTime ModifiedTime { get; set; } = DateTime.Now;
+
+        /// <summary>
+        /// 修改人
+        /// </summary>
+        public string ModifiedBy { get; set; } = string.Empty;
+
 
     }
     
