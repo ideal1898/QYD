@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PigRunner.DTO.Basic.Pub;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,21 +7,8 @@ using System.Threading.Tasks;
 
 namespace PigRunner.DTO.Basic
 {
-    public class CountryView
+    public class CountryView: PubView
     {
-
-        public int LineNum { get; set; } = -1;
-        /// <summary>
-        /// 国家/地区编码
-        /// </summary>
-        public string Code { get; set; } = string.Empty;
-
-     
-
-        /// <summary>
-        /// 国家/地区名称
-        /// </summary>
-        public string Name { get; set; } = string.Empty;
 
         /// <summary>
         /// 时区名称
@@ -62,10 +50,7 @@ namespace PigRunner.DTO.Basic
         /// </summary>
         public string LanguageName { get; set; } = string.Empty;
 
-        /// <summary>
-        /// id
-        /// </summary>
-        public long ID { get; set; } = -1;
+     
 
         /// <summary>
         /// 姓名格式
@@ -78,24 +63,5 @@ namespace PigRunner.DTO.Basic
         public int NameFormat { get; set; } = -1;
 
 
-        /// <summary>
-        /// 操作类型
-        /// </summary>
-        public string OptType { get; set; } =string.Empty;
-
-        /// <summary>
-        /// 当前页
-        /// </summary>
-        public int Current { get; set; } = 1;
-
-        /// <summary>
-        /// 每页几行
-        /// </summary>
-        public int Size { get; set; } = 2;
-
-        /// <summary>
-        /// 编号集合
-        /// </summary>
-        public List<string> Codes { get; set; } = new List<string>();
     }
 }

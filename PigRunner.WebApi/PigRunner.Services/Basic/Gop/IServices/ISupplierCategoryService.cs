@@ -37,14 +37,14 @@ namespace PigRunner.Services.Basic.IServices
 {
     public interface ISupplierCategoryService:IScopedService
     {
-        #region 新增
-        bool InsertSupplierCategory(SupplierCategoryView view);
+        /// <summary>
+        /// 供应商分类
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        PubResponse ActionSupplierCategory(SupplierCategoryView request);
 
-        #endregion
 
-        #region 查询
-        ResponseBody GetAllSupplierCategories(int current,int size);
-
-        #endregion
+        PubResponse UploadSupplierCategory(MemoryStream file);
     }
 }

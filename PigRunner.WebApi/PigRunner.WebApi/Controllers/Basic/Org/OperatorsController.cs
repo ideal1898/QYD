@@ -8,7 +8,7 @@ using PigRunner.Services.Sys.IServices;
 namespace PigRunner.WebApi.Controllers.Basic
 {
     /// <summary>
-    /// Model.ClassName
+    /// 业务员
     /// </summary>
     [Route("api/[controller]/[action]")]
     [ApiController]
@@ -34,9 +34,36 @@ namespace PigRunner.WebApi.Controllers.Basic
         [AllowAnonymous]
         [HttpPost]
         
-        public PubResponse ActionOperators(OperatorsVo request)
+        public PubResponse ActionOperators(OperatorsView request)
         {
             return services.ActionOperators(request);
+        }
+
+        /// <summary>
+        /// 上传业务员
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns></returns>
+        [AllowAnonymous]
+        [HttpPost]
+        public PubResponse UploadOperators(IFormFile file)
+        {
+            PubResponse response = new PubResponse();
+            try
+            {
+                using (var stream = new MemoryStream())
+                {
+                    file.CopyTo(stream);
+                    stream.Position = 0;
+                    response = services.UploadOperators(stream);
+                }
+            }
+            catch (Exception ex)
+            {
+                response.code = 400;
+                response.msg = ex.Message;
+            }
+            return response;
         }
     }
 

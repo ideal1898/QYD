@@ -11,8 +11,5 @@ namespace PigRunner.Repository.Basic
 
     public class OperatorsRepository : BaseRepository<Operators>, IScopedService
     {
-
-
     }
-    
 }

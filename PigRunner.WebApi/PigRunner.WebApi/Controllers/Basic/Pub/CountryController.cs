@@ -34,5 +34,32 @@ namespace PigRunner.WebApi.Controllers.Basic
         {
             return services.ActionCountry(request);
         }
+
+        /// <summary>
+        /// 上传国家/地区
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns></returns>
+        [AllowAnonymous]
+        [HttpPost]
+        public PubResponse UploadCountry(IFormFile file)
+        {
+            PubResponse response = new PubResponse();
+            try
+            {
+                using (var stream = new MemoryStream())
+                {
+                    file.CopyTo(stream);
+                    stream.Position = 0;
+                    response = services.UploadCountry(stream);
+                }
+            }
+            catch (Exception ex)
+            {
+                response.code = 400;
+                response.msg = ex.Message;
+            }
+            return response;
+        }
     }
 }

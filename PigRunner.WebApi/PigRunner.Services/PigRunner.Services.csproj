@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="EPPlus" Version="7.5.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\PigRunner.DTO\PigRunner.DTO.csproj" />
     <ProjectReference Include="..\PigRunner.Repository\PigRunner.Repository.csproj">
       <Private>True</Private>

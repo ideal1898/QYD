@@ -11,87 +11,65 @@ namespace PigRunner.Entitys.Basic
     [SugarTable("QYD_Basic_UOM")]
     public class UOM : BaseEntity<UOM>
     {
-        
-         
-         
-         
-         
-         
-         
-        
-        /// <summary>
-        /// 备  注:是否生效
-        /// 默认值:
-        ///</summary>
-        [SugarColumn(ColumnName="IsEffective" ) ]
-        public int? IsEffective  { get; set;  } 
-        
-         
-        
         /// <summary>
         /// 备  注:计量单位编码
         /// 默认值:
         ///</summary>
-        [SugarColumn(ColumnName="Code" ) ]
-        public string? Code  { get; set;  } 
-        
-         
-        
+        public string Code  { get; set;  } = string.Empty;
+
+
+
         /// <summary>
         /// 备  注:计量单位名称
         /// 默认值:
         ///</summary>
-        [SugarColumn(ColumnName="Name" ) ]
-        public string? Name  { get; set;  } 
-        
-         
-        
+        public string Name  { get; set;  } = string.Empty;
+
+
+
         /// <summary>
         /// 备  注:是否基准单位
         /// 默认值:
         ///</summary>
-        [SugarColumn(ColumnName="IsBase" ) ]
-        public int? IsBase  { get; set;  } 
+        public int IsBase { get; set; } = 0;
         
          
-        
-        /// <summary>
-        /// 备  注:副单位
-        /// 默认值:
-        ///</summary>
-        [SugarColumn(ColumnName="BaseUOM" ) ]
-        public string? BaseUOM  { get; set;  } 
-        
-         
-        
         /// <summary>
         /// 备  注:主副单位转换系数
         /// 默认值:
         ///</summary>
-        [SugarColumn(ColumnName="RatioToBase" ) ]
-        public decimal? RatioToBase  { get; set;  } 
-        
-         
-        
+        public decimal RatioToBase { get; set; } = 0;
+
+
+
         /// <summary>
-        /// 备  注:计量单位组
+        /// 舍位方式：1-四舍五入，2-舍位，3-入位
         /// 默认值:
         ///</summary>
-        [SugarColumn(ColumnName="UOMGroup" ) ]
-        public string? UOMGroup  { get; set;  } 
-        
-         
-        
+        public int RoundWay { get; set; } = 0;
+
+
+
         /// <summary>
         /// 备  注:备注
         /// 默认值:
         ///</summary>
-        [SugarColumn(ColumnName="Remark" ) ]
-        public string? Remark  { get; set;  } 
-        
-         
-        
+        public string Remark { get; set; } = string.Empty;
 
+        /// <summary>
+        /// 单位精度
+        /// </summary>
+        public decimal UomPrecision { get; set; } = 0;
+
+        /// <summary>
+        /// 修改日期
+        /// </summary>
+        public DateTime ModifiedTime { get; set; } = DateTime.Now;
+
+        /// <summary>
+        /// 修改人
+        /// </summary>
+        public string ModifiedBy { get; set; } = string.Empty;
     }
     
 }

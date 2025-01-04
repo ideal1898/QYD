@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PigRunner.DTO.Basic.Pub;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,33 +10,13 @@ namespace PigRunner.DTO.Basic
     /// <summary>
     /// 组织视图
     /// </summary>
-    public class OrganizationView
+    public class OrganizationView : PubView
     {
         /// <summary>
         /// 备  注:是否生效
         /// 默认值:
         ///</summary>
         public int IsEffective { get; set; } = 0;
-
-
-
-        /// <summary>
-        /// 备  注:组织编码
-        /// 默认值:
-        ///</summary>
-        public string Code { get; set; }=string.Empty;
-
-
-        /// <summary>
-        /// id
-        /// </summary>
-        public long ID { get; set; } = -1;
-
-        /// <summary>
-        /// 备  注:组织名称
-        /// 默认值:
-        ///</summary>
-        public string Name { get; set; } = string.Empty;
 
 
 
@@ -88,30 +69,5 @@ namespace PigRunner.DTO.Basic
         /// 默认值:
         ///</summary>
         public string Shortname { get; set; } = string.Empty;
-
-
-        /// <summary>
-        /// 操作类型
-        /// </summary>
-        public string OptType { get; set; } = string.Empty;
-
-        /// <summary>
-        /// 当前页
-        /// </summary>
-        public int Current { get; set; } = 1;
-
-        /// <summary>
-        /// 每页几行
-        /// </summary>
-        public int Size { get; set; } = 2;
-
-        /// <summary>
-        /// 编号集合
-        /// </summary>
-        public List<string> Codes { get; set; } = new List<string>();
-
-
-        public int LineNum { get; set; } = -1;
-
     }
 }
