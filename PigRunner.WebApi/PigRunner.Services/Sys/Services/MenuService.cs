@@ -95,6 +95,12 @@ namespace PigRunner.Services.Sys
             var sysMenus = menuRepository.AsQueryable().ToTree(it => it.Children, it => it.Parent, 0);
             return MenuTree.Convert(sysMenus);
         }
+
+        public  List<SysMenu> QueryAllMenusBySameLevel() {
+           return menuRepository.AsQueryable().ToList();
+        }
+        
+
         /// <summary>
         /// 分页查询
         /// </summary>

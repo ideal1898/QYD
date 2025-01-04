@@ -31,6 +31,7 @@ namespace PigRunner.Services.Sys
 
         #region 查询菜单
         List<MenuView> QueryAllMenus();
+        List<SysMenu> QueryAllMenusBySameLevel();
         List<MenuView> QueryMenusByPage(int PageSize,int Current, ref int Total);//同步分页查询
        
         #endregion
