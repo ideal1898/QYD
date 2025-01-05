@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PigRunner.DTO.BCP.Lot;
 using PigRunner.Public.Common.Views;
-using PigRunner.Services.Sys.IServices;
+using PigRunner.Services.BCP.Lot.IServices;
 
-namespace PigRunner.WebApi.Controllers
+namespace PigRunner.WebApi.Controllers.BCP.Lot
 {
     /// <summary>
     /// 批号
@@ -12,25 +13,52 @@ namespace PigRunner.WebApi.Controllers
     [ApiController]
     public class LotMasterController : ControllerBase
     {
-        private ILotMasterService loginServices;
+        private ILotMasterService services;
         /// <summary>
         /// 服务注册
         /// </summary>
-        /// <param name="_loginServices"></param>
-        public LotMasterController(ILotMasterService _loginServices)
+        /// <param name="_services"></param>
+        public LotMasterController(ILotMasterService _services)
         {
-            this.loginServices = _loginServices;
+            this.services = _services;
         }
         /// <summary>
-        /// 批号
+        /// 批次主档
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
         [AllowAnonymous]
         [HttpPost]
-        public PubResponse ActionLotMaster(LotMasterRequest request)
+        public PubResponse ActionLotMaster(LotMasterView request)
         {
-            return loginServices.ActionLotMaster(request);
+            return services.ActionLotMaster(request);
+        }
+
+        /// <summary>
+        /// 上传批次主档
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns></returns>
+        [AllowAnonymous]
+        [HttpPost]
+        public PubResponse UploadLotMaster(IFormFile file)
+        {
+            PubResponse response = new PubResponse();
+            try
+            {
+                using (var stream = new MemoryStream())
+                {
+                    file.CopyTo(stream);
+                    stream.Position = 0;
+                    response = services.UploadLotMaster(stream);
+                }
+            }
+            catch (Exception ex)
+            {
+                response.code = 400;
+                response.msg = ex.Message;
+            }
+            return response;
         }
     }
 }

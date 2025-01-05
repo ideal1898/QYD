@@ -9,12 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="BarCode\Lot\**" />
-    <EmbeddedResource Remove="BarCode\Lot\**" />
-    <None Remove="BarCode\Lot\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\PigRunner.Public\PigRunner.Public.csproj" />
   </ItemGroup>
 

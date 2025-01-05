@@ -146,8 +146,6 @@ namespace PigRunner.Services.Basic.Services
                 {
                     int total = 0;
                     List<WhShView> list = new List<WhShView>();
-                    var lst = repository.AsQueryable().ToOffsetPage(request.Current, request.Size, ref total);
-
                     long WhID = 0;
                     long WHbinG = 0;
                     if(!string.IsNullOrEmpty(request.WhCode))
@@ -166,26 +164,19 @@ namespace PigRunner.Services.Basic.Services
                         WHbinG = lg.ID;
                     }
 
-                    if (!string.IsNullOrEmpty(request.Code) && !string.IsNullOrEmpty(request.Name) && WhID > 0 && WHbinG > 0)
-                        lst = repository.AsQueryable().Where(q => q.Code.Contains(request.Code) && q.Name.Contains(request.Name) && q.Wh == WhID && q.WhBinGroup == WHbinG).ToOffsetPage(request.Current, request.Size, ref total);
+                    string sql = "1=1";
+                    if (!string.IsNullOrEmpty(request.Code))
+                        sql += string.Format(" and Code like '%{0}%' ", request.Code);
+                    if (!string.IsNullOrEmpty(request.Name))
+                        sql += string.Format(" and Name like '%{0}%' ", request.Name);
 
-                    else if (!string.IsNullOrEmpty(request.Code) && !string.IsNullOrEmpty(request.Name) && WhID > 0)
-                        lst = repository.AsQueryable().Where(q => q.Code.Contains(request.Code) && q.Name.Contains(request.Name) && q.Wh == WhID).ToOffsetPage(request.Current, request.Size, ref total);
+                    if (WHbinG>0)
+                        sql += string.Format(" and WhBinGroup={0} ", WHbinG);
+                    if (WhID > 0)
+                        sql += string.Format(" and Wh={0} ", WhID);
 
-                    else if (!string.IsNullOrEmpty(request.Code) && !string.IsNullOrEmpty(request.Name) && WHbinG > 0)
-                        lst = repository.AsQueryable().Where(q => q.Code.Contains(request.Code) && q.Name.Contains(request.Name) && q.WhBinGroup == WHbinG).ToOffsetPage(request.Current, request.Size, ref total);
+                    var lst = repository.AsQueryable().Where(sql).ToOffsetPage(request.Current, request.Size, ref total);
 
-                    else if (!string.IsNullOrEmpty(request.Code) && !string.IsNullOrEmpty(request.Name))
-                        lst = repository.AsQueryable().Where(q => q.Code.Contains(request.Code) && q.Name.Contains(request.Name)).ToOffsetPage(request.Current, request.Size, ref total);
-
-                    else if (!string.IsNullOrEmpty(request.Code))
-                        lst = repository.AsQueryable().Where(q => q.Code.Contains(request.Code)).ToOffsetPage(request.Current, request.Size, ref total);
-                    else if (!string.IsNullOrEmpty(request.Name))
-                        lst = repository.AsQueryable().Where(q => q.Name.Contains(request.Name)).ToOffsetPage(request.Current, request.Size, ref total);
-                    else if (WhID > 0)
-                        lst = repository.AsQueryable().Where(q => q.Wh == WhID).ToOffsetPage(request.Current, request.Size, ref total);
-                    else if (WHbinG > 0)
-                        lst = repository.AsQueryable().Where(q => q.WhBinGroup == WHbinG).ToOffsetPage(request.Current, request.Size, ref total);
                     if (lst != null && lst.Count > 0)
                     {
                         int lineNum = 1;

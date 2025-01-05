@@ -1,44 +1,57 @@
-﻿using PigRunner.Public.Abstract;
+﻿using PigRunner.DTO.Basic.Pub;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PigRunner.Entitys.BarCode
+namespace PigRunner.DTO.BCP.Lot
 {
-    [SqlSugar.SugarTable("QYD_BC_LotMaster")]
-    public class BcLotMaster : BaseEntity<BcLotMaster>
+    /// <summary>
+    ///批次视图
+    /// </summary>
+    public class LotMasterView : PubView
     {
+
         /// <summary>
         /// 批号
         /// </summary>
         public string LotCode { get; set; } = string.Empty;
 
         /// <summary>
-        /// 料品
+        /// 料号
         /// </summary>
-        public long ItemMaster { get; set; } = 0;
+        public string ItemCode { get; set; } = string.Empty;
+
+        /// <summary>
+        /// 料品名称
+        /// </summary>
+        public string ItemName { get; set; } = string.Empty;
 
         /// <summary>
         /// 组织
         /// </summary>
-        public long Org { get; set; } = 0;
+        public string OrgCode { get; set; } = string.Empty;
+
+        /// <summary>
+        /// 组织名称
+        /// </summary>
+        public string OrgName { get; set; } = string.Empty;
 
         /// <summary>
         /// 生效日期
         /// </summary>
-        public DateTime EffectiveDate { get; set; }
+        public string EffectiveDate { get; set; } = string.Empty;
 
         /// <summary>
         /// 生效天数
         /// </summary>
-        public int ValidDate { get; set; }
+        public int ValidDate { get; set; } = 0;
 
         /// <summary>
         /// 失效日期
         /// </summary>
-        public DateTime InvalidDate { get; set; }
+        public string InvalidDate { get; set; } = string.Empty;
 
         /// <summary>
         /// 来源单号
@@ -54,6 +67,6 @@ namespace PigRunner.Entitys.BarCode
         /// <summary>
         /// 备注
         /// </summary>
-        public string Memo { get; set; } = string.Empty;
+        public string Remark { get; set; } = string.Empty;
     }
 }
