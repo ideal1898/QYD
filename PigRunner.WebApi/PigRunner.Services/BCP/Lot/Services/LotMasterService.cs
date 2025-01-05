@@ -130,7 +130,6 @@ namespace PigRunner.Services.BCP.Lot.Services
                 {
                     int total = 0;
                     List<LotMasterView> list = new List<LotMasterView>();
-                    var lst = repository.AsQueryable().ToOffsetPage(request.Current, request.Size, ref total);
 
                     long itemID = 0;
                     if (!string.IsNullOrEmpty(request.ItemCode))
@@ -139,12 +138,15 @@ namespace PigRunner.Services.BCP.Lot.Services
                         if (item != null)
                             itemID = item.ID;
                     }
-                    if (!string.IsNullOrEmpty(request.LotCode) && itemID > 0)
-                        lst = repository.AsQueryable().Where(q => q.LotCode.Contains(request.LotCode) && q.ItemMaster == itemID).ToOffsetPage(request.Current, request.Size, ref total);
-                    else if (!string.IsNullOrEmpty(request.LotCode))
-                        lst = repository.AsQueryable().Where(q => q.LotCode.Contains(request.LotCode)).ToOffsetPage(request.Current, request.Size, ref total);
-                    else if (itemID > 0)
-                        lst = repository.AsQueryable().Where(q => q.ItemMaster == itemID).ToOffsetPage(request.Current, request.Size, ref total);
+
+                    string sql = "1=1";
+                    if (!string.IsNullOrEmpty(request.LotCode))
+                        sql += string.Format(" and LotCode='{0}'", request.LotCode);
+
+                    if (itemID>0)
+                        sql += string.Format(" and ItemMaster={0}", itemID);
+
+                  var  lst = repository.AsQueryable().Where(sql).ToOffsetPage(request.Current, request.Size, ref total);
 
                     if (lst != null && lst.Count > 0)
                     {
