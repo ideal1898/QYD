@@ -10,7 +10,7 @@ namespace PigRunner.Entitys.BCP.Lot
     /// <summary>
     /// 批次主档
     /// </summary>
-    [SqlSugar.SugarTable("QYD_BC_LotMaster")]
+    [SqlSugar.SugarTable("QYD_BCP_LotMaster")]
     public class LotMaster : BaseEntity<LotMaster>
     {
         /// <summary>

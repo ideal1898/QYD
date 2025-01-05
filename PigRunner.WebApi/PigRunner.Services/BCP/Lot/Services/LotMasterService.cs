@@ -6,11 +6,6 @@ using PigRunner.Entitys.BCP.Lot;
 using PigRunner.Public.Common.Views;
 using PigRunner.Repository.BCP.Lot;
 using PigRunner.Services.BCP.Lot.IServices;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PigRunner.Services.BCP.Lot.Services
 {
@@ -92,8 +87,10 @@ namespace PigRunner.Services.BCP.Lot.Services
                         throw new Exception("生效日期不能为空！");
                     DateTime.TryParse(request.EffectiveDate, out EffectiveDate);
 
-                   head.EffectiveDate = EffectiveDate;
+                    head.EffectiveDate = EffectiveDate;
                     head.InvalidDate = EffectiveDate.AddDays(request.ValidDate);
+                    head.ValidDate = request.ValidDate;
+                    head.SrcDocNo = request.SrcDocNo;
 
                     head.AutoCode = request.AutoCode;
 
@@ -187,6 +184,7 @@ namespace PigRunner.Services.BCP.Lot.Services
             if (item.InvalidDate != DateTime.MinValue)
                 dto.InvalidDate = item.InvalidDate.ToString("yyyy-MM-dd");
             dto.ValidDate = item.ValidDate;
+            dto.SrcDocNo = item.SrcDocNo;
 
             if (item.ItemMaster > 0)
             {
@@ -195,6 +193,16 @@ namespace PigRunner.Services.BCP.Lot.Services
                 {
                     dto.ItemName = itemM.Name;
                     dto.ItemCode = itemM.Code;
+                }
+            }
+
+            if (item.Org > 0)
+            {
+                var itemM = repository.Context.Queryable<Organization>().Where(q => q.ID == item.Org).ToList()?.FirstOrDefault();
+                if (itemM != null)
+                {
+                    dto.OrgCode = itemM.Code;
+                    dto.OrgName = itemM.Name;
                 }
             }
             return dto;
