@@ -3,12 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using PigRunner.DTO.Basic;
 using PigRunner.Public.Common.Views;
 using PigRunner.Services.Basic.IServices;
-using PigRunner.Services.Sys.IServices;
 
 namespace PigRunner.WebApi.Controllers.Basic
 {
     /// <summary>
-    /// Model.ClassName
+    /// 库位
     /// </summary>
     [Route("api/[controller]/[action]")]
     [ApiController]

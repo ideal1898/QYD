@@ -1,50 +1,54 @@
 ﻿using Newtonsoft.Json.Linq;
 using OfficeOpenXml;
-using PigRunner.DTO.Basic.Gop;
+using PigRunner.DTO.BCP.Lot;
 using PigRunner.Entitys.Basic;
+using PigRunner.Entitys.BCP.Lot;
 using PigRunner.Public.Common.Views;
-using PigRunner.Repository.Basic.Gop;
-using PigRunner.Services.Basic.Gop.IServices;
+using PigRunner.Repository.BCP.Lot;
+using PigRunner.Services.BCP.Lot.IServices;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace PigRunner.Services.Basic.Gop.Services
+namespace PigRunner.Services.BCP.Lot.Services
 {
-    public class ProjectService : IProjectService
+    public class LotMasterService : ILotMasterService
     {
-        private ProjectRepository repository;
+        private LotMasterRepository repository;
         /// <summary>
         /// 服务
         /// </summary>
         /// <param name="_lotMasterRepository"></param>
-        public ProjectService(ProjectRepository _repository)
+        public LotMasterService(LotMasterRepository _repository)
         {
             this.repository = _repository;
         }
 
         /// <summary>
-        /// 项目增删改查
+        /// 批次主档增删改查
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public PubResponse ActionProject(ProjectView request)
+        public PubResponse ActionLotMaster(LotMasterView request)
         {
             PubResponse response = new PubResponse();
             try
             {
-                if (request.OptType.Equals("AddProject") || request.OptType.Equals("UpdateProject"))
+                if (request.OptType.Equals("AddLotMaster") || request.OptType.Equals("UpdateLotMaster"))
                 {
-                    if (string.IsNullOrEmpty(request.Code))
-                        throw new Exception("编码不能为空！");
-                    if (string.IsNullOrEmpty(request.Name))
-                        throw new Exception("名称不能为空！");
+                    if (string.IsNullOrEmpty(request.LotCode))
+                        throw new Exception("批次号不能为空！");
 
-                    Project head = repository.GetFirst(q => q.Code == request.Code);
+                    LotMaster head = repository.GetFirst(q => q.LotCode == request.LotCode);
 
-                    if (request.OptType.Equals("AddProject"))
+                    if (request.OptType.Equals("AddLotMaster"))
                     {
                         if (head != null)
-                            throw new Exception(string.Format("编码为【{0}】的项目已存在，不能再新增！", request.Code));
+                            throw new Exception(string.Format("批次号为【{0}】的批次主档已存在，不能再新增！", request.LotCode));
                         else
-                            head = Project.Create();
+                            head = LotMaster.Create();
                     }
                     else
                     {
@@ -52,47 +56,60 @@ namespace PigRunner.Services.Basic.Gop.Services
                             throw new Exception("修改ID要大于零！");
                         head = repository.GetFirst(q => q.ID == request.ID);
                         if (head == null)
-                            throw new Exception(string.Format("ID为【{0}】的项目不存在，请检查！", request.ID));
+                            throw new Exception(string.Format("ID为【{0}】的批次主档不存在，请检查！", request.ID));
 
                         head.ModifiedTime = DateTime.Now;
                     }
 
-                    Project oldHead = repository.GetFirst(q => (q.Code == request.Code || q.Name == request.Name) && q.ID != head.ID);
+                    LotMaster oldHead = repository.GetFirst(q => (q.LotCode == request.LotCode) && q.ID != head.ID);
                     if (oldHead != null)
-                        throw new Exception(string.Format("编码为【{0}】或者名称为【{1}】的项目已存在，请检查！", request.Code, request.Name));
+                        throw new Exception(string.Format("批次号为【{0}】的批次主档已存在，请检查！", request.LotCode));
 
-                    head.Code = request.Code;
-                    head.Name = request.Name;
+                    head.LotCode = request.LotCode;
                     response.id = head.ID;
-                    head.Description = request.Description;
+                    head.Remark = request.Remark;
 
-                    head.Status = request.Status;
+                    if (string.IsNullOrEmpty(request.OrgCode))
+                        throw new Exception("组织不能为空！");
+                    var org = repository.Context.Queryable<Organization>().Where(q => q.Code == request.OrgCode).ToList()?.FirstOrDefault();
+                    if (org == null)
+                        throw new Exception(string.Format("编码为【{0}】的组织机构不存在，请检查！", request.OrgCode));
+                    head.Org = org.ID;
 
-                    DateTime AcceptDate = DateTime.MinValue;
-                    if (!string.IsNullOrEmpty(request.AcceptDate))
-                        DateTime.TryParse(request.AcceptDate, out AcceptDate);
+                    long itemID = 0;
+                    if(!string.IsNullOrEmpty(request.ItemCode))
+                    {
+                        var item = repository.Context.Queryable<Item>().Where(q => q.Code == request.ItemCode).ToList()?.FirstOrDefault();
+                        if (item == null)
+                            throw new Exception(string.Format("编码为【{0}】的物料不存在，请检查！", request.ItemCode));
+                        itemID = item.ID;
+                    }
+                    head.ItemMaster = itemID;
 
-                    DateTime QAExpireDate = DateTime.MinValue;
-                    if (!string.IsNullOrEmpty(request.QAExpireDate))
-                        DateTime.TryParse(request.QAExpireDate, out QAExpireDate);
-                    if (AcceptDate != DateTime.MinValue)
-                        head.AcceptDate = AcceptDate;
-                    if (QAExpireDate != DateTime.MinValue)
-                        head.QAExpireDate = QAExpireDate;
+
+                    DateTime EffectiveDate = DateTime.MinValue;
+                    if (string.IsNullOrEmpty(request.EffectiveDate))
+                        throw new Exception("生效日期不能为空！");
+                    DateTime.TryParse(request.EffectiveDate, out EffectiveDate);
+
+                   head.EffectiveDate = EffectiveDate;
+                    head.InvalidDate = EffectiveDate.AddDays(request.ValidDate);
+
+                    head.AutoCode = request.AutoCode;
 
                     bool isSuccess = repository.InsertOrUpdate(head);
                     if (!isSuccess)
-                        throw new Exception("项目新增/修改操作失败！");
+                        throw new Exception("批次主档新增/修改操作失败！");
                 }
-                else if (request.OptType.Equals("DelProject"))
+                else if (request.OptType.Equals("DelLotMaster"))
                 {
-                    if (string.IsNullOrEmpty(request.Code) && (request.Codes == null || request.Codes.Count <= 0))
-                        throw new Exception("编码不能为空！");
-                    if (!string.IsNullOrEmpty(request.Code))
+                    if (string.IsNullOrEmpty(request.LotCode) && (request.Codes == null || request.Codes.Count <= 0))
+                        throw new Exception("批次号不能为空！");
+                    if (!string.IsNullOrEmpty(request.LotCode))
                     {
-                        Project head = repository.GetFirst(q => q.Code == request.Code);
+                        LotMaster head = repository.GetFirst(q => q.LotCode == request.LotCode);
                         if (head == null)
-                            throw new Exception(string.Format("编码为【{0}】的项目不存在！", request.Code));
+                            throw new Exception(string.Format("批次号为【{0}】的批次主档不存在！", request.LotCode));
 
                         bool isSuccess = repository.Delete(head);
                         if (!isSuccess)
@@ -102,9 +119,9 @@ namespace PigRunner.Services.Basic.Gop.Services
                     {
                         foreach (var item in request.Codes)
                         {
-                            Project head = repository.GetFirst(q => q.Code == item);
+                            LotMaster head = repository.GetFirst(q => q.LotCode == item);
                             if (head == null)
-                                throw new Exception(string.Format("编码为【{0}】的项目不存在！", request.Code));
+                                throw new Exception(string.Format("批次号为【{0}】的批次主档不存在！", request.LotCode));
 
                             bool isSuccess = repository.Delete(head);
                             if (!isSuccess)
@@ -112,28 +129,32 @@ namespace PigRunner.Services.Basic.Gop.Services
                         }
                     }
                 }
-                else if (request.OptType.Equals("QueryProject"))
+                else if (request.OptType.Equals("QueryLotMaster"))
                 {
                     int total = 0;
-                    List<ProjectView> list = new List<ProjectView>();
+                    List<LotMasterView> list = new List<LotMasterView>();
                     var lst = repository.AsQueryable().ToOffsetPage(request.Current, request.Size, ref total);
 
-                    if (!string.IsNullOrEmpty(request.Code) && !string.IsNullOrEmpty(request.Name) && request.ID > 0)
-                        lst = repository.AsQueryable().Where(q => q.Code.Contains(request.Code) && q.Name.Contains(request.Name) && q.ID != request.ID).ToOffsetPage(request.Current, request.Size, ref total);
-                    else if (!string.IsNullOrEmpty(request.Code) && !string.IsNullOrEmpty(request.Name))
-                        lst = repository.AsQueryable().Where(q => q.Code.Contains(request.Code) && q.Name.Contains(request.Name)).ToOffsetPage(request.Current, request.Size, ref total);
-                    else if (!string.IsNullOrEmpty(request.Code))
-                        lst = repository.AsQueryable().Where(q => q.Code.Contains(request.Code)).ToOffsetPage(request.Current, request.Size, ref total);
-                    else if (!string.IsNullOrEmpty(request.Name))
-                        lst = repository.AsQueryable().Where(q => q.Name.Contains(request.Name)).ToOffsetPage(request.Current, request.Size, ref total);
-                    else if (request.ID > 0)
-                        lst = repository.AsQueryable().Where(q => q.ID != request.ID).ToOffsetPage(request.Current, request.Size, ref total);
+                    long itemID = 0;
+                    if (!string.IsNullOrEmpty(request.ItemCode))
+                    {
+                        var item = repository.Context.Queryable<Item>().Where(q => q.Code == request.ItemCode).ToList()?.FirstOrDefault();
+                        if (item != null)
+                            itemID = item.ID;
+                    }
+                    if (!string.IsNullOrEmpty(request.LotCode) && itemID > 0)
+                        lst = repository.AsQueryable().Where(q => q.LotCode.Contains(request.LotCode) && q.ItemMaster == itemID).ToOffsetPage(request.Current, request.Size, ref total);
+                    else if (!string.IsNullOrEmpty(request.LotCode))
+                        lst = repository.AsQueryable().Where(q => q.LotCode.Contains(request.LotCode)).ToOffsetPage(request.Current, request.Size, ref total);
+                    else if (itemID > 0)
+                        lst = repository.AsQueryable().Where(q => q.ItemMaster == itemID).ToOffsetPage(request.Current, request.Size, ref total);
+
                     if (lst != null && lst.Count > 0)
                     {
                         int lineNum = 1;
                         foreach (var item in lst)
                         {
-                            ProjectView dto = SetValue(item);
+                            LotMasterView dto = SetValue(item);
                             dto.LineNum = lineNum;
                             list.Add(dto);
                             lineNum += 1;
@@ -154,31 +175,32 @@ namespace PigRunner.Services.Basic.Gop.Services
             return response;
         }
 
-        private ProjectView SetValue(Project item)
+        private LotMasterView SetValue(LotMaster item)
         {
-            ProjectView dto = new ProjectView();
-            dto.Code = item.Code;
-            dto.Name = item.Name;
-            dto.Description = item.Description;
+            LotMasterView dto = new LotMasterView();
+            dto.LotCode = item.LotCode;
+            dto.Remark = item.Remark;
             dto.ID = item.ID;
-            dto.Status = item.Status;
-            if (dto.Status == 1)
-                dto.StatusName = "立项";
-            else if (dto.Status == 2)
-                dto.StatusName = "进行中";
-            else if (dto.Status == 3)
-                dto.StatusName = "暂停";
-            else if (dto.Status == 4)
-                dto.StatusName = "验收";
-            if (item.QAExpireDate != DateTime.MinValue)
-                dto.QAExpireDate = item.QAExpireDate.ToString("yyyy-MM-dd");
-            if (item.AcceptDate != DateTime.MinValue)
-                dto.AcceptDate = item.AcceptDate.ToString("yyyy-MM-dd");
 
+            if (item.EffectiveDate != DateTime.MinValue)
+                dto.EffectiveDate = item.EffectiveDate.ToString("yyyy-MM-dd");
+            if (item.InvalidDate != DateTime.MinValue)
+                dto.InvalidDate = item.InvalidDate.ToString("yyyy-MM-dd");
+            dto.ValidDate = item.ValidDate;
+
+            if (item.ItemMaster > 0)
+            {
+                var itemM = repository.Context.Queryable<Item>().Where(q => q.ID == item.ItemMaster).ToList()?.FirstOrDefault();
+                if (itemM != null)
+                {
+                    dto.ItemName = itemM.Name;
+                    dto.ItemCode = itemM.Code;
+                }
+            }
             return dto;
         }
 
-        public PubResponse UploadProject(MemoryStream stream)
+        public PubResponse UploadLotMaster(MemoryStream stream)
         {
             PubResponse response = new PubResponse();
             try
@@ -192,7 +214,7 @@ namespace PigRunner.Services.Basic.Gop.Services
                     var lst = package.Workbook.Worksheets.Cast<ExcelWorksheet>().Where(q => q.Dimension != null).ToList();
                     if (lst == null || lst.Count <= 0)
                         throw new Exception("Excel的sheet内容不能为空！");
-                    List<Project> lstCtry = new List<Project>();
+                    List<LotMaster> lstCtry = new List<LotMaster>();
                     Dictionary<string, string> dic = new Dictionary<string, string>();
                     foreach (var worksheet in lst)
                     {
@@ -206,7 +228,7 @@ namespace PigRunner.Services.Basic.Gop.Services
                         for (int row = 2; row <= rowCount; row++)
                         {
 
-                            //第1列：编码
+                            //第1列：批次号
                             string Code = string.Empty;
                             if (worksheet.GetValue(row, 1) != null)
                                 Code = worksheet.GetValue(row, 1).ToString();
@@ -248,20 +270,13 @@ namespace PigRunner.Services.Basic.Gop.Services
                             if (string.IsNullOrEmpty(Code) || string.IsNullOrEmpty(Name))
                                 continue;
                             if (dic.ContainsKey(Code) || dic.ContainsValue(Name))
-                                throw new Exception(string.Format("Sheet[{0}]编码或名称已重复，请检查！", worksheet.Name));
+                                throw new Exception(string.Format("Sheet[{0}]批次号或名称已重复，请检查！", worksheet.Name));
                             dic.Add(Code, Name);
-                            Project head = repository.GetFirst(q => q.Code == Code || q.Name == Name);
+                            LotMaster head = repository.GetFirst(q => q.LotCode == Code);
                             if (head != null)
-                                throw new Exception(string.Format("编码为【{0}】的项目已存在！", Code));
-                            head = Project.Create();
-                            head.Code = Code;
-                            head.Name = Name;
-                            head.Description = Remark;
-                            head.Status = RoundWay;
-                            if (AcceptDate != DateTime.MinValue)
-                                head.AcceptDate = AcceptDate;
-                            if (QAExpireDate != DateTime.MinValue)
-                                head.QAExpireDate = QAExpireDate;
+                                throw new Exception(string.Format("批次号为【{0}】的批次主档已存在！", Code));
+                            head = LotMaster.Create();
+                           head.LotCode = Code;
                             lstCtry.Add(head);
                         }
                     }

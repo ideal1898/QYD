@@ -1,11 +1,11 @@
 
 --批号主档表
-IF OBJECT_ID('QYD_BC_LotMaster') IS NOT NULL
-DROP TABLE QYD_BC_LotMaster
+IF OBJECT_ID('QYD_BCP_LotMaster') IS NOT NULL
+DROP TABLE QYD_BCP_LotMaster
 GO
 
-CREATE TABLE QYD_BC_LotMaster(
-	ID BIGINT PRIMARY KEY, --标识
+CREATE TABLE QYD_BCP_LotMaster(
+	ID BIGINT NOT NULL UNIQUE, --标识
 	SysVersion BIGINT DEFAULT 0, --版本
 	CreatedTime DATETIME DEFAULT GETDATE(),--创建时间
 	CreatedBy VARCHAR(50) DEFAULT '',--创建人
@@ -17,7 +17,12 @@ CREATE TABLE QYD_BC_LotMaster(
 	InvalidDate DATETIME,--生效日期
 	SrcDocNo VARCHAR(50),--创建人
 	AutoCode int,--是否自动编码
-	Memo VARCHAR(500)--备注
+	Remark VARCHAR(500),--备注
+	--修改人
+	[ModifiedBy] VARCHAR(50),
+	--修改时间
+	[ModifiedTime] datetime,
+	PRIMARY KEY([ID])
 )
 GO
 

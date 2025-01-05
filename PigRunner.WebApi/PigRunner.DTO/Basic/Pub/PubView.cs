@@ -20,14 +20,14 @@ namespace PigRunner.DTO.Basic.Pub
 
         public int LineNum { get; set; } = -1;
         /// <summary>
-        /// 国家/地区编码
+        ///编码
         /// </summary>
         public string Code { get; set; } = string.Empty;
 
 
 
         /// <summary>
-        /// 国家/地区名称
+        /// 名称
         /// </summary>
         public string Name { get; set; } = string.Empty;
 
