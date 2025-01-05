@@ -15,11 +15,11 @@ using PigRunner.Public.Common.Views;
 using PigRunner.Services.Common;
 
 var builder = WebApplication.CreateBuilder(args);
-//ÈÕÖ¾
+//æ—¥å¿—
 LoggerHelper.Configure();
 
 
-#region ¹ıÂËÆ÷Ïà¹Ø
+#region è¿‡æ»¤å™¨ç›¸å…³
 
 builder.Services.AddControllers().AddNewtonsoftJson(options =>
 {
@@ -27,13 +27,13 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
     options.SerializerSettings.DateFormatString = "yyyy-MM-dd HH:mm:ss";
 });
 
-//Ìí¼ÓÈ«¾ÖÈ¨ÏŞÑéÖ¤
+//æ·»åŠ å…¨å±€æƒé™éªŒè¯
 builder.Services.AddMvc(a =>
 {
     a.Filters.Add<AuthorizationFilter>();
 });
 
-//È¥³ı²ÎÊıÓĞĞ§ĞÔÑéÖ¤
+//å»é™¤å‚æ•°æœ‰æ•ˆæ€§éªŒè¯
 builder.Services.Configure<ApiBehaviorOptions>((o) =>
 {
     o.SuppressModelStateInvalidFilter = true;
@@ -42,13 +42,13 @@ builder.Services.Configure<ApiBehaviorOptions>((o) =>
 #endregion
 
 
-#region swagger ÓÃJwtÑéÖ¤
+#region swagger ç”¨JwtéªŒè¯
 
 builder.Services.AddSwaggerGen(options =>
 {
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
-        Description = "JWTÊÚÈ¨(Êı¾İ½«ÔÚÇëÇóÍ·ÖĞ½øĞĞ´«µİ)Ö±½ÓÔÚÏÂÃæ¿òÖĞÊäÈëBearer {token}(×¢ÒâÁ½ÕßÖ®¼äÊÇÒ»¸ö¿Õ¸ñ) \"",
+        Description = "JWTæˆæƒ(æ•°æ®å°†åœ¨è¯·æ±‚å¤´ä¸­è¿›è¡Œä¼ é€’)ç›´æ¥åœ¨ä¸‹é¢æ¡†ä¸­è¾“å…¥Bearer {token}(æ³¨æ„ä¸¤è€…ä¹‹é—´æ˜¯ä¸€ä¸ªç©ºæ ¼) \"",
         Name = "Authorization",
         In = ParameterLocation.Header,
         Type = SecuritySchemeType.ApiKey,
@@ -70,8 +70,8 @@ builder.Services.AddSwaggerGen(options =>
         }
     });
 
-    options.SwaggerDoc("v1", new OpenApiInfo { Title = "WebApi½Ó¿ÚÎÄµµ", Version = "v1" });
-    //Æ¥Åä¹æÔò²éÕÒËùÓĞxmlÎÄ¼ş¶¼¼ÓÈëswaggerÖĞ¼´¿É
+    options.SwaggerDoc("v1", new OpenApiInfo { Title = "WebApiæ¥å£æ–‡æ¡£", Version = "v1" });
+    //åŒ¹é…è§„åˆ™æŸ¥æ‰¾æ‰€æœ‰xmlæ–‡ä»¶éƒ½åŠ å…¥swaggerä¸­å³å¯
     string baseDirectory=AppContext.BaseDirectory;
     DirectoryInfo directoryInfo = new DirectoryInfo(baseDirectory);
     var Files= directoryInfo.GetFiles("*.xml");
@@ -80,11 +80,11 @@ builder.Services.AddSwaggerGen(options =>
     }
     /*
     var path = Path.Combine(AppContext.BaseDirectory, "PigRunner.WebApi.xml");
-    //ÏÔÊ¾¿ØÖÆÆ÷²ã×¢ÊÍ
+    //æ˜¾ç¤ºæ§åˆ¶å™¨å±‚æ³¨é‡Š
     options.IncludeXmlComments(path, true);
-    //ÏÔÊ¾ÊµÌå×¢ÊÍ
+    //æ˜¾ç¤ºå®ä½“æ³¨é‡Š
     options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "PigRunner.Entitys.xml"), true);
-    //ÏÔÊ¾¹«¹²×¢ÊÍ
+    //æ˜¾ç¤ºå…¬å…±æ³¨é‡Š
     options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "PigRunner.Public.xml"), true);
     */
 });
@@ -118,16 +118,16 @@ builder.Services.AddAuthentication(option =>
     };
     token.Events = new JwtBearerEvents {
         OnChallenge = context => {
-            //´Ë´¦´úÂëÎªÖÕÖ¹.Net CoreÄ¬ÈÏµÄ·µ»ØÀàĞÍºÍÊı¾İ½á¹û£¬Õâ¸öºÜÖØÒªÅ¶£¬±ØĞë
+            //æ­¤å¤„ä»£ç ä¸ºç»ˆæ­¢.Net Coreé»˜è®¤çš„è¿”å›ç±»å‹å’Œæ•°æ®ç»“æœï¼Œè¿™ä¸ªå¾ˆé‡è¦å“¦ï¼Œå¿…é¡»
             context.HandleResponse();
-            //×Ô¶¨Òå×Ô¼ºÏëÒª·µ»ØµÄÊı¾İ½á¹û£¬ÎÒÕâÀïÒª·µ»ØµÄÊÇJson¶ÔÏó£¬Í¨¹ıÒıÓÃNewtonsoft.Json¿â½øĞĞ×ª»»
-            var payload = JsonConvert.SerializeObject(new { Code = 401, Message = "ºÜ±§Ç¸£¬ÄúÎŞÈ¨·ÃÎÊ¸Ã½Ó¿Ú" });
-            //×Ô¶¨Òå·µ»ØµÄÊı¾İÀàĞÍ
+            //è‡ªå®šä¹‰è‡ªå·±æƒ³è¦è¿”å›çš„æ•°æ®ç»“æœï¼Œæˆ‘è¿™é‡Œè¦è¿”å›çš„æ˜¯Jsonå¯¹è±¡ï¼Œé€šè¿‡å¼•ç”¨Newtonsoft.Jsonåº“è¿›è¡Œè½¬æ¢
+            var payload = JsonConvert.SerializeObject(new { Code = 401, Message = "å¾ˆæŠ±æ­‰ï¼Œæ‚¨æ— æƒè®¿é—®è¯¥æ¥å£" });
+            //è‡ªå®šä¹‰è¿”å›çš„æ•°æ®ç±»å‹
             context.Response.ContentType = "application/json";
-            //×Ô¶¨Òå·µ»Ø×´Ì¬Âë£¬Ä¬ÈÏÎª401 ÎÒÕâÀï¸Ä³É 200
+            //è‡ªå®šä¹‰è¿”å›çŠ¶æ€ç ï¼Œé»˜è®¤ä¸º401 æˆ‘è¿™é‡Œæ”¹æˆ 200
             context.Response.StatusCode = StatusCodes.Status200OK;
             //context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-            //Êä³öJsonÊı¾İ½á¹û
+            //è¾“å‡ºJsonæ•°æ®ç»“æœ
             context.Response.WriteAsync(payload);
             return Task.FromResult(0);
         }
@@ -140,30 +140,30 @@ builder.Services.AddAuthentication(option =>
 
 SugarIocServices.AddSqlSugar(new IocConfig()
 {
-    ConnectionString = ConfigHelper.GetSection("DB:masterConnString"),//ÁÙÊ±Ğ´ËÀ¼ÓÃÜ
+    ConnectionString = ConfigHelper.GetSection("DB:masterConnString"),//ä¸´æ—¶å†™æ­»åŠ å¯†
     DbType = IocDbType.SqlServer,
     IsAutoCloseConnection = true,
 });
 
-// ´òÓ¡sqlÓï¾ä
+// æ‰“å°sqlè¯­å¥
 SugarIocServices.ConfigurationSugar(db =>
 {
     db.Aop.OnLogExecuting = (sql, p) =>
     {
         Console.WriteLine(sql);
     };
-    //Ö´ĞĞ³¬¹ı1sÓï¾ä
+    //æ‰§è¡Œè¶…è¿‡1sè¯­å¥
     db.Aop.OnLogExecuted = (sql, p) => {
         if (db.Ado.SqlExecutionTime.TotalSeconds > 1) {
             var SqlStack = db.Ado.SqlStackTrace;
             if (SqlStack != null) {
-                //csÎÄ¼şÃû
+                //csæ–‡ä»¶å
                 var CsFileName = SqlStack.FirstFileName;
-                //csÎÄ¼ş´úÂëĞĞÊı
+                //csæ–‡ä»¶ä»£ç è¡Œæ•°
                 var CsFileLine=SqlStack.FirstLine;
-                //csÎÄ¼ş·½·¨Ãû
+                //csæ–‡ä»¶æ–¹æ³•å
                 var CsFileMethod=SqlStack.FirstMethodName;
-                //½«½á¹ûÊä³ö¿ØÖÆÌ¨
+                //å°†ç»“æœè¾“å‡ºæ§åˆ¶å°
                 Console.WriteLine($"{CsFileName}.{CsFileMethod}:{CsFileLine}:{sql}");  
             }
         
@@ -185,7 +185,7 @@ builder.Services.AddAutoMapper(typeof(SysAutoMapperProfile));
 
 var app = builder.Build();
 
-#region ÉÏ´«ÎÄ¼ş¾²Ì¬Ä¿Â¼
+#region ä¸Šä¼ æ–‡ä»¶é™æ€ç›®å½•
 
 var staticPath = Path.Combine(Directory.GetCurrentDirectory(), "files/UploadTemp");
 if (!Directory.Exists(staticPath))

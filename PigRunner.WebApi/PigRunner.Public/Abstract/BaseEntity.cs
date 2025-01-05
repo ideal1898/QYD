@@ -14,22 +14,29 @@ namespace PigRunner.Public.Abstract
     /// </summary>
     public class BaseEntity<T>
     {
+        /// <summary>
+        /// 业务标识
+        /// </summary>
         [SugarColumn(IsPrimaryKey = true, ColumnName = "ID")]
-        public long ID { get; set; }
+        public long ID { get; set; } = 0;
         /// <summary>
         /// 创建日期
         /// </summary>
-        public DateTime? CreatedTime { get; set; }
+        public DateTime CreatedTime { get; set; }=DateTime.Now;
         /// <summary>
         /// 创建人
         /// </summary>
-        public string? CreatedBy { get; set; }
+        public string CreatedBy { get; set; }=string.Empty;
         /// <summary>
         /// 版本
         /// </summary>
+<<<<<<< HEAD
+        public long SysVersion { get; set; } = 0;
+=======
         public long SysVersion { get; set; }
        
 
+>>>>>>> 163cba787badb9b240dea49c927e9512bb53087f
         /// <summary>
         /// 创建实体
         /// </summary>
