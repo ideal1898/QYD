@@ -51,5 +51,15 @@ namespace PigRunner.DTO
         /// 版本
         /// </summary>
         public long SysVersion { get; set; }
+
+        /// <summary>
+        /// 修改日期
+        /// </summary>
+        public DateTime ModifiedTime { get; set; } = DateTime.Now;
+
+        /// <summary>
+        /// 修改人
+        /// </summary>
+        public string ModifiedBy { get; set; } = string.Empty;
     }
 }

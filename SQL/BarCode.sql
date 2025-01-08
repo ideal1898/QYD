@@ -1,4 +1,8 @@
 
+insert into QYD_Sys_Menu(id,CreatedTime,CreatedBy,SysVersion,Path,Name,Component,Redirect,IsActive,Icon,Title,IsLink,IsHide,IsFull,IsAffix,IsKeepAlive,Parent) values(605049656549446,GETDATE(),'管理员',0,'/scm/mm','MM',null,null,0,'Menu','制造管理',null,0,0,0,1,605049575112773)
+
+insert into QYD_Sys_Menu(id,CreatedTime,CreatedBy,SysVersion,Path,Name,Component,Redirect,IsActive,Icon,Title,IsLink,IsHide,IsFull,IsAffix,IsKeepAlive,Parent) values(605049656549447,GETDATE(),'管理员',0,'/scm/mm/mo','MO','/scm/mm/mo/index',null,0,'Menu','生产订单',null,0,0,0,1,605049656549446)
+
 --批号主档表
 IF OBJECT_ID('QYD_BCP_LotMaster') IS NOT NULL
 DROP TABLE QYD_BCP_LotMaster
