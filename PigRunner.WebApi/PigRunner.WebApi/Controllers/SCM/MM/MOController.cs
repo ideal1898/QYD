@@ -58,5 +58,53 @@ namespace PigRunner.WebApi.Controllers.SCM.MM
         {
             return services.MOQueryByID(request);
         }
+
+        /// <summary>
+        /// 生产订单删除
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [AllowAnonymous]
+        [HttpPost]
+        public PubResponse MODelete([FromBody] MODelView request)
+        {
+            return services.MODelete(request);
+        }
+
+        /// <summary>
+        /// 生产订单提交
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [AllowAnonymous]
+        [HttpPost]
+        public PubResponse MOSubmit([FromBody] MODelView request)
+        {
+            return services.MOSubmit(request);
+        }
+
+        /// <summary>
+        /// 生产订单删除
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [AllowAnonymous]
+        [HttpPost]
+        public PubResponse MOApprove([FromBody] MODelView request)
+        {
+            return services.MOApprove(request);
+        }
+
+        /// <summary>
+        /// 生产订单弃审
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [AllowAnonymous]
+        [HttpPost]
+        public PubResponse MOUnApprove([FromBody] MODelView request)
+        {
+            return services.MOUnApprove(request);
+        }
     }
 }

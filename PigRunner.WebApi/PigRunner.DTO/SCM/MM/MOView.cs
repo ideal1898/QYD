@@ -66,6 +66,8 @@ namespace PigRunner.DTO.SCM.MM
         /// </summary>
         public string CompleteWhName { get; set; } = string.Empty;
 
+       
+
         public List<MOLineView> Lines { get; set; } = new List<MOLineView>();
     }
 
@@ -179,9 +181,15 @@ namespace PigRunner.DTO.SCM.MM
     {
 
         /// <summary>
-        /// 主表ID
+        /// 行ID
         /// </summary>
         public long id { get; set;} = 0;
+
+        /// <summary>
+        /// 主表ID
+        /// </summary>
+        public long MainID { get; set; } = 0;
+        
 
         /// <summary>
         /// 行号
@@ -243,18 +251,27 @@ namespace PigRunner.DTO.SCM.MM
         /// </summary>
         public string CompleteWhName { get; set; } = string.Empty;
 
+        /// <summary>
+        /// 单据状态
+        /// </summary>
+        public string Status { get; set; } = string.Empty;
+
+        /// <summary>
+        /// 单据状态
+        /// </summary>
+        public string StatusName { get; set; } = string.Empty;
 
     }
 
     /// <summary>
-    /// 行ID视图
+    /// 主体ID视图
     /// </summary>
     public class MOLineQueryView
     {
         /// <summary>
-        /// 行ID
+        /// ID
         /// </summary>
-        public string LineID { get; set; } = string.Empty;
+        public string MainID { get; set; } = string.Empty;
     }
 
     /// <summary>
@@ -323,4 +340,16 @@ namespace PigRunner.DTO.SCM.MM
         /// </summary>
         public string Size { get; set; } = string.Empty;
     }
+
+    /// <summary>
+    /// 删除MO视图
+    /// </summary>
+    public class MODelView
+    {
+        /// <summary>
+        /// 行ID集合
+        /// </summary>
+        public List<long> MainIDs { get; set; } = new List<long>();
+    }
+   
 }

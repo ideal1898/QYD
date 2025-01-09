@@ -10,7 +10,7 @@ CREATE TABLE QYD_SCM_MO(
 	SysVersion BIGINT DEFAULT 0, --版本
 	CreatedTime DATETIME DEFAULT GETDATE(),--创建时间
 	CreatedBy VARCHAR(50) DEFAULT '',--创建人
-	MoOrg BIGINT,--组织ID
+	Org BIGINT,--组织ID
 	DocType VARCHAR(100),--单据类型
 	DocNo VARCHAR(100),--单号
 	StartDate DATETIME,--计划开工日
@@ -21,6 +21,7 @@ CREATE TABLE QYD_SCM_MO(
 	CompleteWh BIGINT,--完工仓库
 	ModifiedTime DATETIME,--修改日期
 	ModifiedBy VARCHAR(50),--修改人
+	[Status] int,--单据状态
 	Memo VARCHAR(500)--备注
 )
 GO

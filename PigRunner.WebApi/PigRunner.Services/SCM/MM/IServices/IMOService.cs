@@ -32,5 +32,33 @@ namespace PigRunner.Services.SCM.MM.IServices
         /// <param name="request"></param>
         /// <returns></returns>
         PubResponse MOQueryByID(MOLineQueryView request);
+
+        /// <summary>
+        /// 生产订单删除
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        PubResponse MODelete(MODelView request);
+
+        /// <summary>
+        /// 生产订单提交
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        PubResponse MOSubmit(MODelView request);
+
+        /// <summary>
+        /// 生产订单审核
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        PubResponse MOApprove(MODelView request);
+
+        /// <summary>
+        /// 生产订单弃审
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        PubResponse MOUnApprove(MODelView request);
     }
 }

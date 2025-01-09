@@ -34,7 +34,7 @@ namespace PigRunner.DTO
 {
     public class BaseView
     {
-        public long ID
+        public long id
         {
             get;
             set;

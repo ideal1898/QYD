@@ -15,7 +15,7 @@ namespace PigRunner.DTO
         /// <summary>
         /// 组织
         /// </summary>
-        public long Org { get; set; } = 0;
+        public string Org { get; set; } = string.Empty;
 
         /// <summary>
         /// 组织编码
@@ -51,5 +51,10 @@ namespace PigRunner.DTO
         /// 单据状态
         /// </summary>
         public string Status { get; set; } = string.Empty;
+
+        /// <summary>
+        /// 单据状态
+        /// </summary>
+        public string StatusName { get; set; } = string.Empty;
     }
 }
