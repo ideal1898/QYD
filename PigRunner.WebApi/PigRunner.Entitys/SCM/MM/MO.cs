@@ -17,7 +17,7 @@ namespace PigRunner.Entitys.SCM.MM
         /// <summary>
         /// 组织
         /// </summary>
-        public long MoOrg { get; set; } = 0;
+        public long Org { get; set; } = 0;
 
         /// <summary>
         /// 单据类型
@@ -77,10 +77,16 @@ namespace PigRunner.Entitys.SCM.MM
 
 
         /// <summary>
+        /// 单据状态
+        /// </summary>
+        public int Status { get; set; } = -1;
+
+
+        /// <summary>
         /// 生产订单明细
         /// </summary>
         [Navigate(NavigateType.OneToMany, nameof(MOLine.MO))] // 如果使用了外键列名，可以指定  
-        public List<MOLine>? MOLines { get; set; } = null;
+        public List<MOLine> MOLines { get; set; }
     }
 
     /// <summary>
@@ -92,7 +98,7 @@ namespace PigRunner.Entitys.SCM.MM
         /// <summary>
         /// 生产订单ID
         /// </summary>
-        public long MO { get; set; } = 0;
+        public long MO { get; set; }=0;
 
         /// <summary>
         /// 行号
