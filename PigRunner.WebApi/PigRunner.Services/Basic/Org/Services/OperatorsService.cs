@@ -36,6 +36,9 @@ namespace PigRunner.Services.Basic.Services
             PubResponse response = new PubResponse();
             try
             {
+                if (request == null)
+                    throw new Exception("参数不能为空！");
+
                 if (request.OptType.Equals("AddOperators") || request.OptType.Equals("UpdateOperators"))
                 {
                     if (string.IsNullOrEmpty(request.Code))
@@ -54,9 +57,9 @@ namespace PigRunner.Services.Basic.Services
                     }
                     else
                     {
-                        if (request.ID <= 0)
+                        if (string.IsNullOrEmpty(request.ID))
                             throw new Exception("修改ID要大于零！");
-                        head = repository.GetFirst(q => q.ID == request.ID);
+                        head = repository.GetFirst(q => q.ID.ToString() == request.ID);
                         if (head == null)
                             throw new Exception(string.Format("ID为【{0}】的业务员不存在，请检查！", request.ID));
 
@@ -71,11 +74,11 @@ namespace PigRunner.Services.Basic.Services
                     head.Name = request.Name;
                     response.id = head.ID;
                     head.Remark = request.Remark;
-                    head.IsEffective = request.IsEffective ? 1 : 0;
-                    head.IsInver = request.IsInver ? 1 : 0;
-                    head.IsPlaner = request.IsPlaner ? 1 : 0;
-                    head.IsPurer = request.IsPurer ? 1 : 0;
-                    head.IsSaler = request.IsSaler ? 1 : 0;
+                    head.IsEffective =bool.TryParse( request.IsEffective,out bool IsEffective) ? 1 : 0;
+                    head.IsInver = bool.TryParse(request.IsEffective, out bool IsInver) ? 1 : 0;
+                    head.IsPlaner = bool.TryParse(request.IsEffective, out bool IsPlaner) ? 1 : 0;
+                    head.IsPurer = bool.TryParse(request.IsEffective, out bool IsPurer) ? 1 : 0;
+                    head.IsSaler = bool.TryParse(request.IsEffective, out bool IsSaler) ? 1 : 0;
 
                     long ParentNode = -1;
 
@@ -128,14 +131,22 @@ namespace PigRunner.Services.Basic.Services
                         sql += string.Format(" and Code like '%{0}%' ", request.Code);
                     if (!string.IsNullOrEmpty(request.Name))
                         sql += string.Format(" and Name like '%{0}%' ", request.Name);
-                    var lst = repository.AsQueryable().Where(sql).ToOffsetPage(request.Current, request.Size, ref total);
+
+                    int.TryParse(request.Current, out int Current);
+                    int.TryParse(request.Size, out int Size);
+                    if (Current <= 0)
+                        Current = 10;
+                    if (Size <= 0)
+                        Size = 1;
+
+                    var lst = repository.AsQueryable().Where(sql).ToOffsetPage(Current, Size, ref total);
                     if (lst != null && lst.Count > 0)
                     {
                         int lineNum = 1;
                         foreach (var item in lst)
                         {
                             OperatorsView dto = SetValue(item);
-                            dto.LineNum = lineNum;
+                            dto.LineNum = lineNum.ToString();
                             list.Add(dto);
                             lineNum += 1;
                         }
@@ -161,34 +172,34 @@ namespace PigRunner.Services.Basic.Services
             dto.Code = item.Code;
             dto.Name = item.Name;
             dto.Remark = item.Remark;
-            dto.ID = item.ID;
-            dto.IsEffective = item.IsEffective == 1 ? true : false;
-            if (dto.IsEffective)
-                dto.Effective = "生效";
+            dto.ID = item.ID.ToString();
+            dto.IsEffective = false.ToString();
+            if (item.IsEffective == 1)
+            { dto.Effective = "生效"; dto.IsEffective = true.ToString(); }
             else
                 dto.Effective = "停用";
 
-            dto.IsPurer = item.IsPurer == 1 ? true : false;
-            if (dto.IsPurer)
-                dto.IsPurerName = "是";
+            dto.IsPurer = false.ToString();
+            if (item.IsPurer == 1)
+            {  dto.IsPurerName = "是";dto.IsPurer = true.ToString(); }
             else
                 dto.IsPurerName = "否";
 
-            dto.IsInver = item.IsInver == 1 ? true : false;
-            if (dto.IsInver)
-                dto.IsInverName = "是";
+            dto.IsInver = false.ToString();
+            if (item.IsInver == 1)
+            { dto.IsInverName = "是"; dto.IsInver = true.ToString(); }
             else
                 dto.IsInverName = "否";
 
-            dto.IsPlaner = item.IsPlaner == 1 ? true : false;
-            if (dto.IsPlaner)
-                dto.IsPlanerName = "是";
+            dto.IsPlaner = false.ToString();
+            if (item.IsPlaner == 1)
+            { dto.IsPlanerName = "是"; dto.IsPlaner = true.ToString(); }
             else
                 dto.IsPlanerName = "否";
 
-            dto.IsSaler = item.IsSaler == 1 ? true : false;
-            if (dto.IsSaler)
-                dto.IsSalerName = "是";
+            dto.IsSaler = false.ToString();
+            if (item.IsSaler == 1)
+            { dto.IsSalerName = "是"; dto.IsSaler = true.ToString(); }
             else
                 dto.IsSalerName = "否";
 

@@ -30,7 +30,7 @@ namespace PigRunner.DTO.Basic.Gop
         /// <summary>
         /// 是否生效
         /// </summary>
-        public bool IsEffective { get; set; } = false;
+        public string IsEffective { get; set; } = string.Empty;
 
         /// <summary>
         /// 生效名称

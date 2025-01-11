@@ -29,7 +29,7 @@ namespace PigRunner.WebApi.Controllers.Basic
         /// <returns></returns>
         [AllowAnonymous]//设置不需要token值即可调用
         [HttpPost]
-        public PubResponse ActionCurrency(EnumView request)
+        public PubResponse ActionCurrency([FromBody] EnumView request)
         {
             return services.ActionCurrency(request);
         }

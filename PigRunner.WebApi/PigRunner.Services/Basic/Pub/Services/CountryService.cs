@@ -35,6 +35,9 @@ namespace PigRunner.Services.Basic.Services
 
             try
             {
+                if (request == null)
+                    throw new Exception("参数不能为空！");
+
                 if (request.OptType.Equals("AddCountry") || request.OptType.Equals("UpdateCountry"))
                 {
                     if (string.IsNullOrEmpty(request.Code))
@@ -52,9 +55,9 @@ namespace PigRunner.Services.Basic.Services
                     }
                     else
                     {
-                        if (request.ID <= 0)
+                        if (string.IsNullOrEmpty(request.ID))
                             throw new Exception("修改ID要大于零！");
-                        head = repository.GetFirst(q => q.ID == request.ID);
+                        head = repository.GetFirst(q => q.ID.ToString() == request.ID);
                         if (head == null)
                             throw new Exception(string.Format("ID为【{0}】的国家/地区不存在，请检查！", request.ID));
                     }
@@ -65,11 +68,20 @@ namespace PigRunner.Services.Basic.Services
 
                     head.Code = request.Code;
                     head.Name = request.Name;
-                    head.CountryFormat = request.CountryFormat;
-                    head.Currency = request.Currency;
-                    head.Language = request.Language;
-                    head.NameFormat = request.NameFormat;
-                    head.TimeZone = request.TimeZone;
+                    int.TryParse(request.CountryFormat, out int CountryFormat);
+                    head.CountryFormat = CountryFormat;
+
+                    int.TryParse(request.Currency, out int Currency);
+                    head.Currency = Currency;
+
+                    int.TryParse(request.Language, out int Language);
+                    head.Language = Language;
+
+                    int.TryParse(request.NameFormat, out int NameFormat);
+                    head.NameFormat = NameFormat;
+
+                    int.TryParse(request.TimeZone, out int TimeZone);
+                    head.TimeZone = TimeZone;
                     response.id = head.ID;
 
                     bool isSuccess = repository.InsertOrUpdate(head);
@@ -102,7 +114,16 @@ namespace PigRunner.Services.Basic.Services
                         sql += string.Format(" and Code like '%{0}%' ", request.Code);
                     if (!string.IsNullOrEmpty(request.Name))
                         sql += string.Format(" and Name like '%{0}%' ", request.Name);
-                    var lst = repository.AsQueryable().Where(sql).ToOffsetPage(request.Current, request.Size, ref total);
+
+
+                    int.TryParse(request.Current, out int Current);
+                    int.TryParse(request.Size, out int Size);
+                    if (Current <= 0)
+                        Current = 10;
+                    if (Size <= 0)
+                        Size = 1;
+
+                    var lst = repository.AsQueryable().Where(sql).ToOffsetPage(Current, Size, ref total);
 
                     if (lst != null && lst.Count > 0)
                     {
@@ -110,7 +131,7 @@ namespace PigRunner.Services.Basic.Services
                         foreach (var item in lst)
                         {
                             CountryView dto = SetValue(item);
-                            dto.LineNum = lineNum;
+                            dto.LineNum = lineNum.ToString();
                             list.Add(dto);
                             lineNum += 1;
                         }
@@ -151,28 +172,28 @@ namespace PigRunner.Services.Basic.Services
             dto.OptType = "UpdateCountry";
             dto.Code = item.Code;
             dto.Name = item.Name;
-            dto.ID = item.ID;
-            dto.Language = item.Language;
+            dto.ID = item.ID.ToString();
+            dto.Language = item.Language.ToString();
             var lg = repository.Context.Queryable<Language>().Where(q => q.ID == item.Language)?.First();
             if (lg != null)
                 dto.LanguageName = lg.Name;
 
-            dto.CountryFormat = item.CountryFormat;
+            dto.CountryFormat = item.CountryFormat.ToString();
             var cf = repository.Context.Queryable<CountryFormat>().Where(q => q.ID == item.CountryFormat)?.First();
             if (cf != null)
                 dto.CountryFormatName = cf.Name;
 
-            dto.Currency = item.Currency;
+            dto.Currency = item.Currency.ToString();
             var cy = repository.Context.Queryable<Currency>().Where(q => q.ID == item.Currency)?.First();
             if (cy != null)
                 dto.CurrencyName = cy.Name;
 
-            dto.NameFormat = item.NameFormat;
+            dto.NameFormat = item.NameFormat.ToString();
             var nf = repository.Context.Queryable<NameFormat>().Where(q => q.ID == item.NameFormat)?.First();
             if (nf != null)
                 dto.NameFormatName = nf.Name;
 
-            dto.TimeZone = item.TimeZone;
+            dto.TimeZone = item.TimeZone.ToString();
             var tz = repository.Context.Queryable<Entitys.Basic.TimeZone>().Where(q => q.ID == item.TimeZone)?.First();
             if (tz != null)
                 dto.TimeZoneName = tz.Name;

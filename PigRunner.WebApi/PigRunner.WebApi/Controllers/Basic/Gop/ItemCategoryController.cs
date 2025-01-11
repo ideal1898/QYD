@@ -29,7 +29,7 @@ namespace PigRunner.WebApi.Controllers.Basic.Gop
         /// <returns></returns>
         [AllowAnonymous]
         [HttpPost]
-        public PubResponse ActionItemCategory(ItemCategoryView request)
+        public PubResponse ActionItemCategory([FromBody] ItemCategoryView request)
         {
             return services.ActionItemCategory(request);
         }
@@ -41,7 +41,7 @@ namespace PigRunner.WebApi.Controllers.Basic.Gop
         /// <returns></returns>
         [AllowAnonymous]
         [HttpPost]
-        public PubResponse UploadItemCategory(IFormFile file)
+        public PubResponse UploadItemCategory([FromBody] IFormFile file)
         {
             PubResponse response = new PubResponse();
             try

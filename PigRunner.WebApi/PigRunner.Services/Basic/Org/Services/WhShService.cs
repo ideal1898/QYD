@@ -36,6 +36,9 @@ namespace PigRunner.Services.Basic.Services
             PubResponse response = new PubResponse();
             try
             {
+                if (request == null)
+                    throw new Exception("参数不能为空！");
+
                 if (request.OptType.Equals("AddWhSh") || request.OptType.Equals("UpdateWhSh"))
                 {
                     if (string.IsNullOrEmpty(request.Code))
@@ -54,9 +57,9 @@ namespace PigRunner.Services.Basic.Services
                     }
                     else
                     {
-                        if (request.ID <= 0)
+                        if (string.IsNullOrEmpty(request.ID))
                             throw new Exception("修改ID要大于零！");
-                        head = repository.GetFirst(q => q.ID == request.ID);
+                        head = repository.GetFirst(q => q.ID.ToString() == request.ID);
                         if (head == null)
                             throw new Exception(string.Format("ID为【{0}】的货位不存在，请检查！", request.ID));
 
@@ -71,8 +74,8 @@ namespace PigRunner.Services.Basic.Services
                     head.Name = request.Name;
                     response.id = head.ID;
                     head.Remark = request.Remark;
-                    head.IsEffective = request.IsEffective ? 1 : 0;
-                    head.IsWhSh = request.IsWhSh ? 1 : 0;
+                    head.IsEffective =bool.TryParse( request.IsEffective,out bool IsEffective) ? 1 : 0;
+                    head.IsWhSh = bool.TryParse(request.IsWhSh, out bool IsWhSh) ? 1 : 0;
 
 
                     long OrgID = 0;
@@ -107,8 +110,11 @@ namespace PigRunner.Services.Basic.Services
                         WhBinGroupID = lg.ID;
                     }
                     head.WhBinGroup = WhBinGroupID;
-                    head.Area = request.Area;
-                    head.Volume = request.Volume;
+                    decimal.TryParse(request.Area, out decimal Area);
+                    head.Area =Area;
+
+                    decimal.TryParse(request.Volume, out decimal Volume);
+                    head.Volume = Volume;
 
                     bool isSuccess = repository.InsertOrUpdate(head);
                     if (!isSuccess)
@@ -175,7 +181,15 @@ namespace PigRunner.Services.Basic.Services
                     if (WhID > 0)
                         sql += string.Format(" and Wh={0} ", WhID);
 
-                    var lst = repository.AsQueryable().Where(sql).ToOffsetPage(request.Current, request.Size, ref total);
+                    int.TryParse(request.Current, out int Current);
+                    int.TryParse(request.Size, out int Size);
+                    if (Current <= 0)
+                        Current = 10;
+                    if (Size <= 0)
+                        Size = 1;
+
+
+                    var lst = repository.AsQueryable().Where(sql).ToOffsetPage(Current, Size, ref total);
 
                     if (lst != null && lst.Count > 0)
                     {
@@ -183,7 +197,7 @@ namespace PigRunner.Services.Basic.Services
                         foreach (var item in lst)
                         {
                             WhShView dto = SetValue(item);
-                            dto.LineNum = lineNum;
+                            dto.LineNum = lineNum.ToString();
                             list.Add(dto);
                             lineNum += 1;
                         }
@@ -209,16 +223,16 @@ namespace PigRunner.Services.Basic.Services
             dto.Code = item.Code;
             dto.Name = item.Name;
             dto.Remark = item.Remark;
-            dto.ID = item.ID;
-            dto.IsEffective = item.IsEffective == 1 ? true : false;
-            if (dto.IsEffective)
-                dto.Effective = "启用";
+            dto.ID = item.ID.ToString();
+            dto.IsEffective = false.ToString();
+            if (item.IsEffective == 1)
+            { dto.Effective = "启用"; dto.IsEffective = true.ToString(); }
             else
                 dto.Effective = "停用";
 
-            dto.IsWhSh = item.IsWhSh == 1 ? true : false;
-            if (dto.IsWhSh)
-                dto.WhSh = "是";
+            dto.IsWhSh = false.ToString();
+            if (item.IsWhSh == 1)
+            { dto.WhSh = "是"; dto.IsWhSh = true.ToString(); }
             else
                 dto.WhSh = "否";
             if (item.Org > 0)
@@ -251,8 +265,8 @@ namespace PigRunner.Services.Basic.Services
                     dto.WhBinGroupName = lg.Name;
                 }
             }
-            dto.Area = item.Area;
-            dto.Volume = item.Volume;
+            dto.Area = item.Area.ToString();
+            dto.Volume = item.Volume.ToString();
             return dto;
         }
 

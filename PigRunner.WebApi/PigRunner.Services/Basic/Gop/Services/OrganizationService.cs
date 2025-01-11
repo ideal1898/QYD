@@ -35,6 +35,9 @@ namespace PigRunner.Services.Basic.Services
 
             try
             {
+                if (request == null)
+                    throw new Exception("参数不能为空！");
+
                 if (request.OptType.Equals("AddOrganization") || request.OptType.Equals("UpdateOrganization"))
                 {
                     if (string.IsNullOrEmpty(request.Code))
@@ -53,17 +56,20 @@ namespace PigRunner.Services.Basic.Services
                     }
                     else
                     {
-                        if (request.ID <= 0)
+                        if (string.IsNullOrEmpty(request.ID))
                             throw new Exception("修改ID要大于零！");
-                        head = repository.GetFirst(q => q.ID == request.ID);
+                        head = repository.GetFirst(q => q.ID.ToString() == request.ID);
                         if (head == null)
                             throw new Exception(string.Format("ID为【{0}】的组织不存在，请检查！", request.ID));
                     }
                     head.Code = request.Code;
                     head.Name = request.Name;
                     head.Shortname = request.Shortname;
-                    head.DefaultLanguage = request.DefaultLanguage;
-                    head.IsEffective = request.IsEffective;
+                    int.TryParse(request.DefaultLanguage,out int DefaultLanguage);
+                    head.DefaultLanguage = DefaultLanguage;
+
+                    int.TryParse(request.IsEffective, out int IsEffective);
+                    head.IsEffective = IsEffective;
                     head.CCBL = request.CCBL;
                     head.Contacts = request.Contacts;
                     head.Location = request.Location;
@@ -116,7 +122,15 @@ namespace PigRunner.Services.Basic.Services
                     if (!string.IsNullOrEmpty(request.Name))
                         sql += string.Format(" and Name like '%{0}%' ", request.Name);
 
-                    var lst = repository.AsQueryable().Where(sql).ToOffsetPage(request.Current, request.Size, ref total);
+                    int.TryParse(request.Current, out int Current);
+                    int.TryParse(request.Size, out int Size);
+
+                    if (Current <= 0)
+                        Current = 10;
+                    if (Size <= 0)
+                        Size = 1;
+
+                    var lst = repository.AsQueryable().Where(sql).ToOffsetPage(Current, Size, ref total);
 
                     if (lst != null && lst.Count > 0)
                     {
@@ -124,7 +138,7 @@ namespace PigRunner.Services.Basic.Services
                         foreach (var item in lst)
                         {
                             OrganizationView dto = SetValue(item);
-                            dto.LineNum = lineNum;
+                            dto.LineNum = lineNum.ToString();
                             list.Add(dto);
                             lineNum += 10;
                         }
@@ -150,12 +164,12 @@ namespace PigRunner.Services.Basic.Services
             dto.OptType = "UpdateOrganization";
             dto.Code = item.Code;
             dto.Name = item.Name;
-            dto.ID = item.ID;
-            dto.DefaultLanguage = item.DefaultLanguage;
-            var lg = repository.Context.Queryable<Language>().Where(q => q.ID == dto.DefaultLanguage)?.First();
+            dto.ID = item.ID.ToString();
+            dto.DefaultLanguage = item.DefaultLanguage.ToString();
+            var lg = repository.Context.Queryable<Language>().Where(q => q.ID.ToString() == dto.DefaultLanguage)?.First();
             if (lg != null)
                 dto.DefaultLanguageName = lg.Name;
-            dto.IsEffective = item.IsEffective;
+            dto.IsEffective = item.IsEffective.ToString();
             dto.Location= item.Location;
             dto.RegisterAddress= item.RegisterAddress;
             dto.CCBL=item.CCBL;

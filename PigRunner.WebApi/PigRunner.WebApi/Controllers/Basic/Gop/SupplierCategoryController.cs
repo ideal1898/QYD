@@ -30,7 +30,7 @@ namespace PigRunner.WebApi.Controllers.Basic
         /// <returns></returns>
         [AllowAnonymous]
         [HttpPost]
-        public PubResponse ActionSupplierCategory(SupplierCategoryView request)
+        public PubResponse ActionSupplierCategory([FromBody] SupplierCategoryView request)
         {
             return services.ActionSupplierCategory(request);
         }
@@ -42,7 +42,7 @@ namespace PigRunner.WebApi.Controllers.Basic
         /// <returns></returns>
         [AllowAnonymous]
         [HttpPost]
-        public PubResponse UploadSupplierCategory(IFormFile file)
+        public PubResponse UploadSupplierCategory([FromBody] IFormFile file)
         {
             PubResponse response = new PubResponse();
             try

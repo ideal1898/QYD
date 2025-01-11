@@ -30,6 +30,9 @@ namespace PigRunner.Services.Basic.Gop.Services
             PubResponse response = new PubResponse();
             try
             {
+                if (request == null)
+                    throw new Exception("参数不能为空！");
+
                 if (request.OptType.Equals("AddUOM") || request.OptType.Equals("UpdateUOM"))
                 {
                     if (string.IsNullOrEmpty(request.Code))
@@ -48,9 +51,9 @@ namespace PigRunner.Services.Basic.Gop.Services
                     }
                     else
                     {
-                        if (request.ID <= 0)
+                        if (string.IsNullOrEmpty(request.ID))
                             throw new Exception("修改ID要大于零！");
-                        head = repository.GetFirst(q => q.ID == request.ID);
+                        head = repository.GetFirst(q => q.ID.ToString() == request.ID);
                         if (head == null)
                             throw new Exception(string.Format("ID为【{0}】的计量单位不存在，请检查！", request.ID));
 
@@ -66,12 +69,17 @@ namespace PigRunner.Services.Basic.Gop.Services
                     response.id = head.ID;
                     head.Remark = request.Remark;
 
-                    int IsBase = request.IsBase ? 1 : 0;
+                    int IsBase =bool.TryParse( request.IsBase,out bool IsBase2) ? 1 : 0;
                     head.IsBase = IsBase;
 
-                    head.RatioToBase = request.RatioToBase;
-                    head.RoundWay = request.RoundWay;
-                    head.UomPrecision = request.UomPrecision;
+                    decimal.TryParse(request.RatioToBase, out decimal RatioToBase);
+                    head.RatioToBase = RatioToBase;
+
+                    int.TryParse(request.RoundWay, out int RoundWay);
+                    head.RoundWay =RoundWay;
+
+                    decimal.TryParse(request.UomPrecision, out decimal UomPrecision);
+                    head.UomPrecision = UomPrecision;
 
                     bool isSuccess = repository.InsertOrUpdate(head);
                     if (!isSuccess)
@@ -114,7 +122,15 @@ namespace PigRunner.Services.Basic.Gop.Services
                         sql += string.Format(" and Code like '%{0}%' ", request.Code);
                     if (!string.IsNullOrEmpty(request.Name))
                         sql += string.Format(" and Name like '%{0}%' ", request.Name);
-                    var lst = repository.AsQueryable().Where(sql).ToOffsetPage(request.Current, request.Size, ref total);
+
+                    int.TryParse(request.Current, out int Current);
+                    int.TryParse(request.Size, out int Size);
+                    if (Current <= 0)
+                        Current = 10;
+                    if (Size <= 0)
+                        Size = 1;
+
+                    var lst = repository.AsQueryable().Where(sql).ToOffsetPage(Current, Size, ref total);
 
                     if (lst != null && lst.Count > 0)
                     {
@@ -122,7 +138,7 @@ namespace PigRunner.Services.Basic.Gop.Services
                         foreach (var item in lst)
                         {
                             UOMView dto = SetValue(item);
-                            dto.LineNum = lineNum;
+                            dto.LineNum = lineNum.ToString();
                             list.Add(dto);
                             lineNum += 1;
                         }
@@ -148,21 +164,21 @@ namespace PigRunner.Services.Basic.Gop.Services
             dto.Code = item.Code;
             dto.Name = item.Name;
             dto.Remark = item.Remark;
-            dto.ID = item.ID;
-            dto.IsBase = item.IsBase == 1 ? true : false;
-            if (dto.IsBase)
-                dto.IsBaseName = "是";
+            dto.ID = item.ID.ToString();
+            dto.IsBase = false.ToString();
+            if (item.IsBase == 1)
+            { dto.IsBaseName = "是"; dto.IsBase = true.ToString(); }
             else
                 dto.IsBaseName = "否";
-            dto.RatioToBase = item.RatioToBase;
-            dto.RoundWay = item.RoundWay;
-            if (dto.RoundWay == 1)
+            dto.RatioToBase = item.RatioToBase.ToString();
+            dto.RoundWay = item.RoundWay.ToString();
+            if (item.RoundWay == 1)
                 dto.RoundWayName = "四舍五入";
-            else if (dto.RoundWay == 2)
+            else if (item.RoundWay == 2)
                 dto.RoundWayName = "舍位";
-            else if (dto.RoundWay == 3)
+            else if (item.RoundWay == 3)
                 dto.RoundWayName = "入位";
-            dto.UomPrecision = item.UomPrecision;
+            dto.UomPrecision = item.UomPrecision.ToString();
 
             return dto;
         }

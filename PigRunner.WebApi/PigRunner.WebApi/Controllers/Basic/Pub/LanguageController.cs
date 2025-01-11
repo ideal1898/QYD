@@ -29,7 +29,7 @@ namespace PigRunner.WebApi.Controllers.Basic
         /// <returns></returns>
         [AllowAnonymous]//设置不需要token值即可调用
         [HttpPost]
-        public PubResponse ActionLanguage(EnumView request)
+        public PubResponse ActionLanguage([FromBody] EnumView request)
         {
             return services.ActionLanguage(request);
         }

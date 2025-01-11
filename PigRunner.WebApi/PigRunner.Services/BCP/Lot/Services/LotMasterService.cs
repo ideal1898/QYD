@@ -31,6 +31,9 @@ namespace PigRunner.Services.BCP.Lot.Services
             PubResponse response = new PubResponse();
             try
             {
+                if (request == null)
+                    throw new Exception("参数不能为空！");
+
                 if (request.OptType.Equals("AddLotMaster") || request.OptType.Equals("UpdateLotMaster"))
                 {
                     if (string.IsNullOrEmpty(request.LotCode))
@@ -47,9 +50,9 @@ namespace PigRunner.Services.BCP.Lot.Services
                     }
                     else
                     {
-                        if (request.ID <= 0)
+                        if (string.IsNullOrEmpty(request.ID ))
                             throw new Exception("修改ID要大于零！");
-                        head = repository.GetFirst(q => q.ID == request.ID);
+                        head = repository.GetFirst(q => q.ID.ToString() == request.ID);
                         if (head == null)
                             throw new Exception(string.Format("ID为【{0}】的批次主档不存在，请检查！", request.ID));
 
@@ -88,11 +91,13 @@ namespace PigRunner.Services.BCP.Lot.Services
                     DateTime.TryParse(request.EffectiveDate, out EffectiveDate);
 
                     head.EffectiveDate = EffectiveDate;
-                    head.InvalidDate = EffectiveDate.AddDays(request.ValidDate);
-                    head.ValidDate = request.ValidDate;
+                    int.TryParse(request.ValidDate, out int ValidDate);
+                    head.InvalidDate = EffectiveDate.AddDays(ValidDate);
+                    head.ValidDate = ValidDate;
                     head.SrcDocNo = request.SrcDocNo;
 
-                    head.AutoCode = request.AutoCode;
+                    int.TryParse(request.AutoCode, out int AutoCode);
+                    head.AutoCode = AutoCode;
 
                     bool isSuccess = repository.InsertOrUpdate(head);
                     if (!isSuccess)
@@ -146,7 +151,14 @@ namespace PigRunner.Services.BCP.Lot.Services
                     if (itemID>0)
                         sql += string.Format(" and ItemMaster={0}", itemID);
 
-                  var  lst = repository.AsQueryable().Where(sql).ToOffsetPage(request.Current, request.Size, ref total);
+                    int.TryParse(request.Current, out int Current);
+                    int.TryParse(request.Size, out int Size);
+                    if (Current <= 0)
+                        Current = 10;
+                    if (Size <= 0)
+                        Size = 1;
+
+                    var  lst = repository.AsQueryable().Where(sql).ToOffsetPage(Current, Size, ref total);
 
                     if (lst != null && lst.Count > 0)
                     {
@@ -154,7 +166,7 @@ namespace PigRunner.Services.BCP.Lot.Services
                         foreach (var item in lst)
                         {
                             LotMasterView dto = SetValue(item);
-                            dto.LineNum = lineNum;
+                            dto.LineNum = lineNum.ToString();
                             list.Add(dto);
                             lineNum += 1;
                         }
@@ -179,13 +191,13 @@ namespace PigRunner.Services.BCP.Lot.Services
             LotMasterView dto = new LotMasterView();
             dto.LotCode = item.LotCode;
             dto.Remark = item.Remark;
-            dto.ID = item.ID;
+            dto.ID = item.ID.ToString();
 
             if (item.EffectiveDate != DateTime.MinValue)
                 dto.EffectiveDate = item.EffectiveDate.ToString("yyyy-MM-dd");
             if (item.InvalidDate != DateTime.MinValue)
                 dto.InvalidDate = item.InvalidDate.ToString("yyyy-MM-dd");
-            dto.ValidDate = item.ValidDate;
+            dto.ValidDate = item.ValidDate.ToString();
             dto.SrcDocNo = item.SrcDocNo;
 
             if (item.ItemMaster > 0)

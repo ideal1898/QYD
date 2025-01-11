@@ -40,7 +40,7 @@ namespace PigRunner.DTO.Basic
         /// 备  注:是否生效
         /// 默认值:
         ///</summary>
-        public bool IsEffective { get; set; } = false;
+        public string IsEffective { get; set; } = string.Empty;
 
         /// <summary>
         /// 备  注:生效名称
@@ -112,7 +112,7 @@ namespace PigRunner.DTO.Basic
         /// 备  注:主副单位转化系数
         /// 默认值:
         ///</summary>
-        public decimal RatioToBase { get; set; } = 0;
+        public string RatioToBase { get; set; } = string.Empty;
 
 
 
@@ -134,7 +134,7 @@ namespace PigRunner.DTO.Basic
         /// 备  注:物料形态属性
         /// 默认值:
         ///</summary>
-        public int ItemFormAttribute { get; set; } = 0;
+        public string ItemFormAttribute { get; set; } = string.Empty;
 
         /// <summary>
         /// 形态属性名称
@@ -147,7 +147,7 @@ namespace PigRunner.DTO.Basic
         /// 备  注:可销售
         /// 默认值:
         ///</summary>
-        public bool IsSalesEnable { get; set; } = false;
+        public string IsSalesEnable { get; set; } = string.Empty;
 
 
 
@@ -155,7 +155,7 @@ namespace PigRunner.DTO.Basic
         /// 备  注:可生产
         /// 默认值:
         ///</summary>
-        public bool IsBuildEnable { get; set; } = false;
+        public string IsBuildEnable { get; set; } = string.Empty;
 
 
 
@@ -163,7 +163,7 @@ namespace PigRunner.DTO.Basic
         /// 备  注:可采购
         /// 默认值:
         ///</summary>
-        public bool IsPurchaseEnable { get; set; } = false;
+        public string IsPurchaseEnable { get; set; } = string.Empty;
 
 
 
@@ -171,7 +171,7 @@ namespace PigRunner.DTO.Basic
         /// 备  注:可委外
         /// 默认值:
         ///</summary>
-        public bool IsOutsideOperationEnable { get; set; } = false;
+        public string IsOutsideOperationEnable { get; set; } = string.Empty;
 
 
 
@@ -187,7 +187,7 @@ namespace PigRunner.DTO.Basic
         /// 备  注:是否批次管理
         /// 默认值:
         ///</summary>
-        public bool IsLot { get; set; } = false;
+        public string IsLot { get; set; } = string.Empty;
 
 
 
@@ -195,7 +195,7 @@ namespace PigRunner.DTO.Basic
         /// 备  注:是否质检
         /// 默认值:
         ///</summary>
-        public bool IsQc { get; set; } = false;
+        public string IsQc { get; set; } = string.Empty;
 
 
 
@@ -203,7 +203,7 @@ namespace PigRunner.DTO.Basic
         /// 备  注:是否质保期管理
         /// 默认值:
         ///</summary>
-        public bool IsQgPeriod { get; set; } = false;
+        public string IsQgPeriod { get; set; } = string.Empty;
 
 
 
@@ -211,7 +211,7 @@ namespace PigRunner.DTO.Basic
         /// 备  注:质保天数
         /// 默认值:
         ///</summary>
-        public int QgDay { get; set; } = 0;
+        public string QgDay { get; set; } = string.Empty;
 
 
 
@@ -219,7 +219,7 @@ namespace PigRunner.DTO.Basic
         /// 备  注:质保预警天数
         /// 默认值:
         ///</summary>
-        public int QgAlterDay { get; set; } = 0;
+        public string QgAlterDay { get; set; } = string.Empty;
 
 
 
@@ -255,7 +255,7 @@ namespace PigRunner.DTO.Basic
         /// 备  注:标准包装数量
         /// 默认值:
         ///</summary>
-        public decimal PackagQty { get; set; } = 0;
+        public string PackagQty { get; set; } = string.Empty;
 
 
 
@@ -263,7 +263,7 @@ namespace PigRunner.DTO.Basic
         /// 备  注:最小采购量
         /// 默认值:
         ///</summary>
-        public decimal MinRcvQty { get; set; } = 0;
+        public string MinRcvQty { get; set; } = string.Empty;
 
 
 
@@ -271,7 +271,7 @@ namespace PigRunner.DTO.Basic
         /// 备  注:采购周期
         /// 默认值:
         ///</summary>
-        public int PurPeriod { get; set; } = 0;
+        public string PurPeriod { get; set; } = string.Empty;
 
 
 
@@ -304,7 +304,7 @@ namespace PigRunner.DTO.Basic
         /// 备  注:生产批量
         /// 默认值:
         ///</summary>
-        public int MoBatch { get; set; }
+        public string MoBatch { get; set; } = string.Empty;
 
 
 

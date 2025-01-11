@@ -29,7 +29,7 @@ namespace PigRunner.WebApi.Controllers.BCP.Lot
         /// <returns></returns>
         [AllowAnonymous]
         [HttpPost]
-        public PubResponse ActionLotMaster(LotMasterView request)
+        public PubResponse ActionLotMaster([FromBody] LotMasterView request)
         {
             return services.ActionLotMaster(request);
         }
@@ -41,7 +41,7 @@ namespace PigRunner.WebApi.Controllers.BCP.Lot
         /// <returns></returns>
         [AllowAnonymous]
         [HttpPost]
-        public PubResponse UploadLotMaster(IFormFile file)
+        public PubResponse UploadLotMaster([FromBody] IFormFile file)
         {
             PubResponse response = new PubResponse();
             try

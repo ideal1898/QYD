@@ -29,7 +29,7 @@ namespace PigRunner.WebApi.Controllers.Basic
         /// <returns></returns>
         [AllowAnonymous]
         [HttpPost]
-        public PubResponse ActionOrganization(OrganizationView request)
+        public PubResponse ActionOrganization([FromBody] OrganizationView request)
         {
             return services.ActionOrganization(request);
         }

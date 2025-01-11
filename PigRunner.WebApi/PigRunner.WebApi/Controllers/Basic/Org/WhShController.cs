@@ -33,7 +33,7 @@ namespace PigRunner.WebApi.Controllers.Basic
         [AllowAnonymous]
         [HttpPost]
         
-        public PubResponse ActionWhSh(WhShView request)
+        public PubResponse ActionWhSh([FromBody] WhShView request)
         {
             return services.ActionWhSh(request);
         }
@@ -45,7 +45,7 @@ namespace PigRunner.WebApi.Controllers.Basic
         /// <returns></returns>
         [AllowAnonymous]
         [HttpPost]
-        public PubResponse UploadWhSh(IFormFile file)
+        public PubResponse UploadWhSh([FromBody] IFormFile file)
         {
             PubResponse response = new PubResponse();
             try

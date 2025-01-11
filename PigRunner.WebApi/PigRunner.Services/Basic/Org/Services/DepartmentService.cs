@@ -36,6 +36,9 @@ namespace PigRunner.Services.Basic.Services
             PubResponse response = new PubResponse();
             try
             {
+                if (request == null)
+                    throw new Exception("参数不能为空！");
+
                 if (request.OptType.Equals("AddDepartment") || request.OptType.Equals("UpdateDepartment"))
                 {
                     if (string.IsNullOrEmpty(request.Code))
@@ -54,9 +57,9 @@ namespace PigRunner.Services.Basic.Services
                     }
                     else
                     {
-                        if (request.ID <= 0)
+                        if (string.IsNullOrEmpty(request.ID))
                             throw new Exception("修改ID要大于零！");
-                        head = repository.GetFirst(q => q.ID == request.ID);
+                        head = repository.GetFirst(q => q.ID.ToString() == request.ID);
                         if (head == null)
                             throw new Exception(string.Format("ID为【{0}】的部门不存在，请检查！", request.ID));
 
@@ -71,7 +74,7 @@ namespace PigRunner.Services.Basic.Services
                     head.Name = request.Name;
                     response.id = head.ID;
                     head.Remark = request.Remark;
-                    head.IsEffective = request.IsEffective ? 1 : 0;
+                    head.IsEffective =bool.TryParse( request.IsEffective,out bool IsEffective) ? 1 : 0;
                     long ParentNode = -1;
 
                     //根据部门编码查找实体
@@ -123,7 +126,15 @@ namespace PigRunner.Services.Basic.Services
                         sql += string.Format(" and Code like '%{0}%' ", request.Code);
                     if (!string.IsNullOrEmpty(request.Name))
                         sql += string.Format(" and Name like '%{0}%' ", request.Name);
-                    var lst = repository.AsQueryable().Where(sql).ToOffsetPage(request.Current, request.Size, ref total);
+
+                    int.TryParse(request.Current, out int Current);
+                    int.TryParse(request.Size, out int Size);
+                    if (Current <= 0)
+                        Current = 10;
+                    if (Size <= 0)
+                        Size = 1;
+
+                    var lst = repository.AsQueryable().Where(sql).ToOffsetPage(Current, Size, ref total);
 
                     if (lst != null && lst.Count > 0)
                     {
@@ -131,7 +142,7 @@ namespace PigRunner.Services.Basic.Services
                         foreach (var item in lst)
                         {
                             DepartmentView dto = SetValue(item);
-                            dto.LineNum = lineNum;
+                            dto.LineNum = lineNum.ToString();
                             list.Add(dto);
                             lineNum += 1;
                         }
@@ -157,10 +168,10 @@ namespace PigRunner.Services.Basic.Services
             dto.Code = item.Code;
             dto.Name = item.Name;
             dto.Remark = item.Remark;
-            dto.ID = item.ID;
-            dto.IsEffective = item.IsEffective == 1 ? true : false;
-            if (dto.IsEffective)
-                dto.Effective = "生效";
+            dto.ID = item.ID.ToString();
+            dto.IsEffective =false.ToString();
+            if (item.IsEffective == 1)
+            { dto.Effective = "生效"; dto.IsEffective = true.ToString(); }
             else
                 dto.Effective = "停用";
 

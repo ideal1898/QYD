@@ -15,10 +15,10 @@ namespace PigRunner.DTO.Basic.Pub
         /// <summary>
         /// id
         /// </summary>
-        public long ID { get; set; } = -1;
+        public string ID { get; set; } = string.Empty;
 
 
-        public int LineNum { get; set; } = -1;
+        public string LineNum { get; set; } = string.Empty;
         /// <summary>
         ///编码
         /// </summary>
@@ -40,12 +40,12 @@ namespace PigRunner.DTO.Basic.Pub
         /// <summary>
         /// 当前页
         /// </summary>
-        public int Current { get; set; } = 1;
+        public string Current { get; set; } = string.Empty;
 
         /// <summary>
         /// 每页几行
         /// </summary>
-        public int Size { get; set; } = 2;
+        public string Size { get; set; } = string.Empty;
 
         /// <summary>
         /// 编号集合

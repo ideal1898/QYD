@@ -29,7 +29,7 @@ namespace PigRunner.WebApi.Controllers.Basic.Gop
         /// <returns></returns>
         [AllowAnonymous]
         [HttpPost]
-        public PubResponse ActionCustomerCategory(CustomerCategoryView request)
+        public PubResponse ActionCustomerCategory([FromBody]CustomerCategoryView request)
         {
             return services.ActionCustomerCategory(request);
         }
@@ -41,7 +41,7 @@ namespace PigRunner.WebApi.Controllers.Basic.Gop
         /// <returns></returns>
         [AllowAnonymous]
         [HttpPost]
-        public PubResponse UploadCustomerCategory(IFormFile file)
+        public PubResponse UploadCustomerCategory([FromBody]IFormFile file)
         {
             PubResponse response = new PubResponse();
             try

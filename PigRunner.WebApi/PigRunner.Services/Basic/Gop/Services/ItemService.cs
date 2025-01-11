@@ -58,6 +58,9 @@ namespace PigRunner.Services.Basic.Services
             PubResponse response = new PubResponse();
             try
             {
+                if (request == null)
+                    throw new Exception("参数不能为空！");
+
                 if (request.OptType.Equals("AddItem") || request.OptType.Equals("UpdateItem"))
                 {
                     if (string.IsNullOrEmpty(request.Code))
@@ -76,9 +79,9 @@ namespace PigRunner.Services.Basic.Services
                     }
                     else
                     {
-                        if (request.ID <= 0)
+                        if (string.IsNullOrEmpty(request.ID))
                             throw new Exception("修改ID要大于零！");
-                        head = repository.GetFirst(q => q.ID == request.ID);
+                        head = repository.GetFirst(q => q.ID.ToString() == request.ID);
                         if (head == null)
                             throw new Exception(string.Format("ID为【{0}】的物料不存在，请检查！", request.ID));
 
@@ -93,7 +96,7 @@ namespace PigRunner.Services.Basic.Services
                     head.Name = request.Name;
                     response.id = head.ID;
                     head.Description = request.Description;
-                    head.IsEffective = request.IsEffective ? 1 : 0;
+                    head.IsEffective =bool.TryParse( request.IsEffective,out bool isE) ? 1 : 0;
                     head.SPECS = request.SPECS;
                     if (!string.IsNullOrEmpty(request.StockCategoryCode))
                     {
@@ -123,20 +126,24 @@ namespace PigRunner.Services.Basic.Services
                             throw new Exception(string.Format("编码为【{0}】的计量单位不存在，请检查！", request.BaseUOMCode));
                         head.BaseUOM = data.ID;
                     }
-                    head.RatioToBase = request.RatioToBase;
+                    decimal.TryParse(request.RatioToBase, out decimal rate);
+                    head.RatioToBase = rate;
 
                     head.Code1 = request.Code1;
-                    head.ItemFormAttribute = request.ItemFormAttribute;
-                    head.IsSalesEnable = request.IsSalesEnable ? 1 : 0;
-                    head.IsBuildEnable = request.IsBuildEnable ? 1 : 0;
-                    head.IsPurchaseEnable = request.IsPurchaseEnable ? 1 : 0;
-                    head.IsOutsideOperationEnable = request.IsOutsideOperationEnable ? 1 : 0;
+                    int.TryParse(request.ItemFormAttribute, out int ItemFormAttribute);
+                    head.ItemFormAttribute = ItemFormAttribute;
+                    head.IsSalesEnable =bool.TryParse( request.IsSalesEnable,out bool isSa) ? 1 : 0;
+                    head.IsBuildEnable = bool.TryParse(request.IsBuildEnable, out bool IsBuildEnable) ? 1 : 0;
+                    head.IsPurchaseEnable = bool.TryParse(request.IsPurchaseEnable, out bool IsPurchaseEnable) ? 1 : 0;
+                    head.IsOutsideOperationEnable = bool.TryParse(request.IsOutsideOperationEnable, out bool IsOutsideOperationEnable) ? 1 : 0;
                     head.Picture = request.Picture;
-                    head.IsLot = request.IsLot ? 1 : 0;
-                    head.IsQc = request.IsQc ? 1 : 0;
-                    head.IsQgPeriod = request.IsQgPeriod ? 1 : 0;
-                    head.QgDay = request.QgDay;
-                    head.QgAlterDay = request.QgAlterDay;
+                    head.IsLot = bool.TryParse(request.IsLot, out bool IsLot) ? 1 : 0;
+                    head.IsQc = bool.TryParse(request.IsQc, out bool IsQc) ? 1 : 0;
+                    head.IsQgPeriod = bool.TryParse(request.IsQgPeriod, out bool IsQgPeriod) ? 1 : 0;
+                    int.TryParse(request.QgDay, out int QgDay);
+                    head.QgDay = QgDay;
+                    int.TryParse(request.QgAlterDay, out int QgAlterDay);
+                    head.QgAlterDay = QgAlterDay;
 
                     if (!string.IsNullOrEmpty(request.QgAlterDayUomCode))
                     {
@@ -153,9 +160,14 @@ namespace PigRunner.Services.Basic.Services
                             throw new Exception(string.Format("编码为【{0}】的计量单位不存在，请检查！", request.WarehouseCode));
                         head.Warehouse = data.ID;
                     }
-                    head.PackagQty = request.PackagQty;
-                    head.MinRcvQty = request.MinRcvQty;
-                    head.PurPeriod = request.PurPeriod;
+                    decimal.TryParse(request.PackagQty, out decimal PackagQty);
+                    head.PackagQty = PackagQty;
+
+                    decimal.TryParse(request.MinRcvQty, out decimal MinRcvQty);
+                    head.MinRcvQty = MinRcvQty;
+
+                    int.TryParse(request.PurPeriod, out int PurPeriod);
+                    head.PurPeriod = PurPeriod;
 
 
                     if (!string.IsNullOrEmpty(request.SupplierCode))
@@ -174,7 +186,8 @@ namespace PigRunner.Services.Basic.Services
                         head.PurPeriodUom = data.ID;
                     }
 
-                    head.MoBatch = request.MoBatch;
+                    int.TryParse(request.MoBatch, out int MoBatch);
+                    head.MoBatch = MoBatch;
                     if (!string.IsNullOrEmpty(request.MoDeptCode))
                     {
                         var data = repository.Context.Queryable<Department>().Where(q => q.Code == request.MoDeptCode).ToList()?.FirstOrDefault();
@@ -227,7 +240,15 @@ namespace PigRunner.Services.Basic.Services
                     if (!string.IsNullOrEmpty(request.Name))
                         sql += string.Format(" and Name like '%{0}%' ", request.Name);
 
-                    var lst = repository.AsQueryable().Where(sql).ToOffsetPage(request.Current, request.Size, ref total);
+                    int.TryParse(request.Current, out int Current);
+                    int.TryParse(request.Size, out int Size);
+
+                    if (Current <= 0)
+                        Current = 10;
+                    if (Size <= 0)
+                        Size = 1;
+
+                    var lst = repository.AsQueryable().Where(sql).ToOffsetPage(Current, Size, ref total);
 
                     if (lst != null && lst.Count > 0)
                     {
@@ -235,7 +256,7 @@ namespace PigRunner.Services.Basic.Services
                         foreach (var item in lst)
                         {
                             ItemView dto = SetValue(item);
-                            dto.LineNum = lineNum;
+                            dto.LineNum = lineNum.ToString();
                             list.Add(dto);
                             lineNum += 1;
                         }
@@ -261,11 +282,14 @@ namespace PigRunner.Services.Basic.Services
             dto.Code = item.Code;
             dto.Name = item.Name;
             dto.Description = item.Description;
-            dto.ID = item.ID;
+            dto.ID = item.ID.ToString();
             dto.Description = item.Description;
-            dto.IsEffective = item.IsEffective == 1 ? true : false;
-            if (dto.IsEffective)
+            dto.IsEffective = false.ToString();
+            if (item.IsEffective == 1)
+            {
                 dto.Effective = "启用";
+                dto.IsEffective = true.ToString();
+            }
             else
                 dto.Effective = "停用";
             dto.SPECS = item.SPECS;
@@ -305,27 +329,29 @@ namespace PigRunner.Services.Basic.Services
                     dto.BaseUOMName = data.Name;
                 }
             }
-            dto.RatioToBase = item.RatioToBase;
+
+           
+            dto.RatioToBase = item.RatioToBase.ToString();
 
             dto.Code1 = item.Code1;
-            dto.ItemFormAttribute = item.ItemFormAttribute;
+            dto.ItemFormAttribute = item.ItemFormAttribute.ToString();
 
-            if (dto.ItemFormAttribute == 1)
+            if (dto.ItemFormAttribute == "1")
                 dto.ItemFormAttributeName = "采购件";
-            else if (dto.ItemFormAttribute == 2)
+            else if (dto.ItemFormAttribute == "2")
                 dto.ItemFormAttributeName = "制造件";
 
 
-            dto.IsSalesEnable = item.IsSalesEnable == 1 ? true : false;
-            dto.IsBuildEnable = item.IsBuildEnable == 1 ? true : false;
-            dto.IsPurchaseEnable = item.IsPurchaseEnable == 1 ? true : false;
-            dto.IsOutsideOperationEnable = item.IsOutsideOperationEnable == 1 ? true : false;
+            dto.IsSalesEnable = item.IsSalesEnable == 1 ? true.ToString() : false.ToString();
+            dto.IsBuildEnable = item.IsBuildEnable == 1 ? true.ToString() : false.ToString();
+            dto.IsPurchaseEnable = item.IsPurchaseEnable == 1 ? true.ToString() : false.ToString();
+            dto.IsOutsideOperationEnable = item.IsOutsideOperationEnable == 1 ? true.ToString() : false.ToString();
             dto.Picture = item.Picture;
-            dto.IsLot = item.IsLot == 1 ? true : false;
-            dto.IsQc = item.IsQc == 1 ? true : false;
-            dto.IsQgPeriod = item.IsQgPeriod == 1 ? true : false;
-            dto.QgDay = item.QgDay;
-            dto.QgAlterDay = item.QgAlterDay;
+            dto.IsLot = item.IsLot == 1 ? true.ToString() : false.ToString();
+            dto.IsQc = item.IsQc == 1 ? true.ToString() : false.ToString();
+            dto.IsQgPeriod = item.IsQgPeriod == 1 ? true.ToString() : false.ToString();
+            dto.QgDay = item.QgDay.ToString();
+            dto.QgAlterDay = item.QgAlterDay.ToString();
 
             if (item.QgAlterDayUom > 0)
             {
@@ -346,9 +372,9 @@ namespace PigRunner.Services.Basic.Services
                     dto.WarehouseName = data.Name;
                 }
             }
-            dto.PackagQty = item.PackagQty;
-            dto.MinRcvQty = item.MinRcvQty;
-            dto.PurPeriod = item.PurPeriod;
+            dto.PackagQty = item.PackagQty.ToString();
+            dto.MinRcvQty = item.MinRcvQty.ToString();
+            dto.PurPeriod = item.PurPeriod.ToString();
 
 
             if (item.Supplier > 0)
@@ -371,7 +397,7 @@ namespace PigRunner.Services.Basic.Services
                 }
             }
 
-            dto.MoBatch = item.MoBatch;
+            dto.MoBatch = item.MoBatch.ToString();
             if (item.MoDept > 0)
             {
                 var data = repository.Context.Queryable<Department>().Where(q => q.ID == item.MoDept).ToList()?.FirstOrDefault();

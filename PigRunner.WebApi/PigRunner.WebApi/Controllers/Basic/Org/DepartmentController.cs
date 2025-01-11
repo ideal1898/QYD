@@ -33,7 +33,7 @@ namespace PigRunner.WebApi.Controllers.Basic
         [AllowAnonymous]
         [HttpPost]
         
-        public PubResponse ActionDepartment(DepartmentView request)
+        public PubResponse ActionDepartment([FromBody] DepartmentView request)
         {
             return services.ActionDepartment(request);
         }
@@ -45,7 +45,7 @@ namespace PigRunner.WebApi.Controllers.Basic
         /// <returns></returns>
         [AllowAnonymous]
         [HttpPost]
-        public PubResponse UploadDepartment(IFormFile file)
+        public PubResponse UploadDepartment([FromBody] IFormFile file)
         {
             PubResponse response = new PubResponse();
             try

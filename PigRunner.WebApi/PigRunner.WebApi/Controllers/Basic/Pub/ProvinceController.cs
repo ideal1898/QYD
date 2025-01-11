@@ -29,7 +29,7 @@ namespace PigRunner.WebApi.Controllers.Basic.Pub
         /// <returns></returns>
         [AllowAnonymous]
         [HttpPost]
-        public PubResponse ActionProvince(ProvinceView request)
+        public PubResponse ActionProvince([FromBody] ProvinceView request)
         {
             return services.ActionProvince(request);
         }
@@ -41,7 +41,7 @@ namespace PigRunner.WebApi.Controllers.Basic.Pub
         /// <returns></returns>
         [AllowAnonymous]
         [HttpPost]
-        public PubResponse UploadProvince(IFormFile file)
+        public PubResponse UploadProvince([FromBody] IFormFile file)
         {
             PubResponse response = new PubResponse();
             try

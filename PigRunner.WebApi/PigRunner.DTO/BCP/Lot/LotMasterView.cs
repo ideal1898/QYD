@@ -46,7 +46,7 @@ namespace PigRunner.DTO.BCP.Lot
         /// <summary>
         /// 生效天数
         /// </summary>
-        public int ValidDate { get; set; } = 0;
+        public string ValidDate { get; set; } = string.Empty;
 
         /// <summary>
         /// 失效日期
@@ -61,7 +61,7 @@ namespace PigRunner.DTO.BCP.Lot
         /// <summary>
         /// 自动编码
         /// </summary>
-        public int AutoCode { get; set; } = 0;
+        public string AutoCode { get; set; } = string.Empty;
 
 
         /// <summary>

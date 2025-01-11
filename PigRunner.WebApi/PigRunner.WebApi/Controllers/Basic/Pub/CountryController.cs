@@ -29,7 +29,7 @@ namespace PigRunner.WebApi.Controllers.Basic
         /// <returns></returns>
         [AllowAnonymous]
         [HttpPost]
-        public PubResponse ActionCountry(CountryView request)
+        public PubResponse ActionCountry([FromBody] CountryView request)
         {
             return services.ActionCountry(request);
         }
@@ -41,7 +41,7 @@ namespace PigRunner.WebApi.Controllers.Basic
         /// <returns></returns>
         [AllowAnonymous]
         [HttpPost]
-        public PubResponse UploadCountry(IFormFile file)
+        public PubResponse UploadCountry([FromBody] IFormFile file)
         {
             PubResponse response = new PubResponse();
             try

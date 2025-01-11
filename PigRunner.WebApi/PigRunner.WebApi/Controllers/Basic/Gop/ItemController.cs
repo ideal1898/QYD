@@ -31,7 +31,7 @@ namespace PigRunner.WebApi.Controllers.Basic
         /// <returns></returns>
         [AllowAnonymous]
         [HttpPost]
-        public PubResponse ActionItem(ItemView request)
+        public PubResponse ActionItem([FromBody] ItemView request)
         {
             return services.ActionItem(request);
         }
@@ -43,7 +43,7 @@ namespace PigRunner.WebApi.Controllers.Basic
         /// <returns></returns>
         [AllowAnonymous]
         [HttpPost]
-        public PubResponse UploadItem(IFormFile file)
+        public PubResponse UploadItem([FromBody] IFormFile file)
         {
             PubResponse response = new PubResponse();
             try

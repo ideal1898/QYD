@@ -17,7 +17,7 @@ namespace PigRunner.DTO.Basic.Gop
         /// 状态：1-四舍五入，2-舍位，3-入位
         /// 默认值:
         ///</summary>
-        public int Status { get; set; } = 0;
+        public string Status { get; set; } = string.Empty;
 
         /// <summary>
         /// 状态名称
