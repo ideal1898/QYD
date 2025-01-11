@@ -33,12 +33,22 @@ using System.Threading.Tasks;
 
 namespace PigRunner.Public.Common.Views
 {
-    public class ResponseBody
+    /// <summary>
+    /// 返回值
+    /// </summary>
+    public struct ResponseBody
     {
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        public ResponseBody()
+        {      
+        }
+
         /// <summary>
         /// 状态：200,401,502
         /// </summary>
-        public int code { get; set; }
+        public int code { get; set; } = 200;
         /// <summary>
         /// 信息
         /// </summary>
@@ -46,7 +56,7 @@ namespace PigRunner.Public.Common.Views
         /// <summary>
         /// 总数：查询时，需要返回，其他均为0
         /// </summary>
-        public int total { get; set; }
+        public int total { get; set; } = 0;
         /// <summary>
         /// 业务数据
         /// </summary>

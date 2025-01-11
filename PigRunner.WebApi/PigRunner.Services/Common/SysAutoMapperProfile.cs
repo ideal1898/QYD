@@ -25,10 +25,14 @@
 
 
 using AutoMapper;
+using OfficeOpenXml.Drawing.Controls;
 using PigRunner.DTO.Basic;
+using PigRunner.DTO.SCM.PM;
 using PigRunner.DTO.Views.Sys;
 using PigRunner.Entitys.Basic;
+using PigRunner.Entitys.SCM.PM;
 using PigRunner.Entitys.Sys;
+using PigRunner.Public.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,12 +41,36 @@ using System.Threading.Tasks;
 
 namespace PigRunner.Services.Common
 {
-    public class SysAutoMapperProfile:Profile
+    public class SysAutoMapperProfile : Profile
     {
-        public SysAutoMapperProfile() {
+        public SysAutoMapperProfile()
+        {
+            CreateMap<string, decimal>().ConvertUsing(item => item.Length > 0 ? Convert.ToDecimal(item.Replace(",", "")) : 0);
+            CreateMap<decimal, string>().ConvertUsing(item => item.ToString("N4"));
             CreateMap<UserView, SysUser>();
             CreateMap<SupplierCategoryView, SupplierCategory>().ReverseMap();
             CreateMap<SupplierCategoryView[], SupplierCategory[]>().ReverseMap();
+            //采购订单
+            CreateMap<PurchaseOrderView, PurchaseOrder>()
+               .ForMember(dest => dest.ID, opt => opt.MapFrom(src => src.id > 0 ? src.id : IdGeneratorHelper.GetNextId()))
+               .ForMember(dest => dest.DocNo, opt => opt.MapFrom(src => !string.IsNullOrEmpty(src.DocNo) ? src.DocNo : $"PO{DateTime.Now.ToString("yyyyMMddHHss")}"))
+               .ReverseMap()
+               .ForPath(dest => dest.id, opt => opt.MapFrom(src => src.ID))
+               .ForPath(dest => dest.SupplierCode, opt => opt.MapFrom(src => src.Supplier != null ? src.Supplier.Code : ""))
+               .ForPath(dest => dest.SupplierName, opt => opt.MapFrom(src => src.Supplier != null ? src.Supplier.Name : ""))
+               .ForPath(dest => dest.CurrencyName, opt => opt.MapFrom(src => src.Currency != null ? src.Currency.Name : ""));
+            CreateMap<POLineView, POLine>()
+                .ForMember(dest => dest.ID, opt => opt.MapFrom(src => src.id > 0 ? src.id : IdGeneratorHelper.GetNextId()))
+                .ReverseMap()
+                .ForPath(dest => dest.id, opt => opt.MapFrom(src => src.ID))
+                .ForPath(dest => dest.ItemCode, opt => opt.MapFrom(src => src.Item != null ? src.Item.Code : ""))
+                .ForPath(dest => dest.ItemName, opt => opt.MapFrom(src => src.Item != null ? src.Item.Name : ""))
+                .ForPath(dest => dest.ItemSpec, opt => opt.MapFrom(src => src.Item != null ? src.Item.SPECS : ""));
+            //CreateMap<POLineView[], POLine[]>().ReverseMap();
+            //送货单
+
+
+
         }
     }
 }
