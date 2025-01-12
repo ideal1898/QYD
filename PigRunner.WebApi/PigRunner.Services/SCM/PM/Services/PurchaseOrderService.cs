@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Newtonsoft.Json.Linq;
 using PigRunner.DTO.SCM.PM;
+using PigRunner.Entitys.Basic;
 using PigRunner.Entitys.SCM.PM;
 using PigRunner.Public.Common.Views;
 using PigRunner.Repository.SCM.PM;
@@ -41,15 +42,23 @@ namespace PigRunner.Services.SCM.PM.Services
             try
             {
                 PurchaseOrder purchaseOrder = null;
+                long SysVersion = 0;
                 if (view.id > 0)
+                {
                     purchaseOrder = purchaseOrderRepository.AsQueryable().Includes(item => item.Lines).Where(w => w.ID == view.id).First();
+                    SysVersion = purchaseOrder.SysVersion;
+                }
 
                 purchaseOrder = mapper.Map<PurchaseOrder>(view);
-                purchaseOrder.Lines.ForEach(item =>
+                if (view.id > 0)
+                    purchaseOrder.SysVersion = SysVersion + 1;
+                foreach (var item in purchaseOrder.Lines)
                 {
                     if (item.PurchaseOrder == 0)
                         item.PurchaseOrder = purchaseOrder.ID;
-                });
+                    if (view.id > 0)
+                        item.SysVersion += 1;
+                }
                 bool flag = false;
                 if (view.id == 0)
                     flag = purchaseOrderRepository.Context.InsertNav(purchaseOrder).Include(item => item.Lines,
@@ -91,7 +100,7 @@ namespace PigRunner.Services.SCM.PM.Services
                 var purchaseOrder = purchaseOrderRepository.Context.Queryable<PurchaseOrder>()
                     .Includes(item => item.Supplier)
                     .Includes(item => item.Currency)
-                    .Includes(item => item.Lines,line=>line.Item).Where(item => item.ID == id);
+                    .Includes(item => item.Lines, line => line.Item).Where(item => item.ID == id);
                 var view = mapper.Map<PurchaseOrderView>(purchaseOrder.First());
                 response.data = JObject.FromObject(view);
                 response.code = 200;

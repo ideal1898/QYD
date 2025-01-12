@@ -72,6 +72,10 @@ namespace PigRunner.DTO.SCM.PM
         /// 税率
         /// </summary>
         public string TaxRate { get; set; }
+        /// <summary>
+        /// 状态
+        /// </summary>
+        public int Status { get; set; }
 
         public List<POLineView> Lines { get; set; }
     }

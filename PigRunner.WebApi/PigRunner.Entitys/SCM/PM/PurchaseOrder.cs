@@ -63,6 +63,10 @@ namespace PigRunner.Entitys.SCM.PM
         /// 税率
         /// </summary>
         public decimal TaxRate { get; set; }
+        /// <summary>
+        /// 状态：开立，核准中，已核准
+        /// </summary>
+        public int Status { get; set; }
 
         /// <summary>
         /// 采购订单行明细

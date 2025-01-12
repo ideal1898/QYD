@@ -52,16 +52,17 @@ namespace PigRunner.Services.Common
             CreateMap<SupplierCategoryView[], SupplierCategory[]>().ReverseMap();
             //采购订单
             CreateMap<PurchaseOrderView, PurchaseOrder>()
+               .ForMember(dest => dest.SysVersion, opt => opt.Ignore())
                .ForMember(dest => dest.ID, opt => opt.MapFrom(src => src.id > 0 ? src.id : IdGeneratorHelper.GetNextId()))
                .ForMember(dest => dest.DocNo, opt => opt.MapFrom(src => !string.IsNullOrEmpty(src.DocNo) ? src.DocNo : $"PO{DateTime.Now.ToString("yyyyMMddHHss")}"))
-               .ReverseMap()
+               .ReverseMap()            
                .ForPath(dest => dest.id, opt => opt.MapFrom(src => src.ID))
                .ForPath(dest => dest.SupplierCode, opt => opt.MapFrom(src => src.Supplier != null ? src.Supplier.Code : ""))
                .ForPath(dest => dest.SupplierName, opt => opt.MapFrom(src => src.Supplier != null ? src.Supplier.Name : ""))
                .ForPath(dest => dest.CurrencyName, opt => opt.MapFrom(src => src.Currency != null ? src.Currency.Name : ""));
             CreateMap<POLineView, POLine>()
                 .ForMember(dest => dest.ID, opt => opt.MapFrom(src => src.id > 0 ? src.id : IdGeneratorHelper.GetNextId()))
-                .ReverseMap()
+                .ReverseMap()             
                 .ForPath(dest => dest.id, opt => opt.MapFrom(src => src.ID))
                 .ForPath(dest => dest.ItemCode, opt => opt.MapFrom(src => src.Item != null ? src.Item.Code : ""))
                 .ForPath(dest => dest.ItemName, opt => opt.MapFrom(src => src.Item != null ? src.Item.Name : ""))
