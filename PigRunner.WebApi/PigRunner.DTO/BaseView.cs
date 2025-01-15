@@ -32,8 +32,14 @@ using System.Threading.Tasks;
 
 namespace PigRunner.DTO
 {
+    /// <summary>
+    /// 视图基类
+    /// </summary>
     public class BaseView
     {
+        /// <summary>
+        /// 表标识
+        /// </summary>
         public long id
         {
             get;

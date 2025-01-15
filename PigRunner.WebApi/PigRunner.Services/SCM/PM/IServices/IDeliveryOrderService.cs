@@ -10,25 +10,28 @@ using System.Threading.Tasks;
 
 namespace PigRunner.Services.SCM.PM.IServices
 {
-    public interface IPurchaseOrderService: IScopedService
+    /// <summary>
+    /// 采购到货单
+    /// </summary>
+    public interface IDeliveryOrderService : IScopedService
     {
         #region 业务处理
         /// <summary>
-        /// 采购订单
+        /// 采购到货单
         /// </summary>
         /// <param name="view"></param>
         /// <returns></returns>
-        ResponseBusBody Save(PurchaseOrderView view);
+        ResponseBusBody Save(DeliveryOrderView view);
         /// <summary>
-        /// 删除采购订单
+        /// 删除采购到货单
         /// </summary>
         /// <param name="ids"></param>
         /// <returns></returns>
         ResponseBusBody Delete(List<long> ids);
 
-        ResponseBusBody Submit(PurchaseOrderView view);
-        ResponseBusBody Approve(PurchaseOrderView view);
-        ResponseBusBody UnApprove(PurchaseOrderView view);
+        ResponseBusBody Submit(DeliveryOrderView view);
+        ResponseBusBody Approve(DeliveryOrderView view);
+        ResponseBusBody UnApprove(DeliveryOrderView view);
 
         ResponseBody BatchSubmit(List<DoActionView> views);
         ResponseBody BatchApprove(List<DoActionView> views);
@@ -37,7 +40,7 @@ namespace PigRunner.Services.SCM.PM.IServices
         #endregion
         #region 查询
         /// <summary>
-        /// 分页查询采购订单
+        /// 分页查询采购到货单
         /// </summary>
         /// <param name="Where">查询条件</param>
         /// <param name="PageSize">每页大小</param>
@@ -46,13 +49,13 @@ namespace PigRunner.Services.SCM.PM.IServices
         /// <returns></returns>
         ResponseBody QueryAllByPage(PageView view);
         /// <summary>
-        /// 根据ID查询采购订单
+        /// 根据ID查询采购到货单
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         ResponseBusBody QueryDocById(long id);
         /// <summary>
-        /// 根据单据编号查询采购订单
+        /// 根据单据编号查询采购到货单
         /// </summary>
         /// <param name="DocNo"></param>
         /// <returns></returns>

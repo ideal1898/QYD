@@ -135,6 +135,8 @@ namespace PigRunner.Services.Sys.Services
                 sysLogin.Token = token;
                 sysLogin.IsActive = sysUser.IsActive;
                 sysLogin.IsAdmin = sysUser.IsAdmin;
+                sysLogin.ModifiedBy=sysUser.NickName;
+                sysLogin.ModifiedTime=DateTime.Now;
 
                 return loginRepository.Insert(sysLogin);
             }
@@ -143,6 +145,8 @@ namespace PigRunner.Services.Sys.Services
                 sysLogin.Expiretime = DateTime.Now.AddMinutes(45);
                 sysLogin.Token = token;
                 sysLogin.Account = sysUser.ID;
+                sysLogin.ModifiedBy = sysUser.NickName;
+                sysLogin.ModifiedTime = DateTime.Now;
                 return loginRepository.Update(sysLogin);
             }
         }

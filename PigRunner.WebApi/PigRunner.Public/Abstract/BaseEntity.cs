@@ -30,9 +30,17 @@ namespace PigRunner.Public.Abstract
         /// <summary>
         /// 版本
         /// </summary>
-
         public long SysVersion { get; set; } = 0;
-  
+        /// <summary>
+        /// 修改日期
+        /// </summary>
+        public DateTime ModifiedTime { get; set; } = DateTime.Now;
+
+        /// <summary>
+        /// 修改人
+        /// </summary>
+        public string ModifiedBy { get; set; } = string.Empty;
+
         /// <summary>
         /// 创建实体
         /// </summary>

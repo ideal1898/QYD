@@ -6,98 +6,58 @@ using System.Threading.Tasks;
 
 namespace PigRunner.DTO.SCM.PM
 {
-    public struct PurchaseOrderView
-    {
-        /// <summary>
-        /// 标识
-        /// </summary>
-        public long id { get; set; }
-        /// <summary>
-        /// 版本
-        /// </summary>
-        public long SysVersion { get; set; }
-        /// <summary>
-        /// 创建人
-        /// </summary>
-        public string CreatedBy { get; set; }
-        /// <summary>
-        /// 创建时间
-        /// </summary>
-        public DateTime CreatedTime { get; set; }
-        /// <summary>
-        /// 单据编号
-        /// </summary>
-        public string DocNo { get; set; }
-        /// <summary>
-        /// 单据日期
-        /// </summary>
-        public DateTime BusinessDate { get; set; }
+    public class PurchaseOrderView:DocBaseView
+    {     
         /// <summary>
         /// 币种
         /// </summary>
-        public long CurrencyId { get; set; }
+        public long Currency { get; set; }
         /// <summary>
         /// 币种名称
         /// </summary>
-        public string CurrencyName { get; set; }
+        public string CurrencyName { get; set; } = string.Empty;
         /// <summary>
         /// 来源单据类别
         /// </summary>
-        public string SrcDocType { get; set; }
+        public string SrcDocType { get; set; } = string.Empty;
         /// <summary>
         /// 供应商ID
         /// </summary>
-        public long SupplierId { get; set; }
+        public long Supplier { get; set; }    
         /// <summary>
         /// 供应商编码
         /// </summary>
-        public string SupplierCode { get; set; }
+        public string SupplierCode { get; set; } = string.Empty;
         /// <summary>
         /// 供应商名称
         /// </summary>
-        public string SupplierName { get; set; }
+        public string SupplierName { get; set; } = string.Empty;
         /// <summary>
         /// 价税合计
         /// </summary>
-        public string TotalMoney { get; set; }
+        public string TotalMoney { get; set; } = string.Empty;
         /// <summary>
         /// 税额
         /// </summary>
-        public string TaxMoney { get; set; }
+        public string TaxMoney { get; set; } = string.Empty;
         /// <summary>
         /// 未税金额
         /// </summary>
-        public string NoTaxMoney { get; set; }
+        public string NoTaxMoney { get; set; } = string.Empty;
         /// <summary>
         /// 税率
         /// </summary>
-        public string TaxRate { get; set; }
+        public string TaxRate { get; set; } = string.Empty;
         /// <summary>
         /// 状态
         /// </summary>
         public int Status { get; set; }
 
-        public List<POLineView> Lines { get; set; }
+        public List<POLineView> Lines { get; set; }=new List<POLineView>();
     }
 
-    public struct POLineView
-    {
-        /// <summary>
-        /// 标识
-        /// </summary>
-        public long id { get; set; }
-        /// <summary>
-        /// 版本
-        /// </summary>
-        public long SysVersion { get; set; }
-        /// <summary>
-        /// 创建人
-        /// </summary>
-        public string CreatedBy { get; set; }
-        /// <summary>
-        /// 创建日期
-        /// </summary>
-        public DateTime CreatedTime { get; set; }
+    public class POLineView:BaseView
+    {       
         /// <summary>
         /// 料品ID
         /// </summary>
@@ -105,47 +65,47 @@ namespace PigRunner.DTO.SCM.PM
         /// <summary>
         /// 料号
         /// </summary>
-        public string ItemCode { get; set; }
+        public string ItemCode { get; set; } = string.Empty;
         /// <summary>
         /// 品名
         /// </summary>
-        public string ItemName { get; set; }
+        public string ItemName { get; set; } = string.Empty;
         /// <summary>
         /// 规格
         /// </summary>
-        public string ItemSpec { get; set; }
+        public string ItemSpec { get; set; } = string.Empty;
         /// <summary>
         /// 单位
         /// </summary>
-        public string UomName { get; set; }
+        public string UomName { get; set; } = string.Empty;
         /// <summary>
         /// 税率
         /// </summary>
-        public string TaxRate { get; set; }
+        public string TaxRate { get; set; } = string.Empty;
         /// <summary>
         /// 采购数量
         /// </summary>
-        public string Qty { get; set; }
+        public string Qty { get; set; } = string.Empty;
         /// <summary>
         /// 交期
         /// </summary>
-        public DateTime RequireDate { get; set; }
+        public string RequireDate { get; set; } = string.Empty;
         /// <summary>
         /// 单价
         /// </summary>
-        public string Price { get; set; }
+        public string Price { get; set; } = string.Empty;
         /// <summary>
         /// 税额
         /// </summary>
-        public string TaxMoney { get; set; }
+        public string TaxMoney { get; set; } = string.Empty;
         /// <summary>
         /// 未税金额
         /// </summary>
-        public string NoTaxMoney { get; set; }
+        public string NoTaxMoney { get; set; } = string.Empty;
         /// <summary>
         /// 价税合计
         /// </summary>
-        public string TotalMoney { get; set; }
+        public string TotalMoney { get; set; } = string.Empty;
 
     }
 }

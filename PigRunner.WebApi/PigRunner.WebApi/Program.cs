@@ -116,6 +116,7 @@ builder.Services.AddAuthentication(option =>
         ValidateLifetime = true,
         ClockSkew = TimeSpan.Zero
     };
+    
     token.Events = new JwtBearerEvents {
         OnChallenge = context => {
             //此处代码为终止.Net Core默认的返回类型和数据结果，这个很重要哦，必须
@@ -132,6 +133,7 @@ builder.Services.AddAuthentication(option =>
             return Task.FromResult(0);
         }
     };
+    
 });
 
 #endregion

@@ -19,6 +19,10 @@ CREATE TABLE Base_Sys_Login(
 	IsActive BIT--生效
 )
 GO
+alter table Base_Sys_Login add ModifiedTime DateTime DEFAULT GETDATE()
+GO
+alter table Base_Sys_Login add ModifiedBy NVARCHAR(50)
+GO
 --用户
 IF OBJECT_ID('Base_Sys_User') IS NOT NULL
 DROP TABLE Base_Sys_User
@@ -39,6 +43,10 @@ CREATE TABLE Base_Sys_User(
 	MainUrl VARCHAR(20),--主页
 	Avatar VARCHAR(120)--主页
 )
+GO
+alter table Base_Sys_User add ModifiedTime DateTime DEFAULT GETDATE()
+GO
+alter table Base_Sys_User add ModifiedBy NVARCHAR(50)
 GO
 
 --菜单

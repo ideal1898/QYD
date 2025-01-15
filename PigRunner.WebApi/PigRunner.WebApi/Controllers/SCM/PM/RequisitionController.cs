@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json.Linq;
 using PigRunner.DTO.CommonView;
 using PigRunner.DTO.SCM.PM;
 using PigRunner.Public.Common.Views;
@@ -9,115 +8,114 @@ using PigRunner.Services.SCM.PM.IServices;
 namespace PigRunner.WebApi.Controllers.SCM.PM
 {
     /// <summary>
-    /// 采购订单接口
+    /// 请购单接口
     /// </summary>
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class PurchaseOrderController : ControllerBase
+    public class RequisitionController:ControllerBase
     {
         /// <summary>
-        /// 采购订单服务
+        /// 请购单服务
         /// </summary>
-        private IPurchaseOrderService purchaseOrderService;
+        private IRequisitionService orderService;
         /// <summary>
         /// 服务注册
         /// </summary>
-        /// <param name="_service"></param>
-        public PurchaseOrderController(IPurchaseOrderService _service)
+        public RequisitionController(IRequisitionService _orderService)
         {
-            this.purchaseOrderService = _service;
+            orderService = _orderService;
         }
         #region 业务处理
         /// <summary>
-        /// 创建采购订单
+        /// 创建请购单单
         /// </summary>
         /// <param name="vo"></param>
         /// <returns></returns>
-        [AllowAnonymous]
+        //[AllowAnonymous]
         [HttpPost]
-        public ResponseBusBody save([FromBody] PurchaseOrderView vo)
+        public ResponseBusBody save([FromBody] RequisitionView vo)
         {
-            return purchaseOrderService.Save(vo);
+            return orderService.Save(vo);
         }
 
         /// <summary>
-        /// 删除采购订单
+        /// 删除请购单单
         /// </summary>
         /// <param name="ids"></param>
         /// <returns></returns>
-        [AllowAnonymous]
+        //[AllowAnonymous]
         [HttpPost]
         public ResponseBusBody delete([FromBody] List<long> ids)
         {
-            return purchaseOrderService.Delete(ids);
+            return orderService.Delete(ids);
         }
         /// <summary>
-        /// 提交采购订单
+        /// 提交请购单
         /// </summary>
         /// <param name="vo"></param>
         /// <returns></returns>
-        [AllowAnonymous]
+        //[AllowAnonymous]
         [HttpPost]
-        public ResponseBusBody submit([FromBody] PurchaseOrderView vo)
+        public ResponseBusBody submit([FromBody] RequisitionView vo)
         {
-            return purchaseOrderService.Submit(vo);
+            return orderService.Submit(vo);
         }
 
         /// <summary>
-        /// 审核采购订单
+        /// 审核请购单
         /// </summary>
         /// <param name="vo"></param>
         /// <returns></returns>
-        [AllowAnonymous]
+        //[AllowAnonymous]
         [HttpPost]
-        public ResponseBusBody approve([FromBody] PurchaseOrderView vo)
+        public ResponseBusBody approve([FromBody] RequisitionView vo)
         {
-            return purchaseOrderService.Approve(vo);
+            return orderService.Approve(vo);
         }
         /// <summary>
-        /// 弃审采购订单
+        /// 弃审请购单
         /// </summary>
         /// <param name="vo"></param>
         /// <returns></returns>
         [AllowAnonymous]
         [HttpPost]
-        public ResponseBusBody unapprove([FromBody] PurchaseOrderView vo)
+        public ResponseBusBody unapprove([FromBody] RequisitionView vo)
         {
-            return purchaseOrderService.UnApprove(vo);
+            return orderService.UnApprove(vo);
         }
 
         /// <summary>
-        /// 批量提交采购订单
+        /// 批量提交请购单
         /// </summary>
         /// <param name="vos"></param>
         /// <returns></returns>
-        [AllowAnonymous]
+        //[AllowAnonymous]
         [HttpPost]
         public ResponseBody batchSubmit([FromBody] List<DoActionView> vos)
         {
-            return purchaseOrderService.BatchSubmit(vos);
+            return orderService.BatchSubmit(vos);
         }
         /// <summary>
-        /// 批量审核采购订单
+        /// 批量审核请购单
         /// </summary>
         /// <param name="vos"></param>
         /// <returns></returns>
-        [AllowAnonymous]
+        //[AllowAnonymous]
         [HttpPost]
         public ResponseBody batchApprove([FromBody] List<DoActionView> vos)
         {
-            return purchaseOrderService.BatchApprove(vos);
+            return orderService.BatchApprove(vos);
         }
         /// <summary>
-        /// 批量审核采购订单
+        /// 批量审核请购单
         /// </summary>
         /// <param name="vos"></param>
         /// <returns></returns>
-        [AllowAnonymous]
+        //[AllowAnonymous]
         [HttpPost]
         public ResponseBody batchUnApprove([FromBody] List<DoActionView> vos)
         {
-            return purchaseOrderService.BatchUnApprove(vos);
+            return orderService.BatchUnApprove(vos);
         }
 
 
@@ -125,27 +123,27 @@ namespace PigRunner.WebApi.Controllers.SCM.PM
 
         #region 查询
         /// <summary>
-        /// 通过主键查询采购订单
+        /// 通过主键查询请购单
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [AllowAnonymous]
+        //[AllowAnonymous]
         [HttpGet]
-        public ResponseBusBody queryPurchseOrderById([FromQuery] long id)
+        public ResponseBusBody queryDocById([FromQuery] long id)
         {
-            return purchaseOrderService.QueryDocById(id);
+            return orderService.QueryDocById(id);
         }
 
         /// <summary>
-        /// 通过单据编号查询采购订单
+        /// 通过单据编号查询请购单
         /// </summary>
         /// <param name="DocNo"></param>
         /// <returns></returns>
-        [AllowAnonymous]
+        //[AllowAnonymous]
         [HttpGet]
-        public ResponseBusBody queryPurchseOrderByDocNo([FromQuery] string DocNo)
+        public ResponseBusBody queryDocByDocNo([FromQuery] string DocNo)
         {
-            return purchaseOrderService.QueryDocByDocNo(DocNo);
+            return orderService.QueryDocByDocNo(DocNo);
         }
         /// <summary>
         /// 分页查询
@@ -156,7 +154,7 @@ namespace PigRunner.WebApi.Controllers.SCM.PM
         [HttpPost]
         public ResponseBody queryAllByPage([FromBody] PageView view)
         {
-            return purchaseOrderService.QueryAllByPage(view);
+            return orderService.QueryAllByPage(view);
         }
 
         #endregion

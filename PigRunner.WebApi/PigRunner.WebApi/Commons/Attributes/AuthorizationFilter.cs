@@ -39,15 +39,12 @@ namespace PigRunner.WebApi.Commons.Attributes
         /// <param name="context"></param>
         public void OnAuthorization(AuthorizationFilterContext context)
         {
+            var token = context.HttpContext.Request.Headers["authorization"];
             //忽略权限验证
             if (HasAllowAnonymous(context))
             {
                 return;
-            }
-
-           
-
-            var token = context.HttpContext.Request.Headers["authorization"];
+            }  
             var accountData = JWTHelper.JWTDecode(token);
             if (accountData == null)
             {

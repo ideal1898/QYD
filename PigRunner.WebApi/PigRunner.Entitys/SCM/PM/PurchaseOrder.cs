@@ -27,12 +27,12 @@ namespace PigRunner.Entitys.SCM.PM
         /// <summary>
         /// 币种ID
         /// </summary>
-        public long CurrencyId { get; set; }
+        public long Currency { get; set; }
         /// <summary>
         /// 币种
         /// </summary>
-        [Navigate(NavigateType.OneToOne, nameof(CurrencyId))]//一对一 CurrencyId是PurchaseOrder类里面的
-        public Currency? Currency { get; set; }
+        [Navigate(NavigateType.OneToOne, nameof(Currency))]//一对一 CurrencyId是PurchaseOrder类里面的
+        public Currency? Symbols { get; set; }
         /// <summary>
         /// 来源类型
         /// </summary>
@@ -41,12 +41,12 @@ namespace PigRunner.Entitys.SCM.PM
         /// <summary>
         /// 供应商ID
         /// </summary>
-        public long SupplierId { get; set; }
+        public long Supplier { get; set; }
         /// <summary>
         /// 供应商导航关联
         /// </summary>
-        [Navigate(NavigateType.OneToOne, nameof(SupplierId))]//一对一 SupplierId是PurchaseOrder类里面的
-        public Supplier? Supplier { get; set; }
+        [Navigate(NavigateType.OneToOne, nameof(Supplier))]//一对一 SupplierId是PurchaseOrder类里面的
+        public Supplier? Supp { get; set; }
         /// <summary>
         /// 价税合计
         /// </summary>
