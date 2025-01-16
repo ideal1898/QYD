@@ -27,6 +27,10 @@ CREATE TABLE [QYD_Basic_Country] (
 	[Language] SMALLINT DEFAULT -1,
 	-- 姓名格式
 	[NameFormat] SMALLINT DEFAULT -1,
+	--修改人
+	[ModifiedBy] VARCHAR(50),
+	--修改时间
+	[ModifiedTime] datetime,
 	PRIMARY KEY([ID])
 );
 GO

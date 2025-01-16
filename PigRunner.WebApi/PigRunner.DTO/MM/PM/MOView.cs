@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PigRunner.DTO.SCM.MM
+namespace PigRunner.DTO.MM.PM
 {
     /// <summary>
     /// 生产订单视图

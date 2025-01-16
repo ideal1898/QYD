@@ -1,4 +1,4 @@
-﻿using PigRunner.Entitys.SCM.MM;
+﻿using PigRunner.Entitys.MM.PM;
 using PigRunner.Public.Interface;
 using System;
 using System.Collections.Generic;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PigRunner.Repository.SCM.MM
+namespace PigRunner.Repository.MM.PM
 {
     /// <summary>
     /// 生产订单

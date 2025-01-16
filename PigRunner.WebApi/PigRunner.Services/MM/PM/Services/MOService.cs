@@ -1,11 +1,11 @@
 ﻿using Newtonsoft.Json.Linq;
-using PigRunner.DTO.SCM.MM;
+using PigRunner.DTO.MM.PM;
 using PigRunner.Entitys.Basic;
 using PigRunner.Entitys.BCP.Lot;
-using PigRunner.Entitys.SCM.MM;
+using PigRunner.Entitys.MM.PM;
 using PigRunner.Public.Common.Views;
-using PigRunner.Repository.SCM.MM;
-using PigRunner.Services.SCM.MM.IServices;
+using PigRunner.Repository.MM.PM;
+using PigRunner.Services.MM.PM.IServices;
 using SqlSugar;
 using System;
 using System.Collections.Generic;
@@ -13,7 +13,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PigRunner.Services.SCM.MM.Services
+namespace PigRunner.Services.MM.PM.Services
 {
     public class MOService : IMOService
     {
