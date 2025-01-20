@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace PigRunner.DTO.SCM.PM
 {
+    /// <summary>
+    /// 采购订单
+    /// </summary>
     public class PurchaseOrderView:DocBaseView
     {     
         /// <summary>
@@ -48,14 +51,16 @@ namespace PigRunner.DTO.SCM.PM
         /// 税率
         /// </summary>
         public string TaxRate { get; set; } = string.Empty;
+     
         /// <summary>
-        /// 状态
+        /// 明细数据
         /// </summary>
-        public int Status { get; set; }
-
         public List<POLineView> Lines { get; set; }=new List<POLineView>();
     }
 
+    /// <summary>
+    /// 采购订单行
+    /// </summary>
     public class POLineView:BaseView
     {       
         /// <summary>

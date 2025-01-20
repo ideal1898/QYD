@@ -70,7 +70,7 @@ namespace PigRunner.Entitys
         /// <summary>
         /// 提交时间
         /// </summary>
-        public DateTime SubmitDate { get; set; }
+        public DateTime? SubmitDate { get; set; }
         /// <summary>
         /// 提交人
         /// </summary>
@@ -78,7 +78,7 @@ namespace PigRunner.Entitys
         /// <summary>
         /// 审核时间
         /// </summary>
-        public DateTime ApprovedOn { get; set;}
+        public DateTime? ApprovedOn { get; set;}
         /// <summary>
         /// 审核人
         /// </summary>

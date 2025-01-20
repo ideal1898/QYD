@@ -27,7 +27,7 @@ namespace PigRunner.WebApi.Controllers.SCM.PM
         }
         #region 业务处理
         /// <summary>
-        /// 创建采购入库单单
+        /// 创建采购入库单
         /// </summary>
         /// <param name="vo"></param>
         /// <returns></returns>
@@ -39,7 +39,7 @@ namespace PigRunner.WebApi.Controllers.SCM.PM
         }
 
         /// <summary>
-        /// 删除采购入库单单
+        /// 删除采购入库单
         /// </summary>
         /// <param name="ids"></param>
         /// <returns></returns>

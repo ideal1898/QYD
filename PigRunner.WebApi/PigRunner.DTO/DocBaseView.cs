@@ -30,7 +30,7 @@ namespace PigRunner.DTO
         /// <summary>
         /// 创建时间
         /// </summary>
-        public string CreatedTime { get; set; } = string.Empty;
+        public string CreatedTime { get; set; } = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
         /// <summary>
         /// 创建人
         /// </summary>

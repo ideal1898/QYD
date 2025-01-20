@@ -143,15 +143,20 @@ namespace PigRunner.Entitys.SCM.PM
         /// <summary>
         /// 货位实体
         /// </summary>
+        [Navigate(NavigateType.OneToOne, nameof(Bin))]
         public WhSh? Freight { get; set; }
         /// <summary>
         /// 生产日期
         /// </summary>
-        public DateTime ProduceDate { get; set; }
+        public DateTime? ProduceDate { get; set; }
         /// <summary>
         /// 保质天数
         /// </summary>
         public int Expiration { get; set; }
+        /// <summary>
+        /// 生效日期
+        /// </summary>
+        public DateTime? EffectiveDate { get; set; }
         /// <summary>
         /// 失效日期
         /// </summary>

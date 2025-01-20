@@ -140,7 +140,7 @@ namespace PigRunner.WebApi.Controllers.SCM.PM
         /// </summary>
         /// <param name="DocNo"></param>
         /// <returns></returns>
-        //[AllowAnonymous]
+        [AllowAnonymous]
         [HttpGet]
         public ResponseBusBody queryDocByDocNo([FromQuery] string DocNo)
         {

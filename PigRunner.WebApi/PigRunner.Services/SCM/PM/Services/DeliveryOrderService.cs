@@ -35,6 +35,7 @@ namespace PigRunner.Services.SCM.PM.Services
             this.session = _session;
             this.mapper = _mapper;
         }
+
         #region 业务操作
         public ResponseBusBody Save(DeliveryOrderView view)
         {
@@ -53,10 +54,17 @@ namespace PigRunner.Services.SCM.PM.Services
                 }
 
                 doc = mapper.Map<DeliveryOrder>(view);
-                if (view.id > 0) {
+                if (view.id > 0)
+                {
                     doc.SysVersion = SysVersion + 1;
-                    doc.ModifiedBy=session.UserName;
-                    doc.ModifiedTime=DateTime.Now;
+                    doc.ModifiedBy = session.UserName;
+                }
+                else
+                {
+                    if (string.IsNullOrEmpty(doc.CreatedBy))
+                        doc.CreatedBy = session.UserName;
+                    if (doc.CreatedTime == DateTime.MinValue)
+                        doc.CreatedTime = DateTime.Now;
                 }
                 if (doc.Supplier == 0 && !string.IsNullOrEmpty(view.SupplierCode))
                 {
@@ -329,8 +337,8 @@ namespace PigRunner.Services.SCM.PM.Services
                 {
                     SysVersion = it.SysVersion + 1,
                     Status = 0,
-                    ModifiedBy= session.UserName,
-                    ModifiedTime= DateTime.Now
+                    ModifiedBy = session.UserName,
+                    ModifiedTime = DateTime.Now
                 }).Where(w => ids.Contains(w.ID)).ExecuteCommand();
                 repository.CommitTran();
                 stopwatch.Stop();
@@ -360,10 +368,11 @@ namespace PigRunner.Services.SCM.PM.Services
             {
                 int total = 0;
                 var docs = repository.Context.Queryable<DeliveryOrder>()
-                    .Includes(item => item.Dept)
-                    .Includes(item => item.Operators)
-                    .Includes(item => item.Organization)
                     .Includes(item => item.Supp)
+                    .Includes(item => item.Operators)
+                    .Includes(item => item.Dept)
+                    .Includes(item => item.Organization)
+                    .OrderBy(item => item.CreatedTime,OrderByType.Desc)
                     .ToOffsetPage(view.PageNumber, view.PageSize, ref total);
                 var views = mapper.Map<List<DeliveryOrderView>>(docs);
                 stopwatch.Stop();
@@ -392,11 +401,8 @@ namespace PigRunner.Services.SCM.PM.Services
             try
             {
                 var doc = repository.Context.Queryable<DeliveryOrder>()
-                    .Includes(item => item.Dept)
-                    .Includes(item => item.Operators)
-                    .Includes(item => item.Organization)
-                    .Includes(item => item.Supp)
-                    .Includes(item => item.Lines, line => line.Item).Where(item => item.ID == id);
+                     .IncludesAllFirstLayer()
+                     .IncludesAllSecondLayer(item => item.Lines).Where(item => item.ID == id);
                 var view = mapper.Map<DeliveryOrderView>(doc.First());
                 response.data = JObject.FromObject(view);
                 response.code = 200;
@@ -423,8 +429,9 @@ namespace PigRunner.Services.SCM.PM.Services
             try
             {
                 var doc = repository.Context.Queryable<DeliveryOrder>()
-                    .Includes(item => item.Supp)
-                    .Includes(item => item.Lines, line => line.Item).Where(item => item.DocNo == DocNo);
+                     .IncludesAllFirstLayer()
+                     .IncludesAllSecondLayer(item => item.Lines)
+                     .Where(item => item.DocNo == DocNo);
                 var view = mapper.Map<DeliveryOrderView>(doc.First());
                 response.data = JObject.FromObject(view);
                 response.code = 200;
@@ -442,14 +449,13 @@ namespace PigRunner.Services.SCM.PM.Services
         private DeliveryOrderView GetViewById(long id)
         {
             var doc = repository.Context.Queryable<DeliveryOrder>()
-                       .Includes(item => item.Dept)
-                       .Includes(item => item.Operators)
-                       .Includes(item => item.Organization)
-                       .Includes(item => item.Supp)
-                       .Includes(item => item.Lines, line => line.Item).Where(item => item.ID == id);
+                       .IncludesAllFirstLayer()
+                       .IncludesAllSecondLayer(item => item.Lines)
+                       .Where(item => item.ID == id);
             return mapper.Map<DeliveryOrderView>(doc.First());
         }
 
         #endregion
+    
     }
 }

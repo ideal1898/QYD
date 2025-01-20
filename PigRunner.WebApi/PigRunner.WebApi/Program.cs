@@ -181,6 +181,7 @@ SugarIocServices.ConfigurationSugar(db =>
 builder.Services.InjectionAllServices();
 builder.Services.AddScoped<WebSession>();
 builder.Services.AddAutoMapper(typeof(SysAutoMapperProfile));
+builder.Services.AddAutoMapper(typeof(PMAutoMapperProfile));
 
 #endregion
 

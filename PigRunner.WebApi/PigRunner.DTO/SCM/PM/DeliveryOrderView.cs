@@ -152,6 +152,10 @@ namespace PigRunner.DTO.SCM.PM
         /// </summary>
         public string ExpirationDate { get; set; } = string.Empty;
         /// <summary>
+        /// 生效日期
+        /// </summary>
+        public string EffectiveDate { get; set; }=string.Empty;
+        /// <summary>
         /// 备注
         /// </summary>
         public string Memo { get; set; } = string.Empty;
