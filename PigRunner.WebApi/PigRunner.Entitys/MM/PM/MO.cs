@@ -6,12 +6,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PigRunner.Entitys.SCM.MM
+namespace PigRunner.Entitys.MM.PM
 {
     /// <summary>
     /// 生产订单
     /// </summary>
-    [SqlSugar.SugarTable("QYD_SCM_MO")]
+    [SqlSugar.SugarTable("QYD_MM_MO")]
     public class MO : BaseEntity<MO>
     {
         /// <summary>
@@ -66,17 +66,6 @@ namespace PigRunner.Entitys.SCM.MM
 
 
         /// <summary>
-        /// 修改日期
-        /// </summary>
-        public DateTime ModifiedTime { get; set; } = DateTime.Now;
-
-        /// <summary>
-        /// 修改人
-        /// </summary>
-        public string ModifiedBy { get; set; } = string.Empty;
-
-
-        /// <summary>
         /// 单据状态
         /// </summary>
         public int Status { get; set; } = -1;
@@ -92,7 +81,7 @@ namespace PigRunner.Entitys.SCM.MM
     /// <summary>
     /// 生产订单行
     /// </summary>
-    [SqlSugar.SugarTable("QYD_SCM_MOLine")]
+    [SqlSugar.SugarTable("QYD_MM_MOLine")]
     public class MOLine : BaseEntity<MOLine>
     {
         /// <summary>
@@ -165,16 +154,5 @@ namespace PigRunner.Entitys.SCM.MM
         /// 批次
         /// </summary>
         public long LotMaster { get; set; } = 0;
-
-
-        /// <summary>
-        /// 修改日期
-        /// </summary>
-        public DateTime ModifiedTime { get; set; } = DateTime.Now;
-
-        /// <summary>
-        /// 修改人
-        /// </summary>
-        public string ModifiedBy { get; set; } = string.Empty;
     }
 }

@@ -1,7 +1,10 @@
 
-insert into QYD_Sys_Menu(id,CreatedTime,CreatedBy,SysVersion,Path,Name,Component,Redirect,IsActive,Icon,Title,IsLink,IsHide,IsFull,IsAffix,IsKeepAlive,Parent) values(605049656549446,GETDATE(),'管理员',0,'/scm/mm','MM',null,null,0,'Menu','制造管理',null,0,0,0,1,605049575112773)
+insert into QYD_Sys_Menu(id,CreatedTime,CreatedBy,SysVersion,Path,Name,Component,Redirect,IsActive,Icon,Title,IsLink,IsHide,IsFull,IsAffix,IsKeepAlive,Parent) values(605049656549446,GETDATE(),'管理员',0,'/mm','MM',null,null,0,'Lock','制造管理',null,0,0,0,1,0)
 
-insert into QYD_Sys_Menu(id,CreatedTime,CreatedBy,SysVersion,Path,Name,Component,Redirect,IsActive,Icon,Title,IsLink,IsHide,IsFull,IsAffix,IsKeepAlive,Parent) values(605049656549447,GETDATE(),'管理员',0,'/scm/mm/mo','MO','/scm/mm/mo/index',null,0,'Menu','生产订单',null,0,0,0,1,605049656549446)
+insert into QYD_Sys_Menu(id,CreatedTime,CreatedBy,SysVersion,Path,Name,Component,Redirect,IsActive,Icon,Title,IsLink,IsHide,IsFull,IsAffix,IsKeepAlive,Parent) values(605049656549447,GETDATE(),'管理员',0,'/mm/pm','PM',null,null,0,'Menu','生产管理',null,0,0,0,1,605049656549446)
+
+insert into QYD_Sys_Menu(id,CreatedTime,CreatedBy,SysVersion,Path,Name,Component,Redirect,IsActive,Icon,Title,IsLink,IsHide,IsFull,IsAffix,IsKeepAlive,Parent) values(605049656549448,GETDATE(),'管理员',0,'/mm/pm/mo','MO','/mm/pm/mo/index',null,0,'Menu','生产订单',null,0,0,0,1,605049656549447)
+
 
 --批号主档表
 IF OBJECT_ID('QYD_BCP_LotMaster') IS NOT NULL
@@ -44,6 +47,10 @@ CREATE TABLE QYD_BC_LotRule(
 	RuleName VARCHAR(100),--规则名称
 	Org BIGINT,--组织ID
 	RuleDes VARCHAR(500),--创建人
+	--修改人
+	[ModifiedBy] VARCHAR(50),
+	--修改时间
+	[ModifiedTime] datetime,
 	Memo VARCHAR(500)--备注
 )
 GO
@@ -65,6 +72,10 @@ CREATE TABLE QYD_BC_LotRuleLine(
 	FillInCode VARCHAR(50),--补位符
 	SplitCode VARCHAR(50),--分隔符
 	IsFlow BIT,--是否流水依据
+	--修改人
+	[ModifiedBy] VARCHAR(50),
+	--修改时间
+	[ModifiedTime] datetime,
 	Memo VARCHAR(500)--数据源类型
 )
 GO

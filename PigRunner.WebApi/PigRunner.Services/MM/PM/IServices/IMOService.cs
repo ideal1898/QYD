@@ -1,4 +1,4 @@
-﻿using PigRunner.DTO.SCM.MM;
+﻿using PigRunner.DTO.MM.PM;
 using PigRunner.Public.Common.Views;
 using PigRunner.Public.Interface;
 using System;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PigRunner.Services.SCM.MM.IServices
+namespace PigRunner.Services.MM.PM.IServices
 {
     public interface IMOService : IScopedService
     {

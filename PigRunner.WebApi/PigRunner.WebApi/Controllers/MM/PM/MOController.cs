@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PigRunner.DTO.BCP.Lot;
-using PigRunner.DTO.SCM.MM;
+using PigRunner.DTO.MM.PM;
 using PigRunner.Public.Common.Views;
-using PigRunner.Services.SCM.MM.IServices;
+using PigRunner.Services.MM.PM.IServices;
 
-namespace PigRunner.WebApi.Controllers.SCM.MM
+namespace PigRunner.WebApi.Controllers.MM.PM
 {
       /// <summary>
       /// 生产订单
