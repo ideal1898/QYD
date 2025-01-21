@@ -1,4 +1,6 @@
-﻿using PigRunner.Public.Abstract;
+﻿using PigRunner.Entitys.Basic;
+using PigRunner.Entitys.BCP.Lot;
+using PigRunner.Public.Abstract;
 using SqlSugar;
 using System;
 using System.Collections.Generic;
@@ -18,6 +20,12 @@ namespace PigRunner.Entitys.MM.PM
         /// 组织
         /// </summary>
         public long Org { get; set; } = 0;
+
+        /// <summary>
+        /// 组织导航关联
+        /// </summary>
+        [Navigate(NavigateType.OneToOne, nameof(Org))]//一对一
+        public Organization? Organization { get; set; }
 
         /// <summary>
         /// 单据类型
@@ -45,9 +53,21 @@ namespace PigRunner.Entitys.MM.PM
         public long MoDept { get; set; } = 0;
 
         /// <summary>
+        /// 部门导航关联
+        /// </summary>
+        [Navigate(NavigateType.OneToOne, nameof(MoDept))]//一对一
+        public Department? MODepartment { get; set; }
+
+        /// <summary>
         /// 业务员
         /// </summary>
         public long BusinessPerson { get; set; } = 0;
+
+        /// <summary>
+        /// 导航关联
+        /// </summary>
+        [Navigate(NavigateType.OneToOne, nameof(BusinessPerson))]//一对一
+        public Operators? Operators { get; set; }
 
         /// <summary>
         /// 计划完工日
@@ -58,6 +78,12 @@ namespace PigRunner.Entitys.MM.PM
         /// 完工仓库
         /// </summary>
         public long CompleteWh { get; set; } = 0;
+
+        /// <summary>
+        /// 导航关联
+        /// </summary>
+        [Navigate(NavigateType.OneToOne, nameof(CompleteWh))]//一对一
+        public Wh? WH { get; set; }
 
         /// <summary>
         /// 备注
@@ -99,6 +125,12 @@ namespace PigRunner.Entitys.MM.PM
         /// </summary>
         public long Item { get; set; } = 0;
 
+        /// <summary>
+        /// 导航关联
+        /// </summary>
+        [Navigate(NavigateType.OneToOne, nameof(Item))]//一对一
+        public Item ItemMaster { get; set; }
+
 
         /// <summary>
         /// 生产数量
@@ -109,6 +141,14 @@ namespace PigRunner.Entitys.MM.PM
         /// 生产单位
         /// </summary>
         public long MoUom { get; set; } = 0;
+
+        /// <summary>
+        /// 导航关联
+        /// </summary>
+        [Navigate(NavigateType.OneToOne, nameof(MoUom))]//一对一
+        public UOM Uom { get; set; }
+
+       
 
         /// <summary>
         /// 计划开工日
@@ -154,5 +194,11 @@ namespace PigRunner.Entitys.MM.PM
         /// 批次
         /// </summary>
         public long LotMaster { get; set; } = 0;
+
+        /// <summary>
+        /// 导航关联
+        /// </summary>
+        [Navigate(NavigateType.OneToOne, nameof(LotMaster))]//一对一
+        public LotMaster? Lot { get; set; }
     }
 }

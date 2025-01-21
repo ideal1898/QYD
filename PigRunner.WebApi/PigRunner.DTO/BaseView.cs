@@ -48,7 +48,8 @@ namespace PigRunner.DTO
         /// <summary>
         /// 创建日期
         /// </summary>
-        public DateTime? CreatedTime { get { return DateTime.Now; } set { } }
+        public DateTime CreatedTime { get; set; } = DateTime.Now;
+
         /// <summary>
         /// 创建人
         /// </summary>

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PigRunner.DTO.BCP.Lot;
+using PigRunner.DTO.CommonView;
 using PigRunner.DTO.MM.PM;
 using PigRunner.Public.Common.Views;
 using PigRunner.Services.MM.PM.IServices;
@@ -23,88 +24,139 @@ namespace PigRunner.WebApi.Controllers.MM.PM
         {
             this.services = _services;
         }
+
+        #region 业务处理
         /// <summary>
-        /// 生产订单保存
+        /// 创建生产订单
         /// </summary>
-        /// <param name="request"></param>
+        /// <param name="vo"></param>
         /// <returns></returns>
         [AllowAnonymous]
         [HttpPost]
-        public PubResponse MOSave([FromBody]MOView request)
+        public ResponseBusBody save([FromBody] MOView vo)
         {
-            return services.MOSave(request);
+            return services.Save(vo);
         }
 
         /// <summary>
-        /// 生产订单查询
+        /// 删除生产订单
         /// </summary>
-        /// <param name="request"></param>
+        /// <param name="ids"></param>
         /// <returns></returns>
         [AllowAnonymous]
         [HttpPost]
-        public PubResponse MOQuery([FromBody] MOQueryView request)
+        public ResponseBusBody delete([FromBody] List<long> ids)
         {
-            return services.MOQuery(request);
+            return services.Delete(ids);
+        }
+        /// <summary>
+        /// 提交生产订单
+        /// </summary>
+        /// <param name="vo"></param>
+        /// <returns></returns>
+        [AllowAnonymous]
+        [HttpPost]
+        public ResponseBusBody submit([FromBody] MOView vo)
+        {
+            return services.Submit(vo);
         }
 
         /// <summary>
-        /// 根据生产订单行ID查询生产订单信息
+        /// 审核生产订单
         /// </summary>
-        /// <param name="request"></param>
+        /// <param name="vo"></param>
         /// <returns></returns>
         [AllowAnonymous]
         [HttpPost]
-        public PubResponse MOQueryByID([FromBody] MOLineQueryView request)
+        public ResponseBusBody approve([FromBody] MOView vo)
         {
-            return services.MOQueryByID(request);
+            return services.Approve(vo);
+        }
+        /// <summary>
+        /// 弃审生产订单
+        /// </summary>
+        /// <param name="vo"></param>
+        /// <returns></returns>
+        [AllowAnonymous]
+        [HttpPost]
+        public ResponseBusBody unapprove([FromBody] MOView vo)
+        {
+            return services.UnApprove(vo);
         }
 
         /// <summary>
-        /// 生产订单删除
+        /// 批量提交生产订单
         /// </summary>
-        /// <param name="request"></param>
+        /// <param name="vos"></param>
         /// <returns></returns>
         [AllowAnonymous]
         [HttpPost]
-        public PubResponse MODelete([FromBody] MODelView request)
+        public ResponseBody batchSubmit([FromBody] List<DoActionView> vos)
         {
-            return services.MODelete(request);
+            return services.BatchSubmit(vos);
+        }
+        /// <summary>
+        /// 批量审核生产订单
+        /// </summary>
+        /// <param name="vos"></param>
+        /// <returns></returns>
+        [AllowAnonymous]
+        [HttpPost]
+        public ResponseBody batchApprove([FromBody] List<DoActionView> vos)
+        {
+            return services.BatchApprove(vos);
+        }
+        /// <summary>
+        /// 批量审核生产订单
+        /// </summary>
+        /// <param name="vos"></param>
+        /// <returns></returns>
+        [AllowAnonymous]
+        [HttpPost]
+        public ResponseBody batchUnApprove([FromBody] List<DoActionView> vos)
+        {
+            return services.BatchUnApprove(vos);
+        }
+
+
+        #endregion
+
+        #region 查询
+        /// <summary>
+        /// 通过主键查询生产订单
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [AllowAnonymous]
+        [HttpGet]
+        public ResponseBusBody queryMOById([FromQuery] long id)
+        {
+            return services.QueryDocById(id);
         }
 
         /// <summary>
-        /// 生产订单提交
+        /// 通过单据编号查询生产订单
         /// </summary>
-        /// <param name="request"></param>
+        /// <param name="DocNo"></param>
         /// <returns></returns>
         [AllowAnonymous]
-        [HttpPost]
-        public PubResponse MOSubmit([FromBody] MODelView request)
+        [HttpGet]
+        public ResponseBusBody queryMOByDocNo([FromQuery] string DocNo)
         {
-            return services.MOSubmit(request);
+            return services.QueryDocByDocNo(DocNo);
+        }
+        /// <summary>
+        /// 分页查询
+        /// </summary>
+        /// <param name="view"></param>
+        /// <returns></returns>
+        //[AllowAnonymous]
+        [HttpPost]
+        public ResponseBody queryAllByPage([FromBody] PageView view)
+        {
+            return services.QueryAllByPage(view);
         }
 
-        /// <summary>
-        /// 生产订单删除
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
-        [AllowAnonymous]
-        [HttpPost]
-        public PubResponse MOApprove([FromBody] MODelView request)
-        {
-            return services.MOApprove(request);
-        }
-
-        /// <summary>
-        /// 生产订单弃审
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
-        [AllowAnonymous]
-        [HttpPost]
-        public PubResponse MOUnApprove([FromBody] MODelView request)
-        {
-            return services.MOUnApprove(request);
-        }
+        #endregion
     }
 }

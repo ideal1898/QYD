@@ -182,6 +182,7 @@ builder.Services.InjectionAllServices();
 builder.Services.AddScoped<WebSession>();
 builder.Services.AddAutoMapper(typeof(SysAutoMapperProfile));
 builder.Services.AddAutoMapper(typeof(PMAutoMapperProfile));
+builder.Services.AddAutoMapper(typeof(MMAutoMapperProfile));
 
 #endregion
 

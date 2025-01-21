@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using AutoMapper;
+using Newtonsoft.Json.Linq;
+using PigRunner.DTO.CommonView;
 using PigRunner.DTO.MM.PM;
 using PigRunner.Entitys.Basic;
 using PigRunner.Entitys.BCP.Lot;
@@ -9,6 +11,7 @@ using PigRunner.Services.MM.PM.IServices;
 using SqlSugar;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,52 +21,120 @@ namespace PigRunner.Services.MM.PM.Services
     public class MOService : IMOService
     {
         private MORepository repository;
+        private WebSession session;
+        private IMapper mapper;
+
         /// <summary>
         /// 服务
         /// </summary>
         /// <param name="_MORepository"></param>
-        public MOService(MORepository _repository)
+        public MOService(MORepository _repository, WebSession _session, IMapper _mapper)
         {
             this.repository = _repository;
+            this.session = _session;
+            this.mapper = _mapper;
         }
+
+        #region  业务操作
 
         /// <summary>
         /// 生产订单保存
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public PubResponse MOSave(MOView request)
+        public ResponseBusBody Save(MOView request)
         {
-            PubResponse response = new PubResponse();
+            ResponseBusBody response = new ResponseBusBody();
+            Stopwatch stopwatch = Stopwatch.StartNew();
             try
             {
                 if (request == null)
                     throw new Exception("参数不能为空！");
+                if (request.MOLines == null || request.MOLines.Count <= 0)
+                    throw new Exception("生产订单行信息不能为空！");
+                if (string.IsNullOrEmpty(request.BusinessDate))
+                    throw new Exception("单据日期不能为空！");
+
+                if (string.IsNullOrEmpty(request.OrgCode))
+                    throw new Exception("组织不能为空！");
 
                 int Status = 0;
                 int.TryParse(request.Status, out Status);
-
+                long SysVersion = 0;
                 MO head = null;
                 if (request.id > 0)
                 {
                     head = repository.GetFirst(q => q.ID == request.id);
                     if (head == null)
                         throw new Exception(string.Format("ID为【{0}】的生产订单不存在！", request.id));
+                    SysVersion = head.SysVersion;
+                    if (SysVersion != request.SysVersion)
+                        throw new Exception($"生产订单【{head.DocNo}】数据已被修改");
                 }
-                else
+
+                //自动编码生成单号
+                if (string.IsNullOrEmpty(request.DocNo))
                 {
-                    head = MO.Create();
-                    Status = 0;
+                    string DocNo = $"MO{DateTime.Now.ToString("yyyyMMdd")}";
+                    var maxSerialNumber = repository.Context.Queryable<MO>()
+                        .Where(o => o.DocNo.Contains(DocNo))
+                        .Max(o => o.DocNo);
+                    if (string.IsNullOrEmpty(maxSerialNumber))
+                        DocNo += "00001";
+                    else
+                    {
+                        string MaxNum = maxSerialNumber.Substring(DocNo.Length, maxSerialNumber.Length- DocNo.Length);
+
+                        int num = 1;
+                        int.TryParse(MaxNum, out num);
+                        num += 1;
+                        if (num.ToString().Length == 1)
+                            DocNo += "0000" + num;
+                        else if (num.ToString().Length == 2)
+                            DocNo += "000" + num;
+                        else if (num.ToString().Length == 3)
+                            DocNo += "00" + num;
+                        else if (num.ToString().Length == 4)
+                            DocNo += "0" + num;
+                        else
+                            DocNo += num;
+                    }
+                    request.DocNo = DocNo;
                 }
 
-                if (request.Lines == null || request.Lines.Count <= 0)
-                    throw new Exception("生产订单行信息不能为空！");
+                //先把视图中实体字段转为对应ID
+                foreach (var item in request.MOLines)
+                {
+                    if (string.IsNullOrEmpty(item.ItemCode))
+                        throw new Exception("料号不能为空！");
 
-                if (string.IsNullOrEmpty(request.BusinessDate))
-                    throw new Exception("单据日期不能为空！");
+                    var itemEy = repository.Context.Queryable<Item>().Single(q => q.Code == item.ItemCode);
+                    if (itemEy == null)
+                        throw new Exception(string.Format("编码为【{0}】的物料不存在，请检查！", item.ItemCode));
+                    item.Item = itemEy.ID;
 
-                if (string.IsNullOrEmpty(request.OrgCode))
-                    throw new Exception("组织不能为空！");
+                    if (item.MoUom <= 0 && !string.IsNullOrEmpty(item.MoUomCode))
+                    {
+                        var uom = repository.Context.Queryable<UOM>().Single(q => q.Code == item.MoUomCode);
+                        if (uom == null)
+                            throw new Exception(string.Format("编码为【{0}】的计量单位不存在，请检查！", item.MoUomCode));
+                        item.MoUom = uom.ID;
+                    }
+
+                    if (!string.IsNullOrEmpty(item.LotCode))
+                    {
+                        var lot = repository.Context.Queryable<LotMaster>().Where(q => q.LotCode == item.LotCode).ToList()?.FirstOrDefault();
+                        if (lot == null)
+                            throw new Exception(string.Format("编码为【{0}】的批号主档不存在，请检查！", item.LotCode));
+
+                        item.LotMaster = lot.ID;
+                    }
+                }
+
+                head = mapper.Map<MO>(request);
+                if (request.id > 0)
+                    head.SysVersion = SysVersion + 1;
+
                 var org = repository.Context.Queryable<Organization>().Where(q => q.Code == request.OrgCode).ToList()?.FirstOrDefault();
                 if (org == null)
                     throw new Exception(string.Format("编码为【{0}】的组织机构不存在，请检查！", request.OrgCode));
@@ -123,152 +194,44 @@ namespace PigRunner.Services.MM.PM.Services
                         throw new Exception(string.Format("编码为【{0}】的仓库不存在，请检查！", request.CompleteWhCode));
                     head.CompleteWh = obj.ID;
                 }
-                head.Memo = request.Memo;
-                head.MOLines = new List<MOLine>();
-
-                //记录修改行ID，没记录则默认删除行
-                List<long> lstMOLine=new List<long>();
-
-                List<MOLine> oldLine =new  List<MOLine>();
-                if (request.id > 0)
+                foreach (var item in head.MOLines)
                 {
-                    var lst = repository.Context.Queryable<MO>().Includes(q => q.MOLines).Where(q => q.ID == request.id).ToList();
-                    if (lst == null || lst.Count <= 0)
-                        throw new Exception(string.Format("ID为【{0}】的生产订单不存在！", request.id));
-                    oldLine = lst.FirstOrDefault().MOLines;
-                }
-
-
-                foreach (var item in request.Lines)
-                {
-                    if (string.IsNullOrEmpty(item.LineNum))
-                        throw new Exception("行号不能为空！");
-
-                    if (string.IsNullOrEmpty(item.MoQty))
-                        throw new Exception("生产数量不能为空！");
-                    int LineNum = Convert.ToInt32(item.LineNum);
-
-                    decimal MoQty = 0m;
-                    decimal.TryParse(item.MoQty, out MoQty);
-                    if (MoQty <= 0)
-                        throw new Exception(string.Format("【{0}】行生产数量要大于零！", LineNum));
-
-
-                    if (string.IsNullOrEmpty(item.ItemCode))
-                        throw new Exception(string.Format("【{0}】行料号不能为空！", LineNum));
-
-                    if (string.IsNullOrEmpty(item.MoUomCode))
-                        throw new Exception(string.Format("【{0}】行生产单位不能为空！", LineNum));
-
-                    var itemEy = repository.Context.Queryable<Item>().Where(q => q.Code == item.ItemCode).ToList()?.FirstOrDefault();
-                    if (itemEy == null)
-                        throw new Exception(string.Format("编码为【{0}】的物料不存在，请检查！", item.ItemCode));
-
-                    var uom = repository.Context.Queryable<UOM>().Where(q => q.Code == item.MoUomCode).ToList()?.FirstOrDefault();
-                    if (uom == null)
-                        throw new Exception(string.Format("编码为【{0}】的计量单位不存在，请检查！", item.MoUomCode));
-                    MOLine line = null;
+                    if (item.MO == 0)
+                        item.MO = head.ID;
                     if (request.id > 0)
-                    {
-                        if (!string.IsNullOrEmpty(item.Action) && item.Action.Equals("Add"))
-                        {
-                            line = MOLine.Create();
-                        }
-                        else
-                        {
-                            line = repository.Context.Queryable<MOLine>().Where(q => q.ID == item.id).ToList()?.FirstOrDefault();
-                            if (line == null)
-                                throw new Exception(string.Format("行修改时，ID为【{0}】生产订单行不存在！", item.id));
-                        }
-                        if (item.id > 0)
-                            lstMOLine.Add(item.id);
-                    }
-                    else
-                        line = MOLine.Create();
-                    line.MO = head.ID;
-                    line.LineNum = LineNum;
-                    line.Item = itemEy.ID;
-                    line.MoUom = uom.ID;
-                    line.MoQty = MoQty;
+                        item.SysVersion += 1;
 
-                    if (!string.IsNullOrEmpty(item.StartDate))
-                    {
-                        DateTime date = DateTime.Now;
-                        DateTime.TryParse(item.StartDate, out date);
-                        line.StartDate = date;
-                    }
-                    if (!string.IsNullOrEmpty(item.CompleteDate))
-                    {
-                        DateTime date = DateTime.Now;
-                        DateTime.TryParse(item.CompleteDate, out date);
-                        if (date != DateTime.MinValue)
-                            line.CompleteDate = date;
-                    }
-                    line.SrcDocNo = item.SrcDocNo;
-                    line.SrcDocType = item.SrcDocType;
+                    if (item.MO == 0)
+                        item.MO = head.ID;
+                    if (request.id > 0)
+                        item.SysVersion += 1;
 
-                    if (!string.IsNullOrEmpty(item.ActualStartDate))
-                    {
-                        DateTime date = DateTime.Now;
-                        DateTime.TryParse(item.ActualStartDate, out date);
-                        if (date != DateTime.MinValue)
-                            line.ActualStartDate = date;
-                    }
-                    if (!string.IsNullOrEmpty(item.ActualCompleteDate))
-                    {
-                        DateTime date = DateTime.Now;
-                        DateTime.TryParse(item.ActualCompleteDate, out date);
-                        if (date != DateTime.MinValue)
-                            line.ActualCompleteDate = date;
-                    }
-
-                    line.BomVersion = item.BomVersion;
-                    line.Routing = item.Routing;
-
-                    if (!string.IsNullOrEmpty(item.LotCode))
-                    {
-                        var lot = repository.Context.Queryable<LotMaster>().Where(q => q.LotCode == item.LotCode).ToList()?.FirstOrDefault();
-                        if (lot == null)
-                            throw new Exception(string.Format("编码为【{0}】的批号主档不存在，请检查！", item.LotCode));
-
-                        line.LotMaster = lot.ID;
-                    }
-                    head.MOLines.Add(line);
                 }
-
-                //删除行
-                if (lstMOLine.Count > 0)
-                {
-                    List<MOLine> list = new List<MOLine>();
-                    foreach (var item in oldLine)
-                    {
-                        if (lstMOLine.Contains(item.ID))
-                            continue;
-                        list.Add(item);
-                    }
-                    //批量删除行
-                    if(list.Count > 0)
-                    {
-                        repository.Context.Deleteable<MOLine>(list).ExecuteCommand(); //批量删除
-                    }
-                }
-
-                bool isSuccess = false;
-                if(request.id>0)
-                {
-                    isSuccess= repository.Context.UpdateNav(head).Include(q => q.MOLines).ExecuteCommand();
-                }
+                bool flag = false;
+                if (request.id == 0)
+                    flag = repository.Context.InsertNav(head).Include(item => item.MOLines,
+                            new InsertNavOptions() { OneToManyIfExistsNoInsert = true }).ExecuteCommand();
                 else
-                {
-                    isSuccess= repository.Context.InsertNav(head).Include(q => q.MOLines).ExecuteCommand();
-                }
-                if (!isSuccess)
+                    flag = repository.Context.UpdateNav(head).Include(item => item.MOLines, new UpdateNavOptions() { OneToManyInsertOrUpdate = true }).ExecuteCommand();
+                if (!flag)
                     throw new Exception("生产订单新增/修改操作失败！");
 
-                response.id = head.ID;
-                response.success = true;
-                response.code = 200;
-                response.msg = "操作成功";
+                //重新查询单据
+                head = repository.Context.Queryable<MO>()
+                    .Includes(item => item.Organization)
+                    .Includes(item => item.MODepartment)
+                      .Includes(item => item.Operators)
+                        .Includes(item => item.WH)
+                    .Includes(item => item.MOLines, line => line.ItemMaster)
+                     .Includes(item => item.MOLines, line => line.Uom)
+                      .Includes(item => item.MOLines, line => line.Lot)
+                    .Where(item => item.ID == head.ID).First();
+                //将实体转化成View
+                var vo = mapper.Map<MOView>(head);
+                stopwatch.Stop();
+                response.code = flag ? 200 : 401;
+                response.data = JObject.FromObject(vo);
+                response.msg = $"生产订单保存成功，耗时：{stopwatch.ElapsedMilliseconds}毫秒";
             }
             catch (Exception ex)
             {
@@ -278,413 +241,325 @@ namespace PigRunner.Services.MM.PM.Services
         }
 
         /// <summary>
-        /// 生产订单查询
+        /// 批量删除
         /// </summary>
-        /// <param name="request"></param>
+        /// <param name="ids"></param>
         /// <returns></returns>
-        public PubResponse MOQuery(MOQueryView request)
+        public ResponseBusBody Delete(List<long> ids)
         {
-
-            PubResponse response = new PubResponse();
+            ResponseBusBody response = new ResponseBusBody();
             try
             {
-                if (request == null)
-                    throw new Exception("查询参数不能为空！");
-                string sql2Head = "1=1";
-                if (!string.IsNullOrEmpty(request.DocNo))
-                    sql2Head += string.Format(" and DocNo='{0}'", request.DocNo);
+                Stopwatch stopwatch = Stopwatch.StartNew();
+                repository.BeginTran();
+                foreach (long id in ids)
+                    repository.Context.DeleteNav<MO>(item => item.ID == id).Include(item => item.MOLines).ExecuteCommand();
 
+                repository.CommitTran();
+                stopwatch.Stop();
+                response.code = 200;
+                response.msg = $"成功删除：{ids.Count}条记录,执行耗时：{stopwatch.ElapsedMilliseconds}毫秒";
+            }
+            catch (Exception ex)
+            {
+                repository.RollbackTran();
+                response.code = 500;
+                response.msg = ex.Message;
+            }
+
+            return response;
+
+        }
+
+        public ResponseBusBody Submit(MOView view)
+        {
+            ResponseBusBody response = new ResponseBusBody();
+            try
+            {
+                Stopwatch stopwatch = Stopwatch.StartNew();
+                var MO = repository.GetFirst(item => item.ID == view.id);
+                if (MO == null)
+                    throw new Exception($"生产订单【{view.DocNo}】为空，不允许提交");
+
+                if (view.SysVersion != MO.SysVersion)
+                    throw new Exception($"生产订单【{view.DocNo}】数据已被修改，不允许提交");
+
+                repository.BeginTran();
+                repository.Context.Updateable<MO>().SetColumns(it => new MO() { SysVersion = it.SysVersion + 1, Status = 1 }).Where(w => w.ID == view.id).ExecuteCommand();
+                repository.CommitTran();
+                var vo = GetMOViewById(view.id);
+                stopwatch.Stop();
+                response.code = 200;
+                response.msg = $"生产订单提交完成，耗时:{stopwatch.ElapsedMilliseconds}毫秒";
+                response.data = JObject.FromObject(vo);
+            }
+            catch (Exception ex)
+            {
+                repository.RollbackTran();
+                response.code = 500;
+                response.msg = ex.Message;
+            }
+
+            return response;
+        }
+
+        public ResponseBusBody Approve(MOView view)
+        {
+            ResponseBusBody response = new ResponseBusBody();
+            try
+            {
+                Stopwatch stopwatch = Stopwatch.StartNew();
+                var MO = repository.GetFirst(item => item.ID == view.id);
+                if (MO == null)
+                    throw new Exception($"生产订单【{view.DocNo}】为空，不允许审核");
+
+                if (view.SysVersion != MO.SysVersion)
+                    throw new Exception($"生产订单【{view.DocNo}】数据已被修改，不允许审核");
+
+                repository.BeginTran();
+                repository.Context.Updateable<MO>().SetColumns(it => new MO() { SysVersion = it.SysVersion + 1, Status = 2 }).Where(w => w.ID == view.id).ExecuteCommand();
+                repository.CommitTran();
+                var vo = GetMOViewById(view.id);
+                stopwatch.Stop();
+                response.code = 200;
+                response.msg = $"生产订单审核完成，耗时:{stopwatch.ElapsedMilliseconds}毫秒";
+                response.data = JObject.FromObject(vo);
+            }
+            catch (Exception ex)
+            {
+                repository.RollbackTran();
+                response.code = 500;
+                response.msg = ex.Message;
+            }
+
+            return response;
+        }
+
+        public ResponseBusBody UnApprove(MOView view)
+        {
+            ResponseBusBody response = new ResponseBusBody();
+            try
+            {
+                Stopwatch stopwatch = Stopwatch.StartNew();
+                var MO = repository.GetFirst(item => item.ID == view.id);
+                if (MO == null)
+                    throw new Exception($"生产订单【{view.DocNo}】为空，不允许弃审");
+
+                if (view.SysVersion != MO.SysVersion)
+                    throw new Exception($"生产订单【{view.DocNo}】数据已被修改，不允许弃审");
+
+                repository.BeginTran();
+                repository.Context.Updateable<MO>().SetColumns(it => new MO() { SysVersion = it.SysVersion + 1, Status = 0 }).Where(w => w.ID == view.id).ExecuteCommand();
+                repository.CommitTran();
+                var vo = GetMOViewById(view.id);
+                stopwatch.Stop();
+                response.code = 200;
+                response.msg = $"生产订单弃审完成，耗时:{stopwatch.ElapsedMilliseconds}毫秒";
+                response.data = JObject.FromObject(vo);
+            }
+            catch (Exception ex)
+            {
+                repository.RollbackTran();
+                response.code = 500;
+                response.msg = ex.Message;
+            }
+
+            return response;
+        }
+
+        public ResponseBody BatchSubmit(List<DoActionView> views)
+        {
+            ResponseBody response = new ResponseBody();
+            try
+            {
+                var ids = views.Select(item => item.id);
+                Stopwatch stopwatch = Stopwatch.StartNew();
+                repository.BeginTran();
+                repository.Context.Updateable<MO>().SetColumns(it => new MO() { SysVersion = it.SysVersion + 1, Status = 1 }).Where(w => ids.Contains(w.ID)).ExecuteCommand();
+                repository.CommitTran();
+                stopwatch.Stop();
+                response.code = 200;
+                response.msg = $"生产订单提交完成，耗时:{stopwatch.ElapsedMilliseconds}毫秒";
+            }
+            catch (Exception ex)
+            {
+                repository.RollbackTran();
+                response.code = 500;
+                response.msg = ex.Message;
+            }
+
+            return response;
+        }
+
+        public ResponseBody BatchApprove(List<DoActionView> views)
+        {
+            ResponseBody response = new ResponseBody();
+            try
+            {
+                var ids = views.Select(item => item.id);
+                Stopwatch stopwatch = Stopwatch.StartNew();
+                repository.BeginTran();
+                repository.Context.Updateable<MO>().SetColumns(it => new MO() { SysVersion = it.SysVersion + 1, Status = 2 }).Where(w => ids.Contains(w.ID)).ExecuteCommand();
+                repository.CommitTran();
+                stopwatch.Stop();
+                repository.CommitTran();
+                stopwatch.Stop();
+                response.code = 200;
+                response.msg = $"生产订单审核完成，耗时:{stopwatch.ElapsedMilliseconds}毫秒";
+            }
+            catch (Exception ex)
+            {
+                repository.RollbackTran();
+                response.code = 500;
+                response.msg = ex.Message;
+            }
+
+            return response;
+        }
+
+        public ResponseBody BatchUnApprove(List<DoActionView> views)
+        {
+            ResponseBody response = new ResponseBody();
+            try
+            {
+                var ids = views.Select(item => item.id);
+                Stopwatch stopwatch = Stopwatch.StartNew();
+                repository.BeginTran();
+                repository.Context.Updateable<MO>().SetColumns(it => new MO() { SysVersion = it.SysVersion + 1, Status = 0 }).Where(w => ids.Contains(w.ID)).ExecuteCommand();
+                repository.CommitTran();
+                stopwatch.Stop();
+                repository.CommitTran();
+                stopwatch.Stop();
+                response.code = 200;
+                response.msg = $"生产订单弃审完成，耗时:{stopwatch.ElapsedMilliseconds}毫秒";
+            }
+            catch (Exception ex)
+            {
+                repository.RollbackTran();
+                response.code = 500;
+                response.msg = ex.Message;
+            }
+
+            return response;
+        }
+
+
+        #endregion
+
+
+        #region 查询
+        public ResponseBody QueryAllByPage(PageView view)
+        {
+            ResponseBody response = new ResponseBody();
+            Stopwatch stopwatch = Stopwatch.StartNew();
+            try
+            {
                 int total = 0;
-
-                int Current = 1, Size = 10;
-                if (!string.IsNullOrEmpty(request.Current))
-                    int.TryParse(request.Current, out Current);
-                if (!string.IsNullOrEmpty(request.Size))
-                    int.TryParse(request.Size, out Size);
-
-                if (Current <= 0)
-                    Current = 1;
-                if (Size <= 0)
-                    Size = 10;
-
-                var lst = repository.Context.Queryable<MO>().Includes(q => q.MOLines).Where(sql2Head).ToOffsetPage(Current, Size, ref total).ToList();
-                List<MOListView> list = new List<MOListView>();
-                int LineNum = 1;
-                foreach (var item in lst)
-                {
-                    string orgName = null, MoDeptName = null, CompleteWhName = null;
-                    if (item.Org > 0)
-                    {
-                        var org = repository.Context.Queryable<Organization>().Where(q => q.ID == item.Org).ToList()?.FirstOrDefault();
-                        orgName = org?.Name;
-                    }
-                    if (item.MoDept > 0)
-                    {
-                        var obj = repository.Context.Queryable<Department>().Where(q => q.ID == item.MoDept).ToList()?.FirstOrDefault();
-                        MoDeptName = obj?.Name;
-                    }
-                    if (item.CompleteWh > 0)
-                    {
-                        var obj = repository.Context.Queryable<Wh>().Where(q => q.ID == item.CompleteWh).ToList()?.FirstOrDefault();
-                        CompleteWhName = obj?.Name;
-                    }
-                    foreach (var item2 in item.MOLines)
-                    {
-                        MOListView line = new MOListView();
-                        line.LineNum = LineNum.ToString();
-                        line.id = item2.ID;
-                        line.MainID = item.ID;
-                        line.DocTypeName = item.DocType;
-                        line.Status = item.Status.ToString();
-                        if (line.Status == "0")
-                            line.StatusName = "开立";
-                        else if (line.Status == "1")
-                            line.StatusName = "核准中";
-                        else if (line.Status == "2")
-                            line.StatusName = "已核准";
-                        line.DocNo = item.DocNo;
-                        line.BomVersion = item2.BomVersion;
-                        line.OrgName = orgName;
-                        line.MoDeptName = MoDeptName;
-                        line.MoQty = item2.MoQty;
-                        var obj = repository.Context.Queryable<Item>().Where(q => q.ID == item2.Item).ToList()?.FirstOrDefault();
-                        if (obj != null)
-                        {
-                            line.ItemCode = obj.Code;
-                            line.ItemName = obj.Name;
-                            line.ItemSpecs = obj.SPECS;
-                        }
-                        if (item2.MoUom > 0)
-                        {
-                            var obj2 = repository.Context.Queryable<UOM>().Where(q => q.ID == item2.MoUom).ToList()?.FirstOrDefault();
-                            if (obj2 != null)
-                            {
-                                line.MoUomName = obj2.Name;
-                            }
-                        }
-                        line.CompleteWhName = CompleteWhName;
-                        list.Add(line);
-                        LineNum++;
-                    }
-                }
-
-
-                response.data = JArray.FromObject(list);
+                var head = repository.Context.Queryable<MO>()
+                     .Includes(item => item.Organization)
+                     .Includes(item => item.MODepartment)
+                       .Includes(item => item.Operators)
+                         .Includes(item => item.WH)
+                     .Includes(item => item.MOLines, line => line.ItemMaster)
+                      .Includes(item => item.MOLines, line => line.Uom)
+                       .Includes(item => item.MOLines, line => line.Lot).ToOffsetPage(view.PageNumber, view.PageSize, ref total);
+                var views = mapper.Map<List<MOView>>(head);
+                stopwatch.Stop();
+                response.code = 200;
                 response.total = total;
-                response.success = true;
-                response.code = 200;
-                response.msg = "操作成功";
+                response.msg = $"生产订单查询完成，共计{total}条记录，耗时：{total}";
+                response.data = JArray.FromObject(views);
             }
             catch (Exception ex)
             {
+                response.code = 500;
                 response.msg = ex.Message;
             }
+
+            return response;
+        }
+        /// <summary>
+        /// 根据ID查询生产订单
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ResponseBusBody QueryDocById(long id)
+        {
+            ResponseBusBody response = new ResponseBusBody();
+            Stopwatch stopwatch = Stopwatch.StartNew();
+            try
+            {
+                var head = repository.Context.Queryable<MO>()
+                  .Includes(item => item.Organization)
+                  .Includes(item => item.MODepartment)
+                    .Includes(item => item.Operators)
+                      .Includes(item => item.WH)
+                  .Includes(item => item.MOLines, line => line.ItemMaster)
+                   .Includes(item => item.MOLines, line => line.Uom)
+                    .Includes(item => item.MOLines, line => line.Lot)
+                  .Where(item => item.ID == id);
+                var view = mapper.Map<MOView>(head.First());
+                response.data = JObject.FromObject(view);
+                response.code = 200;
+                response.msg = $"生产订单查询耗时:{stopwatch.ElapsedMilliseconds} 毫秒";
+            }
+            catch (Exception ex)
+            {
+                response.code = 500;
+                response.msg = ex.Message;
+            }
+
             return response;
         }
 
         /// <summary>
-        /// 根据生产订单ID查询生产订单信息
+        /// 根据单号查询生产订单
         /// </summary>
-        /// <param name="request"></param>
+        /// <param name="DocNo"></param>
         /// <returns></returns>
-        public PubResponse MOQueryByID(MOLineQueryView request)
+        public ResponseBusBody QueryDocByDocNo(string DocNo)
         {
-            PubResponse response = new PubResponse();
+            ResponseBusBody response = new ResponseBusBody();
+            Stopwatch stopwatch = Stopwatch.StartNew();
             try
             {
-                if (request==null)
-                    throw new Exception("查询参数ID不能为空！");
-
-                var lst = repository.Context.Queryable<MO>().Includes(q => q.MOLines).Where(q => q.ID.ToString() == request.MainID).ToList();
-                if(lst==null||lst.Count<=0)
-                    throw new Exception(string.Format("ID为【{0}】的生产订单不存在！", request.MainID));
-
-                List<MOView> list = new List<MOView>();
-                MO item = lst.FirstOrDefault();
-                if(item == null)
-                    throw new Exception(string.Format("ID为【{0}】的生产订单不存在！", request.MainID));
-                MOView headDTO = new MOView();
-                list.Add(headDTO);
-                headDTO.id = item.ID;
-                headDTO.SysVersion = item.SysVersion;
-                headDTO.CreatedBy = item.CreatedBy;
-                headDTO.CreatedTime = item.CreatedTime;
-                headDTO.ModifiedBy = item.ModifiedBy;
-                headDTO.ModifiedTime = item.ModifiedTime;
-                headDTO.DocType=item.DocType;
-                headDTO.Status=item.Status.ToString();
-                if(headDTO.Status=="0")
-                headDTO.StatusName = "开立";
-                else if (headDTO.Status == "1")
-                    headDTO.StatusName = "核准中";
-                else if (headDTO.Status == "2")
-                    headDTO.StatusName = "已核准";
-
-                if (item.Org > 0)
-                {
-                    var org = repository.Context.Queryable<Organization>().Where(q => q.ID == item.Org).ToList()?.FirstOrDefault();
-                    if (org != null)
-                    {
-                        headDTO.Org = org.ID.ToString();
-                        headDTO.OrgCode = org.Code;
-                        headDTO.OrgName = org.Name;
-                    }
-                }
-                headDTO.DocNo = item.DocNo;
-                if (item.StartDate != DateTime.MinValue)
-                    headDTO.StartDate = item.StartDate.ToString("yyyy-MM-dd");
-
-                headDTO.BusinessDate = item.BusinessDate.ToString("yyyy-MM-dd");
-                if (item.MoDept > 0)
-                {
-                    var obj = repository.Context.Queryable<Department>().Where(q => q.ID == item.MoDept).ToList()?.FirstOrDefault();
-                    if (obj != null)
-                    {
-                        headDTO.MoDept = obj.ID;
-                        headDTO.MoDeptCode = obj.Code;
-                        headDTO.MoDeptName = obj.Name;
-                    }
-                }
-                if (item.BusinessPerson > 0)
-                {
-                    var obj = repository.Context.Queryable<Operators>().Where(q => q.ID == item.BusinessPerson).ToList()?.FirstOrDefault();
-                    if (obj != null)
-                    {
-                        headDTO.BusinessPerson = obj.ID;
-                        headDTO.BusinessPersonCode = obj.Code;
-                        headDTO.BusinessPersonName = obj.Name;
-                    }
-                }
-                if (item.CompleteDate != DateTime.MinValue)
-                    headDTO.CompleteDate = item.CompleteDate.ToString("yyyy-MM-dd");
-
-                if (item.CompleteWh > 0)
-                {
-                    var obj = repository.Context.Queryable<Wh>().Where(q => q.ID == item.CompleteWh).ToList()?.FirstOrDefault();
-                    if (obj != null)
-                    {
-                        headDTO.CompleteWh = obj.ID;
-                        headDTO.CompleteWhCode = obj.Code;
-                        headDTO.CompleteWhName = obj.Name;
-                    }
-                }
-                headDTO.Memo = item.Memo;
-                headDTO.Status = item.Status.ToString();
-                headDTO.Lines = new List<MOLineView>();
-                foreach (var item2 in item.MOLines)
-                {
-                    MOLineView line = new MOLineView();
-                    line.LineNum = item2.LineNum.ToString();
-                    line.id = item2.ID;
-                    line.BomVersion = item2.BomVersion;
-
-                    line.CreatedBy = item2.CreatedBy;
-                    line.CreatedTime = item2.CreatedTime;
-                    line.ModifiedBy = item2.ModifiedBy;
-                    line.ModifiedTime = item2.ModifiedTime;
-                    line.SysVersion = item2.SysVersion;
-
-                    var obj = repository.Context.Queryable<Item>().Where(q => q.ID == item2.Item).ToList()?.FirstOrDefault();
-                    if (obj != null)
-                    {
-                        line.Item=obj.ID;
-                        line.ItemCode = obj.Code;
-                        line.ItemName = obj.Name;
-                        line.ItemSpecs = obj.SPECS;
-                    }
-                    line.MoQty = item2.MoQty.ToString();
-                    if (item2.MoUom > 0)
-                    {
-                        var obj2 = repository.Context.Queryable<UOM>().Where(q => q.ID == item2.MoUom).ToList()?.FirstOrDefault();
-                        if (obj2 != null)
-                        {
-                            line.MoUom = obj2.ID;
-                            line.MoUomCode = obj2.Code;
-                            line.MoUomName = obj2.Name;
-                        }
-                    }
-                    if (item2.StartDate != DateTime.MinValue)
-                        line.StartDate = item2.StartDate.ToString("yyyy-MM-dd");
-
-                    if (item2.CompleteDate != DateTime.MinValue)
-                        line.CompleteDate = item2.CompleteDate.ToString("yyyy-MM-dd");
-
-                    line.SrcDocType = item2.SrcDocType;
-                    line.SrcDocNo = item2.SrcDocNo;
-
-                    if (item2.ActualStartDate != DateTime.MinValue)
-                        line.ActualStartDate = item2.ActualStartDate.ToString("yyyy-MM-dd");
-                    if (item2.ActualCompleteDate != DateTime.MinValue)
-                        line.ActualCompleteDate = item2.ActualCompleteDate.ToString("yyyy-MM-dd");
-
-                    line.BomVersion = item2.BomVersion;
-                    line.Routing = item2.Routing;
-
-                    if (item2.LotMaster > 0)
-                    {
-                        var obj2 = repository.Context.Queryable<LotMaster>().Where(q => q.ID == item2.LotMaster).ToList()?.FirstOrDefault();
-                        if (obj2 != null)
-                        {
-                            line.LotCode = obj2.LotCode;
-                        }
-                    }
-                    headDTO.Lines.Add(line);
-                }
-
-                response.data = JArray.FromObject(list);
-                response.success = true;
+                var head = repository.Context.Queryable<MO>()
+                  .Includes(item => item.Organization)
+                  .Includes(item => item.MODepartment)
+                    .Includes(item => item.Operators)
+                      .Includes(item => item.WH)
+                  .Includes(item => item.MOLines, line => line.ItemMaster)
+                   .Includes(item => item.MOLines, line => line.Uom)
+                    .Includes(item => item.MOLines, line => line.Lot)
+                  .Where(item => item.DocNo == DocNo);
+                var view = mapper.Map<MOView>(head.First());
+                response.data = JObject.FromObject(view);
                 response.code = 200;
-                response.msg = "操作成功";
+                response.msg = $"生产订单查询耗时:{stopwatch.ElapsedMilliseconds} 毫秒";
             }
             catch (Exception ex)
             {
+                response.code = 500;
                 response.msg = ex.Message;
             }
+
             return response;
         }
 
-
-        /// <summary>
-        /// 生产订单删除
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
-        public PubResponse MODelete(MODelView request)
+        private MOView GetMOViewById(long id)
         {
-            PubResponse response = new PubResponse();
-            try
-            {
-                if (request == null)
-                    throw new Exception("参数不能为空！");
-
-                if (request.MainIDs == null || request.MainIDs.Count <= 0)
-                    throw new Exception("ID集合不能为空！");
-                string sql2 = string.Format(" ID in ({0})", string.Join(",", request.MainIDs));
-                var lst = repository.Context.Queryable<MO>().Where(sql2).ToList();
-                if (lst != null && lst.Count > 0)
-                    repository.Context.DeleteNav(lst).Include(q => q.MOLines).ExecuteCommand();
-
-                response.success = true;
-                response.code = 200;
-                response.msg = "操作成功";
-            }
-            catch (Exception ex)
-            {
-                response.msg = ex.Message;
-            }
-            return response;
+            var head = repository.Context.Queryable<MO>()
+                 .Includes(item => item.Organization)
+                 .Includes(item => item.MODepartment)
+                   .Includes(item => item.Operators)
+                     .Includes(item => item.WH)
+                 .Includes(item => item.MOLines, line => line.ItemMaster)
+                  .Includes(item => item.MOLines, line => line.Uom)
+                   .Includes(item => item.MOLines, line => line.Lot)
+                 .Where(item => item.ID == id);
+            return mapper.Map<MOView>(head.First());
         }
 
-        /// <summary>
-        /// 生产订单提交
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
-        public PubResponse MOSubmit(MODelView request)
-        {
-            PubResponse response = new PubResponse();
-            try
-            {
-                if (request == null)
-                    throw new Exception("参数不能为空！");
-                if (request.MainIDs == null || request.MainIDs.Count <= 0)
-                    throw new Exception("ID集合不能为空！");
-                string sql = string.Format(" ID in ({0}) and Status=0", string.Join(",", request.MainIDs));
-                var list = repository.Context.Queryable<MO>().Where(sql
-                    ).ToList();
-
-                if (list.Count > 0)
-                {
-                    foreach (var item in list)
-                    {
-                        item.Status = 1;
-                    }
-                    repository.Context.Updateable(list).ExecuteCommand();
-                }
-                response.success = true;
-                response.code = 200;
-                response.msg = "操作成功";
-            }
-            catch (Exception ex)
-            {
-                response.msg = ex.Message;
-            }
-            return response;
-        }
-
-        /// <summary>
-        /// 生产订单审核
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
-        public PubResponse MOApprove(MODelView request)
-        {
-            PubResponse response = new PubResponse();
-            try
-            {
-                if (request == null)
-                    throw new Exception("参数不能为空！");
-                if (request.MainIDs == null || request.MainIDs.Count <= 0)
-                    throw new Exception("ID集合不能为空！");
-                string sql = string.Format(" ID in ({0}) and Status=1", string.Join(",", request.MainIDs));
-                var list = repository.Context.Queryable<MO>().Where(sql
-                    ).ToList();
-
-                if (list.Count > 0)
-                {
-                    foreach (var item in list)
-                    {
-                        item.Status = 2;
-                    }
-                    repository.Context.Updateable(list).ExecuteCommand();
-                }
-                response.success = true;
-                response.code = 200;
-                response.msg = "操作成功";
-            }
-            catch (Exception ex)
-            {
-                response.msg = ex.Message;
-            }
-            return response;
-        }
-
-
-        /// <summary>
-        /// 生产订单弃审
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
-        public PubResponse MOUnApprove(MODelView request)
-        {
-            PubResponse response = new PubResponse();
-            try
-            {
-                if (request == null)
-                    throw new Exception("参数不能为空！");
-                if (request.MainIDs == null || request.MainIDs.Count <= 0)
-                    throw new Exception("ID集合不能为空！");
-                string sql = string.Format(" ID in ({0}) and Status=2", string.Join(",", request.MainIDs));
-                var list = repository.Context.Queryable<MO>().Where(sql
-                    ).ToList();
-
-                if (list.Count > 0)
-                {
-                    foreach (var item in list)
-                    {
-                        item.Status = 0;
-                    }
-                    repository.Context.Updateable(list).ExecuteCommand();
-                }
-                response.success = true;
-                response.code = 200;
-                response.msg = "操作成功";
-            }
-            catch (Exception ex)
-            {
-                response.msg = ex.Message;
-            }
-            return response;
-        }
+        #endregion
     }
 }

@@ -1,4 +1,5 @@
-﻿using PigRunner.DTO.MM.PM;
+﻿using PigRunner.DTO.CommonView;
+using PigRunner.DTO.MM.PM;
 using PigRunner.Public.Common.Views;
 using PigRunner.Public.Interface;
 using System;
@@ -11,54 +12,52 @@ namespace PigRunner.Services.MM.PM.IServices
 {
     public interface IMOService : IScopedService
     {
+        #region 业务处理
         /// <summary>
-        /// 生产订单保存
+        /// 保存
         /// </summary>
-        /// <param name="request"></param>
+        /// <param name="view"></param>
         /// <returns></returns>
-        PubResponse MOSave(MOView request);
-
-
+        ResponseBusBody Save(MOView view);
         /// <summary>
-        /// 生产订单查询
+        /// 删除
         /// </summary>
-        /// <param name="request"></param>
+        /// <param name="ids"></param>
         /// <returns></returns>
-        PubResponse MOQuery(MOQueryView request);
+        ResponseBusBody Delete(List<long> ids);
 
-        /// <summary>
-        /// 根据ID查询单据信息：用于修改单据
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
-        PubResponse MOQueryByID(MOLineQueryView request);
+        ResponseBusBody Submit(MOView view);
+        ResponseBusBody Approve(MOView view);
+        ResponseBusBody UnApprove(MOView view);
 
-        /// <summary>
-        /// 生产订单删除
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
-        PubResponse MODelete(MODelView request);
+        ResponseBody BatchSubmit(List<DoActionView> views);
+        ResponseBody BatchApprove(List<DoActionView> views);
+        ResponseBody BatchUnApprove(List<DoActionView> views);
 
-        /// <summary>
-        /// 生产订单提交
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
-        PubResponse MOSubmit(MODelView request);
+        #endregion
 
+        #region 查询
         /// <summary>
-        /// 生产订单审核
+        /// 分页查询采购订单
         /// </summary>
-        /// <param name="request"></param>
+        /// <param name="Where">查询条件</param>
+        /// <param name="PageSize">每页大小</param>
+        /// <param name="Current">当前页面</param>
+        /// <param name="Total">总数量</param>
         /// <returns></returns>
-        PubResponse MOApprove(MODelView request);
-
+        ResponseBody QueryAllByPage(PageView view);
         /// <summary>
-        /// 生产订单弃审
+        /// 根据ID查询采购订单
         /// </summary>
-        /// <param name="request"></param>
+        /// <param name="id"></param>
         /// <returns></returns>
-        PubResponse MOUnApprove(MODelView request);
+        ResponseBusBody QueryDocById(long id);
+        /// <summary>
+        /// 根据单据编号查询采购订单
+        /// </summary>
+        /// <param name="DocNo"></param>
+        /// <returns></returns>
+        ResponseBusBody QueryDocByDocNo(string DocNo);
+        #endregion
     }
 }
