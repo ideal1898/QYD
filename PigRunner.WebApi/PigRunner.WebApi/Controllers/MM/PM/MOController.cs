@@ -150,7 +150,7 @@ namespace PigRunner.WebApi.Controllers.MM.PM
         /// </summary>
         /// <param name="view"></param>
         /// <returns></returns>
-        //[AllowAnonymous]
+        [AllowAnonymous]
         [HttpPost]
         public ResponseBody queryAllByPage([FromBody] PageView view)
         {

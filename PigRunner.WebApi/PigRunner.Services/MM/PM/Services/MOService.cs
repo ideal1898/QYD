@@ -58,8 +58,7 @@ namespace PigRunner.Services.MM.PM.Services
                 if (string.IsNullOrEmpty(request.OrgCode))
                     throw new Exception("组织不能为空！");
 
-                int Status = 0;
-                int.TryParse(request.Status, out Status);
+                int Status = request.Status;
                 long SysVersion = 0;
                 MO head = null;
                 if (request.id > 0)
@@ -454,6 +453,14 @@ namespace PigRunner.Services.MM.PM.Services
             Stopwatch stopwatch = Stopwatch.StartNew();
             try
             {
+
+                //if(view.Where!=null&&view.Where.Count>0)
+                //{
+                //    foreach (var item in view.Where)
+                //    {
+                //    }
+                //}
+
                 int total = 0;
                 var head = repository.Context.Queryable<MO>()
                      .Includes(item => item.Organization)

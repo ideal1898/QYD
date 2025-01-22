@@ -33,7 +33,7 @@ namespace PigRunner.Services.Common
                .ForPath(dest => dest.BusinessPersonCode, opt => opt.MapFrom(src => src.Operators != null ? src.Operators.Code : ""))
                .ForPath(dest => dest.BusinessPersonName, opt => opt.MapFrom(src => src.Operators != null ? src.Operators.Name : ""))
 
-                 .ForPath(dest => dest.CompleteWhCode, opt => opt.MapFrom(src => src.WH != null ? src.WH.Name : ""))
+                 .ForPath(dest => dest.CompleteWhCode, opt => opt.MapFrom(src => src.WH != null ? src.WH.Code : ""))
                .ForPath(dest => dest.CompleteWhName, opt => opt.MapFrom(src => src.WH != null ? src.WH.Name : ""))
                  ;
             CreateMap<MOLineView, MOLine>()
