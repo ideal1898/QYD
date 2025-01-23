@@ -13,13 +13,18 @@ using PigRunner.Public.Helpers;
 using Newtonsoft.Json;
 using PigRunner.Public.Common.Views;
 using PigRunner.Services.Common;
+using PigRunner.Public.Context;
+using PigRunner.Public;
 
 var builder = WebApplication.CreateBuilder(args);
 //日志
 LoggerHelper.Configure();
 
-
 #region 过滤器相关
+
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+builder.Services.AddTransient<ILoginAppContext, LoginAppContext>();
 
 builder.Services.AddControllers().AddNewtonsoftJson(options =>
 {
@@ -187,6 +192,7 @@ builder.Services.AddAutoMapper(typeof(PMAutoMapperProfile));
 
 
 var app = builder.Build();
+ServiceLocator.Instance = app.Services;
 
 #region 上传文件静态目录
 

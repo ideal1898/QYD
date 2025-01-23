@@ -1,11 +1,14 @@
 ﻿using AutoMapper;
+using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Linq;
 using PigRunner.DTO.CommonView;
 using PigRunner.DTO.SCM.PM;
 using PigRunner.Entitys.Basic;
 using PigRunner.Entitys.Basic.Gop;
 using PigRunner.Entitys.SCM.PM;
+using PigRunner.Public;
 using PigRunner.Public.Common.Views;
+using PigRunner.Public.Context;
 using PigRunner.Repository.Basic;
 using PigRunner.Repository.Basic.Gop;
 using PigRunner.Repository.SCM.PM;
@@ -315,6 +318,7 @@ namespace PigRunner.Services.SCM.PM.Services
         #region 查询
         public ResponseBody QueryAllByPage(PageView view)
         {
+            //全局获取变量,每次登录会根据用户变化获取用户与组织信息          
             ResponseBody response = new ResponseBody();
             Stopwatch stopwatch = Stopwatch.StartNew();
             try

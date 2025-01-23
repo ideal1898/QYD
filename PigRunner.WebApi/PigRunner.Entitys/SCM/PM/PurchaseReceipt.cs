@@ -94,13 +94,13 @@ namespace PigRunner.Entitys.SCM.PM
         /// 明细数据
         /// </summary>
         [Navigate(NavigateType.OneToMany,nameof(PurchaseReceiptLine.PurchaseReceipt))]
-        public List<PurchaseReceiptLine> Lines { get; set; }
+        public List<PurchaseReceiptLine>? Lines { get; set; }
     }
 
     /// <summary>
     /// 采购入库单行
     /// </summary>
-    [SqlSugar.SugarTable("QYD_PM_PurchaseReceiptLine")]
+    [SqlSugar.SugarTable("QYD_PM_PurchaseReceiptsLine")]
     public class PurchaseReceiptLine : BaseEntity<PurchaseReceiptLine>
     {
         /// <summary>
@@ -194,6 +194,7 @@ namespace PigRunner.Entitys.SCM.PM
         /// <summary>
         /// 库管员实体
         /// </summary>
+        [Navigate(NavigateType.OneToOne,nameof(Treasurer))]
         public Operators? Operator { get; set; }
 
         /// <summary>

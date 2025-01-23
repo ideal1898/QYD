@@ -3,7 +3,9 @@ using Microsoft.Extensions.DependencyInjection;
 using OfficeOpenXml.Drawing.Controls;
 using PigRunner.DTO.SCM.PM;
 using PigRunner.Entitys.SCM.PM;
+using PigRunner.Public;
 using PigRunner.Public.Common.Views;
+using PigRunner.Public.Context;
 using PigRunner.Public.Helpers;
 using System;
 using System.Collections.Generic;
@@ -21,6 +23,10 @@ namespace PigRunner.Services.Common
         /// <param name="session"></param>
         public PMAutoMapperProfile()
         {
+            CreateMap<string, decimal>().ConvertUsing(item => item.Length > 0 ? Convert.ToDecimal(item.Replace(",", "")) : 0);
+            CreateMap<decimal, string>().ConvertUsing(item => item.ToString("N2").Replace(",", ""));
+            CreateMap<DateTime, string>().ConvertUsing(item => item > DateTime.MinValue ? item.ToString("yyyy-MM-dd") : "");
+            CreateMap<string, int>().ConvertUsing(item => item.Length > 0 ? Convert.ToInt32(item.Replace(",", "")) : 0);
             #region 采购订单
             CreateMap<PurchaseOrderView, PurchaseOrder>()
                .ForMember(dest => dest.CreatedTime, opt => opt.MapFrom(src => src.id > 0 ? (!string.IsNullOrEmpty(src.CreatedTime) ? DateTime.Now : DateTime.Parse(src.CreatedTime)) : DateTime.Now))
@@ -104,6 +110,7 @@ namespace PigRunner.Services.Common
             CreateMap<ReceiptLineView, PurchaseReceiptLine>()
                 .ForMember(dest => dest.CreatedTime, opt => opt.MapFrom(src => src.id > 0 ? src.CreatedTime : DateTime.Now))
                 .ForMember(dest => dest.ModifiedTime, opt => opt.MapFrom(src => DateTime.Now))
+                .ForMember(dest=>dest.Expiration,opt=>opt.MapFrom(src=>!string.IsNullOrEmpty(src.Expiration)?Convert.ToInt32(Convert.ToDecimal(src.Expiration)):0))
                 .ForMember(dest => dest.ID, opt => opt.MapFrom(src => src.id > 0 ? src.id : IdGeneratorHelper.GetNextId()))
                 .ReverseMap()
                 .ForPath(dest => dest.id, opt => opt.MapFrom(src => src.ID))
@@ -116,7 +123,8 @@ namespace PigRunner.Services.Common
                 .ForPath(dest => dest.TreasurerName, opt => opt.MapFrom(src => src.Operator != null ? src.Operator.Name : ""))
                 .ForPath(dest => dest.ProjectCode, opt => opt.MapFrom(src => src.Pro != null ? src.Pro.Code : ""))
                 .ForPath(dest => dest.ProjectName, opt => opt.MapFrom(src => src.Pro != null ? src.Pro.Code : ""));
-            
+
+            //CreateMap<List<ReceiptLineView>, List<PurchaseReceiptLine>>();
             #endregion
 
         }

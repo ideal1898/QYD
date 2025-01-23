@@ -165,7 +165,7 @@ CREATE TABLE QYD_PM_PurchaseReceipt(
 	Department BIGINT, --收货部门
 	RequiredDept BIGINT,--需求部门
 	RequiredMan BIGINT,--需求人员
-	Consignee BIGINT,--收货人
+	Consignee NVARCHAR(255),--收货人
 	DeliveryAddress NVARCHAR(255), --收货地址
 	Currency BIGINT, --币种
 	SalesMan BIGINT, --业务员 

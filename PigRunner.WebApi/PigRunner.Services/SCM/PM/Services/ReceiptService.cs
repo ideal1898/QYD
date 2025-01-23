@@ -370,7 +370,7 @@ namespace PigRunner.Services.SCM.PM.Services
                 int total = 0;
                 var docs = repository.Context.Queryable<PurchaseReceipt>()
                     .Includes(item => item.Supp)
-                    .Includes(item=>item.Currency)
+                    .Includes(item=>item.Symbol)
                     .Includes(item=>item.ReqDept)
                     .Includes(item=>item.ReqMan)
                     .Includes(item => item.Operators)

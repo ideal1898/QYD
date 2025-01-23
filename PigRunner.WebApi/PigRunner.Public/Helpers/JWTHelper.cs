@@ -62,6 +62,11 @@ namespace PigRunner.Public.Helpers
             var token = new JwtSecurityTokenHandler().WriteToken(JWToken);
             return token;
         }
+        /// <summary>
+        /// 创建token
+        /// </summary>
+        /// <param name="loginUser"></param>
+        /// <returns></returns>
         public static string JWTToken(LoginUserVo loginUser)
         {
             var jwtConfig = ConfigHelper.GetJwtConfig();
@@ -80,10 +85,14 @@ namespace PigRunner.Public.Helpers
         {
             IEnumerable<Claim> claims = new Claim[]
             {
-                new Claim("id", user.Id.ToString()),
+                new Claim("Id",user.Id.ToString()),
+                new Claim("UserId", user.Id.ToString()),
                 new Claim("UserName", user.UserName.ToString()),
-                new Claim("Nickname", user.Nickname ?? string.Empty),
-                new Claim("IsAdmin", user.IsAdmin)
+                new Claim("DisplayName", user.DisplayName ?? string.Empty),
+                new Claim("IsAdmin", user.IsAdmin.ToString()),
+                new Claim("Org", user.Org.ToString()),
+                new Claim("OrgCode", user.OrgCode),
+                new Claim("OrgName",user.OrgName)
             };
             return claims;
         }
@@ -111,7 +120,11 @@ namespace PigRunner.Public.Helpers
                 return null;
             }
         }
-
+        /// <summary>
+        /// 解析token
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
         public static LoginUserVo? JWTLoginDecode(string token)
         {
             try
