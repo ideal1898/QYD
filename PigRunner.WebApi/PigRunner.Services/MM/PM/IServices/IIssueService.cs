@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace PigRunner.Services.MM.PM.IServices
 {
-    public interface IMOService : IScopedService
+    public interface IIssueService : IScopedService
     {
         #region 业务处理
         /// <summary>
@@ -18,7 +18,7 @@ namespace PigRunner.Services.MM.PM.IServices
         /// </summary>
         /// <param name="view"></param>
         /// <returns></returns>
-        ResponseBusBody Save(MOView view);
+        ResponseBusBody Save(IssueView view);
         /// <summary>
         /// 删除
         /// </summary>
@@ -26,9 +26,9 @@ namespace PigRunner.Services.MM.PM.IServices
         /// <returns></returns>
         ResponseBusBody Delete(List<long> ids);
 
-        ResponseBusBody Submit(MOView view);
-        ResponseBusBody Approve(MOView view);
-        ResponseBusBody UnApprove(MOView view);
+        ResponseBusBody Submit(IssueView view);
+        ResponseBusBody Approve(IssueView view);
+        ResponseBusBody UnApprove(IssueView view);
 
         ResponseBody BatchSubmit(List<DoActionView> views);
         ResponseBody BatchApprove(List<DoActionView> views);
@@ -38,7 +38,7 @@ namespace PigRunner.Services.MM.PM.IServices
 
         #region 查询
         /// <summary>
-        /// 分页查询生产订单
+        /// 分页查询领料单
         /// </summary>
         /// <param name="Where">查询条件</param>
         /// <param name="PageSize">每页大小</param>
@@ -47,13 +47,13 @@ namespace PigRunner.Services.MM.PM.IServices
         /// <returns></returns>
         ResponseBody QueryAllByPage(PageView view);
         /// <summary>
-        /// 根据ID查询生产订单
+        /// 根据ID查询领料单
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         ResponseBusBody QueryDocById(long id);
         /// <summary>
-        /// 根据单据编号查询生产订单
+        /// 根据单据编号查询领料单
         /// </summary>
         /// <param name="DocNo"></param>
         /// <returns></returns>

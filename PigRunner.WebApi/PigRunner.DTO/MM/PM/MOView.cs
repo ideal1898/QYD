@@ -278,17 +278,6 @@ namespace PigRunner.DTO.MM.PM
     }
 
     /// <summary>
-    /// 主体ID视图
-    /// </summary>
-    public class MOLineQueryView
-    {
-        /// <summary>
-        /// ID
-        /// </summary>
-        public string MainID { get; set; } = string.Empty;
-    }
-
-    /// <summary>
     /// mo查询视图
     /// </summary>
     public class MOQueryView

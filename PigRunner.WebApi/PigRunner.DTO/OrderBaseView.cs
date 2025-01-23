@@ -83,10 +83,5 @@ namespace PigRunner.DTO
         /// 单据状态
         /// </summary>
         public int Status { get; set; } = 0;
-
-        /// <summary>
-        /// 单据状态
-        /// </summary>
-        public string StatusName { get; set; } = string.Empty;
     }
 }
