@@ -10,8 +10,40 @@ namespace PigRunner.DTO
     /// <summary>
     /// 单据基类视图
     /// </summary>
-    public class OrderBaseView: BaseView
+    public class OrderBaseView
     {
+        /// <summary>
+        /// 表标识
+        /// </summary>
+        public long id
+        {
+            get;
+            set;
+        }
+        /// <summary>
+        /// 创建日期
+        /// </summary>
+        public string CreatedTime { get; set; } = string.Empty;
+
+        /// <summary>
+        /// 创建人
+        /// </summary>
+        public string? CreatedBy { get; set; }
+        /// <summary>
+        /// 版本
+        /// </summary>
+        public long SysVersion { get; set; }
+
+        /// <summary>
+        /// 修改日期
+        /// </summary>
+        public string ModifiedTime { get; set; } = string.Empty;
+
+        /// <summary>
+        /// 修改人
+        /// </summary>
+        public string ModifiedBy { get; set; } = string.Empty;
+
         /// <summary>
         /// 组织
         /// </summary>
@@ -50,11 +82,6 @@ namespace PigRunner.DTO
         /// <summary>
         /// 单据状态
         /// </summary>
-        public string Status { get; set; } = string.Empty;
-
-        /// <summary>
-        /// 单据状态
-        /// </summary>
-        public string StatusName { get; set; } = string.Empty;
+        public int Status { get; set; } = 0;
     }
 }

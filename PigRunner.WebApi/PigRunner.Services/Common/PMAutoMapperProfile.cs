@@ -123,10 +123,8 @@ namespace PigRunner.Services.Common
                 .ForPath(dest => dest.TreasurerName, opt => opt.MapFrom(src => src.Operator != null ? src.Operator.Name : ""))
                 .ForPath(dest => dest.ProjectCode, opt => opt.MapFrom(src => src.Pro != null ? src.Pro.Code : ""))
                 .ForPath(dest => dest.ProjectName, opt => opt.MapFrom(src => src.Pro != null ? src.Pro.Code : ""));
-
-            //CreateMap<List<ReceiptLineView>, List<PurchaseReceiptLine>>();
+            
             #endregion
-
         }
     }
 }

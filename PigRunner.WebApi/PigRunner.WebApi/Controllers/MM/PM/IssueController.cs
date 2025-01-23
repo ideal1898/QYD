@@ -9,37 +9,37 @@ using PigRunner.Services.MM.PM.IServices;
 namespace PigRunner.WebApi.Controllers.MM.PM
 {
       /// <summary>
-      /// 生产订单
+      /// 领料单
       /// </summary>
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class MOController : ControllerBase
+    public class IssueController : ControllerBase
     {
-        private IMOService services;
+        private IIssueService services;
         /// <summary>
         /// 服务注册
         /// </summary>
         /// <param name="_services"></param>
-        public MOController(IMOService _services)
+        public IssueController(IIssueService _services)
         {
             this.services = _services;
         }
 
         #region 业务处理
         /// <summary>
-        /// 创建生产订单
+        /// 创建领料单
         /// </summary>
         /// <param name="vo"></param>
         /// <returns></returns>
         [AllowAnonymous]
         [HttpPost]
-        public ResponseBusBody save([FromBody] MOView vo)
+        public ResponseBusBody save([FromBody] IssueView vo)
         {
             return services.Save(vo);
         }
 
         /// <summary>
-        /// 删除生产订单
+        /// 删除领料单
         /// </summary>
         /// <param name="ids"></param>
         /// <returns></returns>
@@ -50,42 +50,42 @@ namespace PigRunner.WebApi.Controllers.MM.PM
             return services.Delete(ids);
         }
         /// <summary>
-        /// 提交生产订单
+        /// 提交领料单
         /// </summary>
         /// <param name="vo"></param>
         /// <returns></returns>
         [AllowAnonymous]
         [HttpPost]
-        public ResponseBusBody submit([FromBody] MOView vo)
+        public ResponseBusBody submit([FromBody] IssueView vo)
         {
             return services.Submit(vo);
         }
 
         /// <summary>
-        /// 审核生产订单
+        /// 审核领料单
         /// </summary>
         /// <param name="vo"></param>
         /// <returns></returns>
         [AllowAnonymous]
         [HttpPost]
-        public ResponseBusBody approve([FromBody] MOView vo)
+        public ResponseBusBody approve([FromBody] IssueView vo)
         {
             return services.Approve(vo);
         }
         /// <summary>
-        /// 弃审生产订单
+        /// 弃审领料单
         /// </summary>
         /// <param name="vo"></param>
         /// <returns></returns>
         [AllowAnonymous]
         [HttpPost]
-        public ResponseBusBody unapprove([FromBody] MOView vo)
+        public ResponseBusBody unapprove([FromBody] IssueView vo)
         {
             return services.UnApprove(vo);
         }
 
         /// <summary>
-        /// 批量提交生产订单
+        /// 批量提交领料单
         /// </summary>
         /// <param name="vos"></param>
         /// <returns></returns>
@@ -96,7 +96,7 @@ namespace PigRunner.WebApi.Controllers.MM.PM
             return services.BatchSubmit(vos);
         }
         /// <summary>
-        /// 批量审核生产订单
+        /// 批量审核领料单
         /// </summary>
         /// <param name="vos"></param>
         /// <returns></returns>
@@ -107,7 +107,7 @@ namespace PigRunner.WebApi.Controllers.MM.PM
             return services.BatchApprove(vos);
         }
         /// <summary>
-        /// 批量审核生产订单
+        /// 批量审核领料单
         /// </summary>
         /// <param name="vos"></param>
         /// <returns></returns>
@@ -123,25 +123,25 @@ namespace PigRunner.WebApi.Controllers.MM.PM
 
         #region 查询
         /// <summary>
-        /// 通过主键查询生产订单
+        /// 通过主键查询领料单
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         [AllowAnonymous]
         [HttpGet]
-        public ResponseBusBody queryMOById([FromQuery] long id)
+        public ResponseBusBody queryIssueById([FromQuery] long id)
         {
             return services.QueryDocById(id);
         }
 
         /// <summary>
-        /// 通过单据编号查询生产订单
+        /// 通过单据编号查询领料单
         /// </summary>
         /// <param name="DocNo"></param>
         /// <returns></returns>
         [AllowAnonymous]
         [HttpGet]
-        public ResponseBusBody queryMOByDocNo([FromQuery] string DocNo)
+        public ResponseBusBody queryIssueByDocNo([FromQuery] string DocNo)
         {
             return services.QueryDocByDocNo(DocNo);
         }

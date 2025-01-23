@@ -4,9 +4,9 @@ using PigRunner.Public.Interface;
 namespace PigRunner.Repository.MM.PM
 {
     /// <summary>
-    /// 生产订单
+    /// 领料单
     /// </summary>
-    public class MORepository : BaseRepository<MO>, IScopedService
+    public class IssueRepository : BaseRepository<Issue>, IScopedService
     {
     }
 }
