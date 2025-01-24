@@ -75,7 +75,7 @@ namespace PigRunner.Services.MM.PM.Services
                 //自动编码生成单号
                 if (string.IsNullOrEmpty(request.DocNo))
                 {
-                    string DocNo = $"Issue{DateTime.Now.ToString("yyyyMMdd")}";
+                    string DocNo = $"LL{DateTime.Now.ToString("yyyyMMdd")}";
                     var maxSerialNumber = repository.Context.Queryable<Issue>()
                         .Where(o => o.DocNo.Contains(DocNo))
                         .Max(o => o.DocNo);
