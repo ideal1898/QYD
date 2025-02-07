@@ -8,7 +8,7 @@ using PigRunner.Services.Basic.Gop.IServices;
 
 namespace PigRunner.Services.Basic.Gop.Services
 {
-     public class ProjectService : IProjectService
+    public class ProjectService : IProjectService
     {
         private ProjectRepository repository;
         /// <summary>
@@ -30,6 +30,9 @@ namespace PigRunner.Services.Basic.Gop.Services
             PubResponse response = new PubResponse();
             try
             {
+                if (request == null)
+                    throw new Exception("参数不能为空！");
+
                 if (request.OptType.Equals("AddProject") || request.OptType.Equals("UpdateProject"))
                 {
                     if (string.IsNullOrEmpty(request.Code))
@@ -48,9 +51,9 @@ namespace PigRunner.Services.Basic.Gop.Services
                     }
                     else
                     {
-                        if (request.ID <= 0)
+                        if (string.IsNullOrEmpty(request.ID ))
                             throw new Exception("修改ID要大于零！");
-                        head = repository.GetFirst(q => q.ID == request.ID);
+                        head = repository.GetFirst(q => q.ID.ToString() == request.ID);
                         if (head == null)
                             throw new Exception(string.Format("ID为【{0}】的项目不存在，请检查！", request.ID));
 
@@ -66,7 +69,8 @@ namespace PigRunner.Services.Basic.Gop.Services
                     response.id = head.ID;
                     head.Description = request.Description;
 
-                    head.Status = request.Status;
+                    int.TryParse(request.Status, out int Status);
+                    head.Status = Status;
 
                     DateTime AcceptDate = DateTime.MinValue;
                     if (!string.IsNullOrEmpty(request.AcceptDate))
@@ -116,25 +120,29 @@ namespace PigRunner.Services.Basic.Gop.Services
                 {
                     int total = 0;
                     List<ProjectView> list = new List<ProjectView>();
-                    var lst = repository.AsQueryable().ToOffsetPage(request.Current, request.Size, ref total);
+                    string sql = "1=1";
+                    if (!string.IsNullOrEmpty(request.Code))
+                        sql += string.Format(" and Code like '%{0}%' ", request.Code);
 
-                    if (!string.IsNullOrEmpty(request.Code) && !string.IsNullOrEmpty(request.Name) && request.ID > 0)
-                        lst = repository.AsQueryable().Where(q => q.Code.Contains(request.Code) && q.Name.Contains(request.Name) && q.ID != request.ID).ToOffsetPage(request.Current, request.Size, ref total);
-                    else if (!string.IsNullOrEmpty(request.Code) && !string.IsNullOrEmpty(request.Name))
-                        lst = repository.AsQueryable().Where(q => q.Code.Contains(request.Code) && q.Name.Contains(request.Name)).ToOffsetPage(request.Current, request.Size, ref total);
-                    else if (!string.IsNullOrEmpty(request.Code))
-                        lst = repository.AsQueryable().Where(q => q.Code.Contains(request.Code)).ToOffsetPage(request.Current, request.Size, ref total);
-                    else if (!string.IsNullOrEmpty(request.Name))
-                        lst = repository.AsQueryable().Where(q => q.Name.Contains(request.Name)).ToOffsetPage(request.Current, request.Size, ref total);
-                    else if (request.ID > 0)
-                        lst = repository.AsQueryable().Where(q => q.ID != request.ID).ToOffsetPage(request.Current, request.Size, ref total);
+                    if (!string.IsNullOrEmpty(request.Name))
+                        sql += string.Format(" and Name like '%{0}%' ", request.Name);
+
+                    int.TryParse(request.Current, out int Current);
+                    int.TryParse(request.Size, out int Size);
+                    if (Current <= 0)
+                        Current = 10;
+                    if (Size <= 0)
+                        Size = 1;
+
+                    var lst = repository.AsQueryable().Where(sql).ToOffsetPage(Current, Size, ref total);
+
                     if (lst != null && lst.Count > 0)
                     {
                         int lineNum = 1;
                         foreach (var item in lst)
                         {
                             ProjectView dto = SetValue(item);
-                            dto.LineNum = lineNum;
+                            dto.LineNum = lineNum.ToString();
                             list.Add(dto);
                             lineNum += 1;
                         }
@@ -160,15 +168,15 @@ namespace PigRunner.Services.Basic.Gop.Services
             dto.Code = item.Code;
             dto.Name = item.Name;
             dto.Description = item.Description;
-            dto.ID = item.ID;
-            dto.Status = item.Status;
-            if (dto.Status == 1)
+            dto.ID = item.ID.ToString();
+            dto.Status = item.Status.ToString();
+            if (item.Status == 1)
                 dto.StatusName = "立项";
-            else if (dto.Status == 2)
+            else if (item.Status == 2)
                 dto.StatusName = "进行中";
-            else if (dto.Status == 3)
+            else if (item.Status == 3)
                 dto.StatusName = "暂停";
-            else if (dto.Status == 4)
+            else if (item.Status == 4)
                 dto.StatusName = "验收";
             if (item.QAExpireDate != DateTime.MinValue)
                 dto.QAExpireDate = item.QAExpireDate.ToString("yyyy-MM-dd");
@@ -236,7 +244,7 @@ namespace PigRunner.Services.Basic.Gop.Services
                                     RoundWay = 4;
                             }
                             //第5列：验收日期
-                            DateTime AcceptDate=DateTime.MinValue;
+                            DateTime AcceptDate = DateTime.MinValue;
                             if (worksheet.GetValue(row, 5) != null)
                                 DateTime.TryParse(worksheet.GetValue(row, 5).ToString(), out AcceptDate);
 

@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using PigRunner.DTO.Basic;
 using PigRunner.Public.Common.Views;
 using PigRunner.Services.Basic.IServices;
-using PigRunner.Services.Sys.IServices;
 
 namespace PigRunner.WebApi.Controllers.Basic
 {
@@ -34,7 +33,7 @@ namespace PigRunner.WebApi.Controllers.Basic
         [AllowAnonymous]
         [HttpPost]
         
-        public PubResponse ActionWhBinGroup(WhBinGroupView request)
+        public PubResponse ActionWhBinGroup([FromBody] WhBinGroupView request)
         {
             return services.ActionWhBinGroup(request);
         }
@@ -46,7 +45,7 @@ namespace PigRunner.WebApi.Controllers.Basic
         /// <returns></returns>
         [AllowAnonymous]
         [HttpPost]
-        public PubResponse UploadWhBinGroup(IFormFile file)
+        public PubResponse UploadWhBinGroup([FromBody] IFormFile file)
         {
             PubResponse response = new PubResponse();
             try

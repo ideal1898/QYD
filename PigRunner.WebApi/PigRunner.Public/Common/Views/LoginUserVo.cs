@@ -42,16 +42,32 @@ namespace PigRunner.Public.Common.Views
         /// </summary>
         public long Id { get; set; }
         /// <summary>
+        /// 用户ID
+        /// </summary>
+        public long UserId { get; set; }
+        /// <summary>
         /// 用户名
         /// </summary>
         public string UserName { get; set;}=string.Empty;
         /// <summary>
         /// 管理员
         /// </summary>
-        public string? IsAdmin { get; set; }
+        public string IsAdmin { get; set; }=string.Empty;
         /// <summary>
         /// 角色
         /// </summary>
-        public string Nickname { get; set; }=string.Empty; 
+        public string DisplayName { get; set; }=string.Empty; 
+        /// <summary>
+        /// 组织ID
+        /// </summary>
+        public long Org { get; set; }
+        /// <summary>
+        /// 组织编码
+        /// </summary>
+        public string OrgCode { get; set; }=string.Empty ;
+        /// <summary>
+        /// 组织名称
+        /// </summary>
+        public string OrgName { get; set; } = string.Empty;
     }
 }

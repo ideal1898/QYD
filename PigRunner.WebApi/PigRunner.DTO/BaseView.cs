@@ -32,9 +32,15 @@ using System.Threading.Tasks;
 
 namespace PigRunner.DTO
 {
+    /// <summary>
+    /// 视图基类
+    /// </summary>
     public class BaseView
     {
-        public long ID
+        /// <summary>
+        /// 表标识
+        /// </summary>
+        public long id
         {
             get;
             set;
@@ -42,7 +48,8 @@ namespace PigRunner.DTO
         /// <summary>
         /// 创建日期
         /// </summary>
-        public DateTime? CreatedTime { get { return DateTime.Now; } set { } }
+        public DateTime CreatedTime { get; set; } = DateTime.Now;
+
         /// <summary>
         /// 创建人
         /// </summary>
@@ -51,5 +58,15 @@ namespace PigRunner.DTO
         /// 版本
         /// </summary>
         public long SysVersion { get; set; }
+
+        /// <summary>
+        /// 修改日期
+        /// </summary>
+        public DateTime ModifiedTime { get; set; } = DateTime.Now;
+
+        /// <summary>
+        /// 修改人
+        /// </summary>
+        public string ModifiedBy { get; set; } = string.Empty;
     }
 }

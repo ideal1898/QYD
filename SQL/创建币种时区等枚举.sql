@@ -9,6 +9,10 @@ ID BIGINT PRIMARY KEY, --标识
 SysVersion BIGINT DEFAULT 0, --版本
 CreatedTime DATETIME DEFAULT GETDATE(),--创建时间
 CreatedBy VARCHAR(50) DEFAULT '',--创建人
+	--修改人
+	[ModifiedBy] VARCHAR(50),
+	--修改时间
+	[ModifiedTime] datetime,
 Code VARCHAR(50) DEFAULT '',--编码
 Name VARCHAR(50) DEFAULT ''--名称
 )
@@ -36,6 +40,10 @@ ID BIGINT PRIMARY KEY, --标识
 SysVersion BIGINT DEFAULT 0, --版本
 CreatedTime DATETIME DEFAULT GETDATE(),--创建时间
 CreatedBy VARCHAR(50) DEFAULT '',--创建人
+--修改人
+[ModifiedBy] VARCHAR(50),
+--修改时间
+[ModifiedTime] datetime,
 Code VARCHAR(100) DEFAULT '',--编码
 Name VARCHAR(100) DEFAULT ''--名称
 )
@@ -165,6 +173,10 @@ ID BIGINT PRIMARY KEY, --标识
 SysVersion BIGINT DEFAULT 0, --版本
 CreatedTime DATETIME DEFAULT GETDATE(),--创建时间
 CreatedBy VARCHAR(50) DEFAULT '',--创建人
+--修改人
+[ModifiedBy] VARCHAR(50),
+--修改时间
+[ModifiedTime] datetime,
 Code VARCHAR(50) DEFAULT '',--编码
 Name VARCHAR(50) DEFAULT ''--名称
 )
@@ -187,6 +199,10 @@ ID BIGINT PRIMARY KEY, --标识
 SysVersion BIGINT DEFAULT 0, --版本
 CreatedTime DATETIME DEFAULT GETDATE(),--创建时间
 CreatedBy VARCHAR(50) DEFAULT '',--创建人
+--修改人
+[ModifiedBy] VARCHAR(50),
+--修改时间
+[ModifiedTime] datetime,
 Code VARCHAR(50) DEFAULT '',--编码
 Name VARCHAR(50) DEFAULT ''--名称
 )
@@ -204,6 +220,10 @@ ID BIGINT PRIMARY KEY, --标识
 SysVersion BIGINT DEFAULT 0, --版本
 CreatedTime DATETIME DEFAULT GETDATE(),--创建时间
 CreatedBy VARCHAR(50) DEFAULT '',--创建人
+--修改人
+[ModifiedBy] VARCHAR(50),
+--修改时间
+[ModifiedTime] datetime,
 Code VARCHAR(50) DEFAULT '',--编码
 Name VARCHAR(50) DEFAULT ''--名称
 )

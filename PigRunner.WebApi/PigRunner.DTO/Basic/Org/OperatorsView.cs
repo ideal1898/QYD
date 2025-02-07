@@ -26,7 +26,7 @@ namespace PigRunner.DTO.Basic
         /// 备  注:是否采购员
         /// 默认值:
         ///</summary>
-        public bool IsPurer { get; set; } = false;
+        public string IsPurer { get; set; } = string.Empty;
 
         /// <summary>
         /// 是否采购员
@@ -39,7 +39,7 @@ namespace PigRunner.DTO.Basic
         /// 备  注:是否销售人员
         /// 默认值:
         ///</summary>
-        public bool IsSaler { get; set; } = false;
+        public string IsSaler { get; set; } = string.Empty;
 
         /// <summary>
         /// 是否销售人员
@@ -52,7 +52,7 @@ namespace PigRunner.DTO.Basic
         /// 备  注:是否计划人员
         /// 默认值:
         ///</summary>
-        public bool IsPlaner { get; set; } = false;
+        public string IsPlaner { get; set; } = string.Empty;
 
         /// <summary>
         /// 是否计划人员
@@ -63,7 +63,7 @@ namespace PigRunner.DTO.Basic
         /// 备  注:是否库存管理员
         /// 默认值:
         ///</summary>
-        public bool IsInver { get; set; } = false;
+        public string IsInver { get; set; } =  string.Empty;
 
         /// <summary>
         /// 是否计划人员
@@ -74,7 +74,7 @@ namespace PigRunner.DTO.Basic
         /// 备  注:是否生效
         /// 默认值:
         ///</summary>
-        public bool IsEffective { get; set; } = false;
+        public string IsEffective { get; set; } = string.Empty;
 
         /// <summary>
         /// 生效名称

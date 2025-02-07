@@ -14,7 +14,7 @@ namespace PigRunner.DTO.Basic.Gop
         /// 备  注:是否基准单位
         /// 默认值:
         ///</summary>
-        public bool IsBase { get; set; } = false;
+        public string IsBase { get; set; } = string.Empty;
 
         /// <summary>
         /// 是否基准单位名称
@@ -26,7 +26,7 @@ namespace PigRunner.DTO.Basic.Gop
         /// 备  注:主副单位转换系数
         /// 默认值:
         ///</summary>
-        public decimal RatioToBase { get; set; } = 0;
+        public string RatioToBase { get; set; } = string.Empty;
 
 
 
@@ -34,7 +34,7 @@ namespace PigRunner.DTO.Basic.Gop
         /// 舍位方式：1-四舍五入，2-舍位，3-入位
         /// 默认值:
         ///</summary>
-        public int RoundWay { get; set; } = 0;
+        public string RoundWay { get; set; } = string.Empty;
 
         /// <summary>
         /// 舍位方式名称
@@ -50,6 +50,6 @@ namespace PigRunner.DTO.Basic.Gop
         /// <summary>
         /// 单位精度
         /// </summary>
-        public decimal UomPrecision { get; set; } = 0;
+        public string UomPrecision { get; set; } = string.Empty;
     }
 }

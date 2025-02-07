@@ -32,15 +32,20 @@ using System.Threading.Tasks;
 
 namespace PigRunner.Public.Common.Views
 {
+    /// <summary>
+    /// 上下文
+    /// </summary>
     public class WebSession
     {
         /// <summary>
         /// 用户ID
         /// </summary>
         public long UserID { get; set; }
+       
         /// <summary>
         /// 用户名称
         /// </summary>
         public string UserName { get; set; } = string.Empty;
+       
     }
 }

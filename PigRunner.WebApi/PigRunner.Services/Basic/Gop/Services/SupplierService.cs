@@ -31,6 +31,9 @@ namespace PigRunner.Services.Basic.Gop.Services
             PubResponse response = new PubResponse();
             try
             {
+                if (request == null)
+                    throw new Exception("参数不能为空！");
+
                 if (request.OptType.Equals("AddSupplier") || request.OptType.Equals("UpdateSupplier"))
                 {
                     if (string.IsNullOrEmpty(request.Code))
@@ -49,9 +52,9 @@ namespace PigRunner.Services.Basic.Gop.Services
                     }
                     else
                     {
-                        if (request.ID <= 0)
+                        if (string.IsNullOrEmpty(request.ID))
                             throw new Exception("修改ID要大于零！");
-                        head = repository.GetFirst(q => q.ID == request.ID);
+                        head = repository.GetFirst(q => q.ID.ToString() == request.ID);
                         if (head == null)
                             throw new Exception(string.Format("ID为【{0}】的供应商不存在，请检查！", request.ID));
 
@@ -107,7 +110,7 @@ namespace PigRunner.Services.Basic.Gop.Services
                     head.Customer = CustomerID;
 
                     head.WeChat = request.WeChat;
-                    head.IsInerOrg = request.IsInerOrg ? 1 : 0;
+                    head.IsInerOrg =bool.TryParse( request.IsInerOrg,out bool IsInerOrg) ? 1 : 0;
 
                     long Dept = -1;
                     if (!string.IsNullOrEmpty(request.DeptCode))
@@ -126,14 +129,14 @@ namespace PigRunner.Services.Basic.Gop.Services
                             Operators = data.ID;
                     }
                     head.Operators = Operators;
-
-                    head.TaxRate = request.TaxRate;
+                    decimal.TryParse(request.TaxRate, out decimal TaxRate);
+                    head.TaxRate = TaxRate;
                     head.TaxNum = request.TaxNum;
                     head.RcvManTell = request.RcvManTell;
                     head.RecTerm = request.RecTerm;
                     head.AccrueTerm = request.AccrueTerm;
                     head.ShipRule = request.ShipRule;
-                    head.Status = request.Status ? 1 : 0;
+                    head.Status =bool.TryParse( request.Status,out bool Status) ? 1 : 0;
 
                     bool isSuccess = repository.InsertOrUpdate(head);
                     if (!isSuccess)
@@ -171,25 +174,28 @@ namespace PigRunner.Services.Basic.Gop.Services
                 {
                     int total = 0;
                     List<SupplierView> list = new List<SupplierView>();
-                    var lst = repository.AsQueryable().ToOffsetPage(request.Current, request.Size, ref total);
+                    string sql = "1=1";
+                    if (!string.IsNullOrEmpty(request.Code))
+                        sql += string.Format(" and Code like '%{0}%' ", request.Code);
+                    if (!string.IsNullOrEmpty(request.Name))
+                        sql += string.Format(" and Name like '%{0}%' ", request.Name);
 
-                    if (!string.IsNullOrEmpty(request.Code) && !string.IsNullOrEmpty(request.Name) && request.ID > 0)
-                        lst = repository.AsQueryable().Where(q => q.Code.Contains(request.Code) && q.Name.Contains(request.Name) && q.ID != request.ID).ToOffsetPage(request.Current, request.Size, ref total);
-                    else if (!string.IsNullOrEmpty(request.Code) && !string.IsNullOrEmpty(request.Name))
-                        lst = repository.AsQueryable().Where(q => q.Code.Contains(request.Code) && q.Name.Contains(request.Name)).ToOffsetPage(request.Current, request.Size, ref total);
-                    else if (!string.IsNullOrEmpty(request.Code))
-                        lst = repository.AsQueryable().Where(q => q.Code.Contains(request.Code)).ToOffsetPage(request.Current, request.Size, ref total);
-                    else if (!string.IsNullOrEmpty(request.Name))
-                        lst = repository.AsQueryable().Where(q => q.Name.Contains(request.Name)).ToOffsetPage(request.Current, request.Size, ref total);
-                    else if (request.ID > 0)
-                        lst = repository.AsQueryable().Where(q => q.ID != request.ID).ToOffsetPage(request.Current, request.Size, ref total);
+                    int.TryParse(request.Current, out int Current);
+                    int.TryParse(request.Size, out int Size);
+                    if (Current <= 0)
+                        Current = 10;
+                    if (Size <= 0)
+                        Size = 1;
+
+                    var lst = repository.AsQueryable().Where(sql).ToOffsetPage(Current, Size, ref total);
+
                     if (lst != null && lst.Count > 0)
                     {
                         int lineNum = 1;
                         foreach (var item in lst)
                         {
                             SupplierView dto = SetValue(item);
-                            dto.LineNum = lineNum;
+                            dto.LineNum = lineNum.ToString();
                             list.Add(dto);
                             lineNum += 1;
                         }
@@ -215,7 +221,7 @@ namespace PigRunner.Services.Basic.Gop.Services
             dto.Code = item.Code;
             dto.Name = item.Name;
             dto.Remark = item.Remark;
-            dto.ID = item.ID;
+            dto.ID = item.ID.ToString();
             dto.ShortName = item.ShortName;
 
             var lg = repository.GetFirst(q => q.ID == item.ParentSuppiler);
@@ -256,9 +262,9 @@ namespace PigRunner.Services.Basic.Gop.Services
             }
 
             dto.WeChat = item.WeChat;
-            dto.IsInerOrg = item.IsInerOrg == 1 ? true : false;
-            if (dto.IsInerOrg)
-                dto.InerOrgName = "是";
+            dto.IsInerOrg =false.ToString();
+            if (item.IsInerOrg == 1)
+            { dto.InerOrgName = "是"; dto.IsInerOrg = true.ToString(); }
             else
                 dto.InerOrgName = "否";
 
@@ -282,16 +288,16 @@ namespace PigRunner.Services.Basic.Gop.Services
                 }
             }
 
-            dto.TaxRate = item.TaxRate;
+            dto.TaxRate = item.TaxRate.ToString();
             dto.TaxNum = item.TaxNum;
             dto.RcvManTell = item.RcvManTell;
             dto.RecTerm = item.RecTerm;
             dto.AccrueTerm = item.AccrueTerm;
             dto.ShipRule = item.ShipRule;
 
-            dto.Status = item.Status == 1 ? true : false;
+            dto.Status = false.ToString();
             if (item.Status == 1)
-                dto.StatusName = "生效";
+            { dto.StatusName = "生效"; dto.Status = true.ToString(); }
             else
                 dto.StatusName = "失效";
 

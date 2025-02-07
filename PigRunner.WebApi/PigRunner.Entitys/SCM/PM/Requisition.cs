@@ -10,7 +10,7 @@ namespace PigRunner.Entitys.SCM.PM
     /// <summary>
     /// 请购单
     /// </summary>
-    [SqlSugar.SugarTable("QYD_Pr_Pr")]
+    [SqlSugar.SugarTable("QYD_PM_Requisition")]
     public class Requisition:BaseEntity<Requisition>
     {
 
@@ -18,7 +18,7 @@ namespace PigRunner.Entitys.SCM.PM
     /// <summary>
     /// 请购单行
     /// </summary>
-    [SqlSugar.SugarTable("QYD_Pr_Prline")]
+    [SqlSugar.SugarTable("QYD_PM_RequisitionLine")]
     public class RequisitionLine:BaseEntity<RequisitionLine> { 
     
     }

@@ -25,10 +25,14 @@
 
 
 using AutoMapper;
+using OfficeOpenXml.Drawing.Controls;
 using PigRunner.DTO.Basic;
+using PigRunner.DTO.SCM.PM;
 using PigRunner.DTO.Views.Sys;
 using PigRunner.Entitys.Basic;
+using PigRunner.Entitys.SCM.PM;
 using PigRunner.Entitys.Sys;
+using PigRunner.Public.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,12 +41,18 @@ using System.Threading.Tasks;
 
 namespace PigRunner.Services.Common
 {
-    public class SysAutoMapperProfile:Profile
+    public class SysAutoMapperProfile : Profile
     {
-        public SysAutoMapperProfile() {
+        public SysAutoMapperProfile()
+        {
+            CreateMap<string, decimal>().ConvertUsing(item => item.Length > 0 ? Convert.ToDecimal(item.Replace(",", "")) : 0);
+            CreateMap<decimal, string>().ConvertUsing(item => item.ToString("N2").Replace(",", ""));
+            CreateMap<DateTime, string>().ConvertUsing(item => item > DateTime.MinValue ? item.ToString("yyyy-MM-dd") : "");
             CreateMap<UserView, SysUser>();
             CreateMap<SupplierCategoryView, SupplierCategory>().ReverseMap();
             CreateMap<SupplierCategoryView[], SupplierCategory[]>().ReverseMap();
+            
+
         }
     }
 }

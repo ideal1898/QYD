@@ -29,7 +29,7 @@ namespace PigRunner.WebApi.Controllers.Basic.Gop
         /// <returns></returns>
         [AllowAnonymous]
         [HttpPost]
-        public PubResponse ActionSupplier(SupplierView request)
+        public PubResponse ActionSupplier([FromBody] SupplierView request)
         {
             return services.ActionSupplier(request);
         }
@@ -41,7 +41,7 @@ namespace PigRunner.WebApi.Controllers.Basic.Gop
         /// <returns></returns>
         [AllowAnonymous]
         [HttpPost]
-        public PubResponse UploadSupplier(IFormFile file)
+        public PubResponse UploadSupplier([FromBody] IFormFile file)
         {
             PubResponse response = new PubResponse();
             try

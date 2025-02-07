@@ -12,7 +12,7 @@ namespace PigRunner.Public.Abstract
     /// <summary>
     /// 实体基类
     /// </summary>
-    public class BaseEntity<T>
+    public  class BaseEntity<T>
     {
         /// <summary>
         /// 业务标识
@@ -30,7 +30,13 @@ namespace PigRunner.Public.Abstract
         /// <summary>
         /// 版本
         /// </summary>
+<<<<<<<<< Temporary merge branch 1
+        public long SysVersion { get; set; }
+       
+
+=========
         public long SysVersion { get; set; } = 0;
+>>>>>>>>> Temporary merge branch 2
         /// <summary>
         /// 创建实体
         /// </summary>

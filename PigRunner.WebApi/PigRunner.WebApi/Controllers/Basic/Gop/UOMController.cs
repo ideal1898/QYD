@@ -29,7 +29,7 @@ namespace PigRunner.WebApi.Controllers.Basic.Gop
         /// <returns></returns>
         [AllowAnonymous]
         [HttpPost]
-        public PubResponse ActionUOM(UOMView request)
+        public PubResponse ActionUOM([FromBody] UOMView request)
         {
             return services.ActionUOM(request);
         }
@@ -41,7 +41,7 @@ namespace PigRunner.WebApi.Controllers.Basic.Gop
         /// <returns></returns>
         [AllowAnonymous]
         [HttpPost]
-        public PubResponse UploadUOM(IFormFile file)
+        public PubResponse UploadUOM([FromBody] IFormFile file)
         {
             PubResponse response = new PubResponse();
             try

@@ -24,7 +24,7 @@ namespace PigRunner.DTO.Basic
         /// 备  注:是否库位
         /// 默认值:
         ///</summary>
-        public bool IsStoreBin { get; set; } = false;
+        public string IsStoreBin { get; set; }  = string.Empty;
 
         /// <summary>
         /// 是否库位
@@ -38,7 +38,7 @@ namespace PigRunner.DTO.Basic
         /// 备  注:面积
         /// 默认值:
         ///</summary>
-        public decimal Area { get; set; } = 0;
+        public string Area { get; set; } = string.Empty;
 
 
 
@@ -46,7 +46,7 @@ namespace PigRunner.DTO.Basic
         /// 备  注:容积
         /// 默认值:
         ///</summary>
-        public decimal Volume { get; set; } = 0;
+        public string Volume { get; set; } = string.Empty;
 
 
 
@@ -91,7 +91,7 @@ namespace PigRunner.DTO.Basic
         /// 备  注:是否生效
         /// 默认值:
         ///</summary>
-        public bool IsEffective { get; set; } = false;
+        public string IsEffective { get; set; } = string.Empty;
 
         /// <summary>
         /// 生效名称

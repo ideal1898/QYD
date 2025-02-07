@@ -18,7 +18,7 @@ namespace PigRunner.DTO.Basic
         /// <summary>
         /// 时区
         /// </summary>
-        public int TimeZone { get; set; } = -1;
+        public string TimeZone { get; set; } =  string.Empty;
 
         /// <summary>
         /// 地区格式名称
@@ -28,7 +28,7 @@ namespace PigRunner.DTO.Basic
         /// <summary>
         /// 地区格式名称
         /// </summary>
-        public int CountryFormat { get; set; } = -1;
+        public string CountryFormat { get; set; } =  string.Empty;
 
         /// <summary>
         /// 币种名称
@@ -38,12 +38,12 @@ namespace PigRunner.DTO.Basic
         /// <summary>
         /// 币种
         /// </summary>
-        public int Currency { get; set; } = -1;
+        public string Currency { get; set; } =  string.Empty;
 
         /// <summary>
         /// 语言
         /// </summary>
-        public int Language { get; set; } =  -1;
+        public string Language { get; set; } =   string.Empty;
 
         /// <summary>
         /// 语言
@@ -60,7 +60,7 @@ namespace PigRunner.DTO.Basic
         /// <summary>
         /// 姓名格式
         /// </summary>
-        public int NameFormat { get; set; } = -1;
+        public string NameFormat { get; set; } =  string.Empty;
 
 
     }

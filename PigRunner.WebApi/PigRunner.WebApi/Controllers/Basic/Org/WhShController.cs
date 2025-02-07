@@ -3,12 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using PigRunner.DTO.Basic;
 using PigRunner.Public.Common.Views;
 using PigRunner.Services.Basic.IServices;
-using PigRunner.Services.Sys.IServices;
 
 namespace PigRunner.WebApi.Controllers.Basic
 {
     /// <summary>
-    /// Model.ClassName
+    /// 库位
     /// </summary>
     [Route("api/[controller]/[action]")]
     [ApiController]
@@ -34,7 +33,7 @@ namespace PigRunner.WebApi.Controllers.Basic
         [AllowAnonymous]
         [HttpPost]
         
-        public PubResponse ActionWhSh(WhShView request)
+        public PubResponse ActionWhSh([FromBody] WhShView request)
         {
             return services.ActionWhSh(request);
         }
@@ -46,7 +45,7 @@ namespace PigRunner.WebApi.Controllers.Basic
         /// <returns></returns>
         [AllowAnonymous]
         [HttpPost]
-        public PubResponse UploadWhSh(IFormFile file)
+        public PubResponse UploadWhSh([FromBody] IFormFile file)
         {
             PubResponse response = new PubResponse();
             try

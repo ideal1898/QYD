@@ -63,6 +63,9 @@ namespace PigRunner.Services.Basic.Services
             PubResponse response = new PubResponse();
             try
             {
+                if (request == null)
+                    throw new Exception("参数不能为空！");
+
                 if (request.OptType.Equals("AddSupplierCategory") || request.OptType.Equals("UpdateSupplierCategory"))
                 {
                     if (string.IsNullOrEmpty(request.Code))
@@ -81,9 +84,9 @@ namespace PigRunner.Services.Basic.Services
                     }
                     else
                     {
-                        if (request.ID <= 0)
+                        if (string.IsNullOrEmpty(request.ID))
                             throw new Exception("修改ID要大于零！");
-                        head = repository.GetFirst(q => q.ID == request.ID);
+                        head = repository.GetFirst(q => q.ID.ToString() == request.ID);
                         if (head == null)
                             throw new Exception(string.Format("ID为【{0}】的供应商分类不存在，请检查！", request.ID));
 
@@ -98,7 +101,7 @@ namespace PigRunner.Services.Basic.Services
                     head.Name = request.Name;
                     response.id = head.ID;
                     head.Remark = request.Remark;
-                    head.IsEffective = request.IsEffective ? 1 : 0;
+                    head.IsEffective =bool.TryParse( request.IsEffective,out bool IsEffective) ? 1 : 0;
                     long ParentNode = -1;
 
                     //根据供应商分类编码查找实体
@@ -145,25 +148,28 @@ namespace PigRunner.Services.Basic.Services
                 {
                     int total = 0;
                     List<SupplierCategoryView> list = new List<SupplierCategoryView>();
-                    var lst = repository.AsQueryable().ToOffsetPage(request.Current, request.Size, ref total);
+                    string sql = "1=1";
+                    if (!string.IsNullOrEmpty(request.Code))
+                        sql += string.Format(" and Code like '%{0}%' ", request.Code);
 
-                    if (!string.IsNullOrEmpty(request.Code) && !string.IsNullOrEmpty(request.Name) && request.ID > 0)
-                        lst = repository.AsQueryable().Where(q => q.Code.Contains(request.Code) && q.Name.Contains(request.Name) && q.ID != request.ID).ToOffsetPage(request.Current, request.Size, ref total);
-                    else if (!string.IsNullOrEmpty(request.Code) && !string.IsNullOrEmpty(request.Name))
-                        lst = repository.AsQueryable().Where(q => q.Code.Contains(request.Code) && q.Name.Contains(request.Name)).ToOffsetPage(request.Current, request.Size, ref total);
-                    else if (!string.IsNullOrEmpty(request.Code))
-                        lst = repository.AsQueryable().Where(q => q.Code.Contains(request.Code)).ToOffsetPage(request.Current, request.Size, ref total);
-                    else if (!string.IsNullOrEmpty(request.Name))
-                        lst = repository.AsQueryable().Where(q => q.Name.Contains(request.Name)).ToOffsetPage(request.Current, request.Size, ref total);
-                    else if (request.ID > 0)
-                        lst = repository.AsQueryable().Where(q => q.ID != request.ID).ToOffsetPage(request.Current, request.Size, ref total);
+                    if (!string.IsNullOrEmpty(request.Name))
+                        sql += string.Format(" and Name like '%{0}%' ", request.Name);
+
+                    int.TryParse(request.Current, out int Current);
+                    int.TryParse(request.Size, out int Size);
+                    if (Current <= 0)
+                        Current = 10;
+                    if (Size <= 0)
+                        Size = 1;
+
+                    var lst = repository.AsQueryable().Where(sql).ToOffsetPage(Current, Size, ref total);
                     if (lst != null && lst.Count > 0)
                     {
                         int lineNum = 1;
                         foreach (var item in lst)
                         {
                             SupplierCategoryView dto = SetValue(item);
-                            dto.LineNum = lineNum;
+                            dto.LineNum = lineNum.ToString();
                             list.Add(dto);
                             lineNum += 1;
                         }
@@ -189,10 +195,13 @@ namespace PigRunner.Services.Basic.Services
             dto.Code = item.Code;
             dto.Name = item.Name;
             dto.Remark = item.Remark;
-            dto.ID = item.ID;
-            dto.IsEffective = item.IsEffective == 1 ? true : false;
-            if (dto.IsEffective)
+            dto.ID = item.ID.ToString();
+            dto.IsEffective = false.ToString();
+            if (item.IsEffective == 1)
+            {
+                dto.IsEffective = true.ToString();
                 dto.Effective = "生效";
+            }
             else
                 dto.Effective = "停用";
 

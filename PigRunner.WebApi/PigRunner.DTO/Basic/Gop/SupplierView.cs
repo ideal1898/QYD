@@ -64,7 +64,7 @@ namespace PigRunner.DTO.Basic.Gop
         /// <summary>
         /// 是否内部组织
         ///</summary>
-        public bool IsInerOrg { get; set; } = false;
+        public string IsInerOrg { get; set; } = string.Empty;
 
         /// <summary>
         /// 是否内部组织
@@ -95,7 +95,7 @@ namespace PigRunner.DTO.Basic.Gop
         /// <summary>
         /// 税率
         ///</summary>
-        public decimal TaxRate { get; set; } = 0;
+        public string TaxRate { get; set; } = string.Empty;
 
         /// <summary>
         /// 税号
@@ -135,7 +135,7 @@ namespace PigRunner.DTO.Basic.Gop
         /// <summary>
         /// 状态
         /// </summary>
-        public bool Status { get; set; } = false;
+        public string Status { get; set; } = string.Empty;
 
         /// <summary>
         /// 状态名称

@@ -37,6 +37,9 @@ namespace PigRunner.Services.Basic.Services
             PubResponse response = new PubResponse();
             try
             {
+                if (request == null)
+                    throw new Exception("参数不能为空！");
+
                 if (request.OptType.Equals("AddWh") || request.OptType.Equals("UpdateWh"))
                 {
                     if (string.IsNullOrEmpty(request.Code))
@@ -55,9 +58,9 @@ namespace PigRunner.Services.Basic.Services
                     }
                     else
                     {
-                        if (request.ID <= 0)
+                        if (string.IsNullOrEmpty(request.ID))
                             throw new Exception("修改ID要大于零！");
-                        head = repository.GetFirst(q => q.ID == request.ID);
+                        head = repository.GetFirst(q => q.ID.ToString() == request.ID);
                         if (head == null)
                             throw new Exception(string.Format("ID为【{0}】的仓库不存在，请检查！", request.ID));
 
@@ -72,8 +75,8 @@ namespace PigRunner.Services.Basic.Services
                     head.Name = request.Name;
                     response.id = head.ID;
                     head.Remark = request.Remark;
-                    head.IsEffective = request.IsEffective ? 1 : 0;
-                    head.IsStoreBin = request.IsStoreBin ? 1 : 0;
+                    head.IsEffective =bool.TryParse( request.IsEffective,out bool IsEffective) ? 1 : 0;
+                    head.IsStoreBin = bool.TryParse(request.IsStoreBin, out bool IsStoreBin) ? 1 : 0;
                   
 
                     long OrgID = 0;
@@ -109,8 +112,12 @@ namespace PigRunner.Services.Basic.Services
                     }
                     head.Supplier = SupplierID;
                     head.Address = request.Address;
-                    head.Area= request.Area;
-                    head.Volume = request.Volume;
+
+                    decimal.TryParse(request.Area, out decimal Area);
+                    head.Area= Area;
+
+                    decimal.TryParse(request.Volume, out decimal Volume);
+                    head.Volume = Volume;
 
                     bool isSuccess = repository.InsertOrUpdate(head);
                     if (!isSuccess)
@@ -148,25 +155,29 @@ namespace PigRunner.Services.Basic.Services
                 {
                     int total = 0;
                     List<WhView> list = new List<WhView>();
-                    var lst = repository.AsQueryable().ToOffsetPage(request.Current, request.Size, ref total);
 
-                    if (!string.IsNullOrEmpty(request.Code) && !string.IsNullOrEmpty(request.Name) && request.ID > 0)
-                        lst = repository.AsQueryable().Where(q => q.Code.Contains(request.Code) && q.Name.Contains(request.Name) && q.ID != request.ID).ToOffsetPage(request.Current, request.Size, ref total);
-                    else if (!string.IsNullOrEmpty(request.Code) && !string.IsNullOrEmpty(request.Name))
-                        lst = repository.AsQueryable().Where(q => q.Code.Contains(request.Code) && q.Name.Contains(request.Name)).ToOffsetPage(request.Current, request.Size, ref total);
-                    else if (!string.IsNullOrEmpty(request.Code))
-                        lst = repository.AsQueryable().Where(q => q.Code.Contains(request.Code)).ToOffsetPage(request.Current, request.Size, ref total);
-                    else if (!string.IsNullOrEmpty(request.Name))
-                        lst = repository.AsQueryable().Where(q => q.Name.Contains(request.Name)).ToOffsetPage(request.Current, request.Size, ref total);
-                    else if (request.ID > 0)
-                        lst = repository.AsQueryable().Where(q => q.ID != request.ID).ToOffsetPage(request.Current, request.Size, ref total);
+                    string sql = "1=1";
+                    if (!string.IsNullOrEmpty(request.Code))
+                        sql += string.Format(" and Code like '%{0}%' ", request.Code);
+                    if (!string.IsNullOrEmpty(request.Name))
+                        sql += string.Format(" and Name like '%{0}%' ", request.Name);
+
+                    int.TryParse(request.Current, out int Current);
+                    int.TryParse(request.Size, out int Size);
+                    if (Current <= 0)
+                        Current = 10;
+                    if (Size <= 0)
+                        Size = 1;
+
+                    var lst = repository.AsQueryable().Where(sql).ToOffsetPage(Current, Size, ref total);
+
                     if (lst != null && lst.Count > 0)
                     {
                         int lineNum = 1;
                         foreach (var item in lst)
                         {
                             WhView dto = SetValue(item);
-                            dto.LineNum = lineNum;
+                            dto.LineNum = lineNum.ToString();
                             list.Add(dto);
                             lineNum += 1;
                         }
@@ -192,16 +203,16 @@ namespace PigRunner.Services.Basic.Services
             dto.Code = item.Code;
             dto.Name = item.Name;
             dto.Remark = item.Remark;
-            dto.ID = item.ID;
-            dto.IsEffective = item.IsEffective == 1 ? true : false;
-            if (dto.IsEffective)
-                dto.Effective = "启用";
+            dto.ID = item.ID.ToString();
+            dto.IsEffective = false.ToString();
+            if (item.IsEffective == 1)
+            { dto.Effective = "启用"; dto.IsEffective = true.ToString(); }
             else
                 dto.Effective = "停用";
 
-            dto.IsStoreBin = item.IsStoreBin == 1 ? true : false;
-            if (dto.IsStoreBin)
-                dto.StoreBinName = "是";
+            dto.IsStoreBin = false.ToString();
+            if (item.IsStoreBin == 1)
+            { dto.StoreBinName = "是"; dto.IsStoreBin = true.ToString(); }
             else
                 dto.StoreBinName = "否";
             if (item.Org > 0)
@@ -235,8 +246,8 @@ namespace PigRunner.Services.Basic.Services
                 }
             }
             dto.Address = item.Address;
-            dto.Area = item.Area;
-            dto.Volume = item.Volume;
+            dto.Area = item.Area.ToString();
+            dto.Volume = item.Volume.ToString();
             return dto;
         }
 

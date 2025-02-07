@@ -25,9 +25,12 @@
 
 
 using Dm.filter.log;
+using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Linq;
 using PigRunner.Entitys.Sys;
+using PigRunner.Public;
 using PigRunner.Public.Common.Views;
+using PigRunner.Public.Context;
 using PigRunner.Public.Helpers;
 using PigRunner.Repository.Sys;
 using System;
@@ -81,9 +84,13 @@ namespace PigRunner.Services.Sys.Services
             var loginUser = new LoginUserVo()
             {
                 Id = sysUser.ID,
+                UserId=sysUser.ID,
                 UserName = sysUser.UserName,
-                IsAdmin = sysUser.IsAdmin.ToString(),
-                Nickname = sysUser.NickName
+                IsAdmin = sysUser.IsAdmin == 1 ? "true" : "false",
+                DisplayName = sysUser.NickName,
+                Org = 1,
+                OrgCode="100",
+                OrgName="星力时代豪庭"
             };
             var sysLogin = loginRepository.GetSysLogingByUser(sysUser.ID);
             var token = IsValidToken(sysLogin) ? sysLogin.Token : JWTHelper.CreateJWTToken(loginUser);
@@ -135,6 +142,8 @@ namespace PigRunner.Services.Sys.Services
                 sysLogin.Token = token;
                 sysLogin.IsActive = sysUser.IsActive;
                 sysLogin.IsAdmin = sysUser.IsAdmin;
+                sysLogin.ModifiedBy=sysUser.NickName;
+                sysLogin.ModifiedTime=DateTime.Now;
 
                 return loginRepository.Insert(sysLogin);
             }
@@ -143,6 +152,8 @@ namespace PigRunner.Services.Sys.Services
                 sysLogin.Expiretime = DateTime.Now.AddMinutes(45);
                 sysLogin.Token = token;
                 sysLogin.Account = sysUser.ID;
+                sysLogin.ModifiedBy = sysUser.NickName;
+                sysLogin.ModifiedTime = DateTime.Now;
                 return loginRepository.Update(sysLogin);
             }
         }

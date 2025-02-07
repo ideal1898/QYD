@@ -16,7 +16,7 @@ namespace PigRunner.DTO.Basic
         /// 备  注:是否生效
         /// 默认值:
         ///</summary>
-        public int IsEffective { get; set; } = 0;
+        public string IsEffective { get; set; } = string.Empty;
 
 
 
@@ -24,7 +24,7 @@ namespace PigRunner.DTO.Basic
         /// 备  注:默认语言
         /// 默认值:
         ///</summary>
-        public int DefaultLanguage { get; set; } = 0;
+        public string DefaultLanguage { get; set; } = string.Empty;
 
         /// <summary>
         /// 备  注:默认语言名称

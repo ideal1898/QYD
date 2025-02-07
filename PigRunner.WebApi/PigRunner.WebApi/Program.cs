@@ -13,13 +13,18 @@ using PigRunner.Public.Helpers;
 using Newtonsoft.Json;
 using PigRunner.Public.Common.Views;
 using PigRunner.Services.Common;
+using PigRunner.Public.Context;
+using PigRunner.Public;
 
 var builder = WebApplication.CreateBuilder(args);
 //日志
 LoggerHelper.Configure();
 
-
 #region 过滤器相关
+
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+builder.Services.AddTransient<ILoginAppContext, LoginAppContext>();
 
 builder.Services.AddControllers().AddNewtonsoftJson(options =>
 {
@@ -116,6 +121,7 @@ builder.Services.AddAuthentication(option =>
         ValidateLifetime = true,
         ClockSkew = TimeSpan.Zero
     };
+    
     token.Events = new JwtBearerEvents {
         OnChallenge = context => {
             //此处代码为终止.Net Core默认的返回类型和数据结果，这个很重要哦，必须
@@ -132,6 +138,7 @@ builder.Services.AddAuthentication(option =>
             return Task.FromResult(0);
         }
     };
+    
 });
 
 #endregion
@@ -179,11 +186,14 @@ SugarIocServices.ConfigurationSugar(db =>
 builder.Services.InjectionAllServices();
 builder.Services.AddScoped<WebSession>();
 builder.Services.AddAutoMapper(typeof(SysAutoMapperProfile));
+builder.Services.AddAutoMapper(typeof(PMAutoMapperProfile));
+builder.Services.AddAutoMapper(typeof(MMAutoMapperProfile));
 
 #endregion
 
 
 var app = builder.Build();
+ServiceLocator.Instance = app.Services;
 
 #region 上传文件静态目录
 

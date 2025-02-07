@@ -30,6 +30,9 @@ namespace PigRunner.Services.Basic.Pub.Services
             PubResponse response = new PubResponse();
             try
             {
+                if (request == null)
+                    throw new Exception("参数不能为空！");
+
                 if (request.OptType.Equals("AddProvince") || request.OptType.Equals("UpdateProvince"))
                 {
                     if (string.IsNullOrEmpty(request.Code))
@@ -51,9 +54,9 @@ namespace PigRunner.Services.Basic.Pub.Services
                     }
                     else
                     {
-                        if (request.ID <= 0)
+                        if (string.IsNullOrEmpty(request.ID))
                             throw new Exception("修改ID要大于零！");
-                        head = repository.GetFirst(q => q.ID == request.ID);
+                        head = repository.GetFirst(q => q.ID.ToString() == request.ID);
                         if (head == null)
                             throw new Exception(string.Format("ID为【{0}】的省/自治区不存在，请检查！", request.ID));
                     }
@@ -107,8 +110,6 @@ namespace PigRunner.Services.Basic.Pub.Services
                 {
                     int total = 0;
                     List<ProvinceView> list = new List<ProvinceView>();
-                    var lst = repository.AsQueryable().ToOffsetPage(request.Current, request.Size, ref total);
-
                     long Cid = -1;
                     if(!string.IsNullOrEmpty(request.CountryCode))
                     {
@@ -120,16 +121,23 @@ namespace PigRunner.Services.Basic.Pub.Services
                             Cid = 0;
                     }
 
-                    if (!string.IsNullOrEmpty(request.Code) && !string.IsNullOrEmpty(request.Name)&&Cid>-1)
-                        lst = repository.AsQueryable().Where(q => q.Code.Contains(request.Code) && q.Name.Contains(request.Name)&&q.Country==Cid).ToOffsetPage(request.Current, request.Size, ref total);
-                    else if (!string.IsNullOrEmpty(request.Code) && !string.IsNullOrEmpty(request.Name))
-                        lst = repository.AsQueryable().Where(q => q.Code.Contains(request.Code) && q.Name.Contains(request.Name)).ToOffsetPage(request.Current, request.Size, ref total);
-                    else if (!string.IsNullOrEmpty(request.Code))
-                        lst = repository.AsQueryable().Where(q => q.Code.Contains(request.Code)).ToOffsetPage(request.Current, request.Size, ref total);
-                    else if (!string.IsNullOrEmpty(request.Name))
-                        lst = repository.AsQueryable().Where(q => q.Name.Contains(request.Name)).ToOffsetPage(request.Current, request.Size, ref total);
-                      else if (Cid>-1)
-                        lst = repository.AsQueryable().Where(q => q.Country==Cid).ToOffsetPage(request.Current, request.Size, ref total);
+                    string sql = "1=1";
+                    if (!string.IsNullOrEmpty(request.Code))
+                        sql += string.Format(" and Code like '%{0}%' ", request.Code);
+                    if (!string.IsNullOrEmpty(request.Name))
+                        sql += string.Format(" and Name like '%{0}%' ", request.Name);
+                    if (Cid>0)
+                        sql += string.Format(" and Country={0} ", Cid);
+
+                    int.TryParse(request.Current, out int Current);
+                    int.TryParse(request.Size, out int Size);
+                    if (Current <= 0)
+                        Current = 10;
+                    if (Size <= 0)
+                        Size = 1;
+
+
+                    var lst = repository.AsQueryable().Where(sql).ToOffsetPage(Current, Size, ref total);
 
                     if (lst != null && lst.Count > 0)
                     {
@@ -137,7 +145,7 @@ namespace PigRunner.Services.Basic.Pub.Services
                         foreach (var item in lst)
                         {
                             ProvinceView dto = SetValue(item);
-                            dto.LineNum = lineNum;
+                            dto.LineNum = lineNum.ToString();
                             list.Add(dto);
                             lineNum += 1;
                         }
@@ -163,7 +171,7 @@ namespace PigRunner.Services.Basic.Pub.Services
             dto.OptType = "UpdateProvince";
             dto.Code = item.Code;
             dto.Name = item.Name;
-            dto.ID = item.ID;
+            dto.ID = item.ID.ToString();
             //根据国家/地区编码查找实体
             var lg = repository.Context.Queryable<Country>().Where(q => q.ID == item.Country)?.First();
             if (lg != null)
