@@ -132,6 +132,53 @@ namespace PigRunner.Services.Common
                 ;
 
             #endregion
+
+            #region 完工入库单
+
+            CreateMap<RcvRptView, RcvRpt>()
+                 .ForMember(dest => dest.CreatedTime, opt => opt.MapFrom(src => src.id > 0 ? (!string.IsNullOrEmpty(src.CreatedTime) ? DateTime.Now : DateTime.Parse(src.CreatedTime)) : DateTime.Now))
+                    .ForMember(dest => dest.Org, opt => opt.MapFrom(src => !string.IsNullOrEmpty(src.Org) ? src.Org : "0"))
+               .ForMember(dest => dest.ModifiedTime, opt => opt.MapFrom(src => DateTime.Now))
+               .ForMember(dest => dest.SysVersion, opt => opt.Ignore())
+               .ForMember(dest => dest.ID, opt => opt.MapFrom(src => src.id > 0 ? src.id : IdGeneratorHelper.GetNextId()))
+               .ForMember(dest => dest.DocNo, opt => opt.MapFrom(src => !string.IsNullOrEmpty(src.DocNo) ? src.DocNo : $"RK{DateTime.Now.ToString("yyyyMMddHHss")}"))
+               .ReverseMap()
+               .ForPath(dest => dest.id, opt => opt.MapFrom(src => src.ID))
+               .ForPath(dest => dest.OrgCode, opt => opt.MapFrom(src => src.Organization != null ? src.Organization.Code : ""))
+               .ForPath(dest => dest.OrgName, opt => opt.MapFrom(src => src.Organization != null ? src.Organization.Name : ""))
+
+               .ForPath(dest => dest.RcvDeptCode, opt => opt.MapFrom(src => src.RcvDept != null ? src.RcvDept.Code : ""))
+               .ForPath(dest => dest.RcvDeptName, opt => opt.MapFrom(src => src.RcvDept != null ? src.RcvDept.Name : ""))
+
+               .ForPath(dest => dest.RcvPersonCode, opt => opt.MapFrom(src => src.RcvPerson != null ? src.RcvPerson.Code : ""))
+               .ForPath(dest => dest.RcvPersonName, opt => opt.MapFrom(src => src.RcvPerson != null ? src.RcvPerson.Name : ""))
+                 ;
+            CreateMap<RcvRptLineView, RcvRptLine>()
+                .ForMember(dest => dest.ID, opt => opt.MapFrom(src => src.id > 0 ? src.id : IdGeneratorHelper.GetNextId()))
+                .ForMember(dest => dest.ModifiedTime, opt => opt.MapFrom(src => DateTime.Now))
+                .ReverseMap()
+                .ForPath(dest => dest.id, opt => opt.MapFrom(src => src.ID))
+
+                 .ForPath(dest => dest.BOMItemCode, opt => opt.MapFrom(src => src.BOMItemMaster != null ? src.BOMItemMaster.Code : ""))
+                .ForPath(dest => dest.BOMItemName, opt => opt.MapFrom(src => src.BOMItemMaster != null ? src.BOMItemMaster.Name : ""))
+                .ForPath(dest => dest.BOMItemSpecs, opt => opt.MapFrom(src => src.BOMItemMaster != null ? src.BOMItemMaster.SPECS : ""))
+
+                .ForPath(dest => dest.ItemCode, opt => opt.MapFrom(src => src.ItemMaster != null ? src.ItemMaster.Code : ""))
+                .ForPath(dest => dest.ItemName, opt => opt.MapFrom(src => src.ItemMaster != null ? src.ItemMaster.Name : ""))
+                .ForPath(dest => dest.ItemSpecs, opt => opt.MapFrom(src => src.ItemMaster != null ? src.ItemMaster.SPECS : ""))
+                  .ForPath(dest => dest.RcvUomCode, opt => opt.MapFrom(src => src.RcvUom != null ? src.RcvUom.Code : ""))
+                .ForPath(dest => dest.RcvUomName, opt => opt.MapFrom(src => src.RcvUom != null ? src.RcvUom.Name : ""))
+
+                  .ForPath(dest => dest.RcvWhCode, opt => opt.MapFrom(src => src.RcvWh != null ? src.RcvWh.Code : ""))
+                .ForPath(dest => dest.RcvWhName, opt => opt.MapFrom(src => src.RcvWh != null ? src.RcvWh.Name : ""))
+
+                  .ForPath(dest => dest.WhShCode, opt => opt.MapFrom(src => src.WhSh != null ? src.WhSh.Code : ""))
+                .ForPath(dest => dest.WhShName, opt => opt.MapFrom(src => src.WhSh != null ? src.WhSh.Name : ""))
+
+                 .ForPath(dest => dest.LotCode, opt => opt.MapFrom(src => src.LotMaster != null ? src.LotMaster.LotCode : ""))
+                ;
+
+            #endregion
         }
     }
 }
