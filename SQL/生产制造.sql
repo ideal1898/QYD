@@ -167,3 +167,57 @@ CREATE TABLE QYD_MM_RtnIssueLine(
 	ModifiedBy VARCHAR(50)--修改人
 )
 GO
+
+
+
+--完工入库单
+IF OBJECT_ID('QYD_MM_RcvRpt') IS NOT NULL
+DROP TABLE QYD_MM_RcvRpt
+GO
+
+CREATE TABLE QYD_MM_RcvRpt(
+	ID BIGINT PRIMARY KEY, --标识
+	SysVersion BIGINT DEFAULT 0, --版本
+	CreatedTime DATETIME DEFAULT GETDATE(),--创建时间
+	CreatedBy VARCHAR(50) DEFAULT '',--创建人
+	Org BIGINT,--组织ID
+	DocType VARCHAR(100),--单据类型
+	DocNo VARCHAR(100),--单号
+	BusinessDate DATETIME,--单据日期
+	RcvDeptID BIGINT,--入库部门
+	RcvPersonID BIGINT,--仓管员
+	ActualRcvTime DATETIME,--入库日期
+	ModifiedTime DATETIME,--修改日期
+	ModifiedBy VARCHAR(50),--修改人
+	[Status] int,--单据状态
+	Memo VARCHAR(500)--备注
+)
+GO
+
+
+--完工入库明细表
+IF OBJECT_ID('QYD_MM_RcvRptLine') IS NOT NULL
+DROP TABLE QYD_MM_RcvRptLine
+GO
+
+CREATE TABLE QYD_MM_RcvRptLine(
+	ID BIGINT PRIMARY KEY, --标识
+	SysVersion BIGINT DEFAULT 0, --版本
+	CreatedTime DATETIME DEFAULT GETDATE(),--创建时间
+	CreatedBy VARCHAR(50) DEFAULT '',--创建人
+	RcvRptID BIGINT,--入库单ID
+	LineNum int,--行号
+	MOLineID BIGINT,--生产行ID
+	MODocNo VARCHAR(50),--生产单号
+	MOLineNum VARCHAR(50),--生产单行号
+	BOMItemID BIGINT,--母件料品
+	ItemID BIGINT,--子件料品
+	RcvQty DECIMAL(24,9),--入库数量
+	RcvUomID BIGINT,--入库单位
+	RcvWhID BIGINT,--入库仓库
+	LotMasterID BIGINT,--批次
+	WhShID BIGINT,--货位
+	ModifiedTime DATETIME,--修改日期
+	ModifiedBy VARCHAR(50)--修改人
+)
+GO

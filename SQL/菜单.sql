@@ -7,3 +7,5 @@ insert into QYD_Sys_Menu(id,CreatedTime,CreatedBy,SysVersion,Path,Name,Component
 insert into QYD_Sys_Menu(id,CreatedTime,CreatedBy,SysVersion,Path,Name,Component,Redirect,IsActive,Icon,Title,IsLink,IsHide,IsFull,IsAffix,IsKeepAlive,Parent) values(605049656549449,GETDATE(),'管理员',0,'/mm/pm/issue','Issue','/mm/pm/issue/index',null,0,'Menu','领料单',null,0,0,0,1,605049656549447)
 
 insert into QYD_Sys_Menu(id,CreatedTime,CreatedBy,SysVersion,Path,Name,Component,Redirect,IsActive,Icon,Title,IsLink,IsHide,IsFull,IsAffix,IsKeepAlive,Parent) values(605049656549450,GETDATE(),'管理员',0,'/mm/pm/rtnissue','RtnIssue','/mm/pm/rtnissue/index',null,0,'Menu','退料单',null,0,0,0,1,605049656549447)
+
+insert into QYD_Sys_Menu(id,CreatedTime,CreatedBy,SysVersion,Path,Name,Component,Redirect,IsActive,Icon,Title,IsLink,IsHide,IsFull,IsAffix,IsKeepAlive,Parent) values(605049656549451,GETDATE(),'管理员',0,'/mm/pm/rcvrpt','RcvRpt','/mm/pm/rcvrpt/index',null,0,'Menu','完工入库单',null,0,0,0,1,605049656549447)

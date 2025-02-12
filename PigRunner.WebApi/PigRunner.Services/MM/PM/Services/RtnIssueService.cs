@@ -266,7 +266,7 @@ namespace PigRunner.Services.MM.PM.Services
                     throw new Exception($"退料单【{view.DocNo}】数据已被修改，不允许提交");
 
                 repository.BeginTran();
-                repository.Context.Updateable<Issue>().SetColumns(it => new Issue() { SysVersion = it.SysVersion + 1, Status = 1 }).Where(w => w.ID == view.id).ExecuteCommand();
+                repository.Context.Updateable<RtnIssue>().SetColumns(it => new RtnIssue() { SysVersion = it.SysVersion + 1, Status = 1 }).Where(w => w.ID == view.id).ExecuteCommand();
                 repository.CommitTran();
                 var vo = GetRtnIssueViewById(view.id);
                 stopwatch.Stop();
@@ -298,7 +298,7 @@ namespace PigRunner.Services.MM.PM.Services
                     throw new Exception($"退料单【{view.DocNo}】数据已被修改，不允许审核");
 
                 repository.BeginTran();
-                repository.Context.Updateable<Issue>().SetColumns(it => new Issue() { SysVersion = it.SysVersion + 1, Status = 2 }).Where(w => w.ID == view.id).ExecuteCommand();
+                repository.Context.Updateable<RtnIssue>().SetColumns(it => new RtnIssue() { SysVersion = it.SysVersion + 1, Status = 2 }).Where(w => w.ID == view.id).ExecuteCommand();
                 repository.CommitTran();
                 var vo = GetRtnIssueViewById(view.id);
                 stopwatch.Stop();
@@ -330,7 +330,7 @@ namespace PigRunner.Services.MM.PM.Services
                     throw new Exception($"退料单【{view.DocNo}】数据已被修改，不允许弃审");
 
                 repository.BeginTran();
-                repository.Context.Updateable<Issue>().SetColumns(it => new Issue() { SysVersion = it.SysVersion + 1, Status = 0 }).Where(w => w.ID == view.id).ExecuteCommand();
+                repository.Context.Updateable<RtnIssue>().SetColumns(it => new RtnIssue() { SysVersion = it.SysVersion + 1, Status = 0 }).Where(w => w.ID == view.id).ExecuteCommand();
                 repository.CommitTran();
                 var vo = GetRtnIssueViewById(view.id);
                 stopwatch.Stop();
@@ -356,7 +356,7 @@ namespace PigRunner.Services.MM.PM.Services
                 var ids = views.Select(item => item.id);
                 Stopwatch stopwatch = Stopwatch.StartNew();
                 repository.BeginTran();
-                repository.Context.Updateable<Issue>().SetColumns(it => new Issue() { SysVersion = it.SysVersion + 1, Status = 1 }).Where(w => ids.Contains(w.ID)).ExecuteCommand();
+                repository.Context.Updateable<RtnIssue>().SetColumns(it => new RtnIssue() { SysVersion = it.SysVersion + 1, Status = 1 }).Where(w => ids.Contains(w.ID)).ExecuteCommand();
                 repository.CommitTran();
                 stopwatch.Stop();
                 response.code = 200;
@@ -380,7 +380,7 @@ namespace PigRunner.Services.MM.PM.Services
                 var ids = views.Select(item => item.id);
                 Stopwatch stopwatch = Stopwatch.StartNew();
                 repository.BeginTran();
-                repository.Context.Updateable<Issue>().SetColumns(it => new Issue() { SysVersion = it.SysVersion + 1, Status = 2 }).Where(w => ids.Contains(w.ID)).ExecuteCommand();
+                repository.Context.Updateable<RtnIssue>().SetColumns(it => new RtnIssue() { SysVersion = it.SysVersion + 1, Status = 2 }).Where(w => ids.Contains(w.ID)).ExecuteCommand();
                 repository.CommitTran();
                 stopwatch.Stop();
                 response.code = 200;
@@ -404,7 +404,7 @@ namespace PigRunner.Services.MM.PM.Services
                 var ids = views.Select(item => item.id);
                 Stopwatch stopwatch = Stopwatch.StartNew();
                 repository.BeginTran();
-                repository.Context.Updateable<Issue>().SetColumns(it => new Issue() { SysVersion = it.SysVersion + 1, Status = 0 }).Where(w => ids.Contains(w.ID)).ExecuteCommand();
+                repository.Context.Updateable<RtnIssue>().SetColumns(it => new RtnIssue() { SysVersion = it.SysVersion + 1, Status = 0 }).Where(w => ids.Contains(w.ID)).ExecuteCommand();
                 repository.CommitTran();
                 stopwatch.Stop();
                 response.code = 200;

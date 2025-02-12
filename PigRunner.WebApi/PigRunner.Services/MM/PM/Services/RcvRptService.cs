@@ -19,17 +19,17 @@ using System.Threading.Tasks;
 
 namespace PigRunner.Services.MM.PM.Services
 {
-    public class MOService : IMOService
+    public class RcvRptService : IRcvRptService
     {
-        private MORepository repository;
+        private RcvRptRepository repository;
         private WebSession session;
         private IMapper mapper;
 
         /// <summary>
         /// 服务
         /// </summary>
-        /// <param name="_MORepository"></param>
-        public MOService(MORepository _repository, WebSession _session, IMapper _mapper)
+        /// <param name="_RcvRptRepository"></param>
+        public RcvRptService(RcvRptRepository _repository, WebSession _session, IMapper _mapper)
         {
             this.repository = _repository;
             this.session = _session;
@@ -39,11 +39,11 @@ namespace PigRunner.Services.MM.PM.Services
         #region  业务操作
 
         /// <summary>
-        /// 生产订单保存
+        /// 完工入库单保存
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public ResponseBusBody Save(MOView request)
+        public ResponseBusBody Save(RcvRptView request)
         {
             ResponseBusBody response = new ResponseBusBody();
             Stopwatch stopwatch = Stopwatch.StartNew();
@@ -51,8 +51,8 @@ namespace PigRunner.Services.MM.PM.Services
             {
                 if (request == null)
                     throw new Exception("参数不能为空！");
-                if (request.MOLines == null || request.MOLines.Count <= 0)
-                    throw new Exception("生产订单行信息不能为空！");
+                if (request.RcvRptLines == null || request.RcvRptLines.Count <= 0)
+                    throw new Exception("完工入库单行信息不能为空！");
                 if (string.IsNullOrEmpty(request.BusinessDate))
                     throw new Exception("单据日期不能为空！");
 
@@ -61,29 +61,29 @@ namespace PigRunner.Services.MM.PM.Services
 
                 int Status = request.Status;
                 long SysVersion = 0;
-                MO head = null;
+                RcvRpt head = null;
                 if (request.id > 0)
                 {
                     head = repository.GetFirst(q => q.ID == request.id);
                     if (head == null)
-                        throw new Exception(string.Format("ID为【{0}】的生产订单不存在！", request.id));
+                        throw new Exception(string.Format("ID为【{0}】的完工入库单不存在！", request.id));
                     SysVersion = head.SysVersion;
                     if (SysVersion != request.SysVersion)
-                        throw new Exception($"生产订单【{head.DocNo}】数据已被修改");
+                        throw new Exception($"完工入库单【{head.DocNo}】数据已被修改");
                 }
 
                 //自动编码生成单号
                 if (string.IsNullOrEmpty(request.DocNo))
                 {
-                    string DocNo = $"MO{DateTime.Now.ToString("yyyyMMdd")}";
-                    var maxSerialNumber = repository.Context.Queryable<MO>()
+                    string DocNo = $"RK{DateTime.Now.ToString("yyyyMMdd")}";
+                    var maxSerialNumber = repository.Context.Queryable<RcvRpt>()
                         .Where(o => o.DocNo.Contains(DocNo))
                         .Max(o => o.DocNo);
                     if (string.IsNullOrEmpty(maxSerialNumber))
                         DocNo += "00001";
                     else
                     {
-                        string MaxNum = maxSerialNumber.Substring(DocNo.Length, maxSerialNumber.Length - DocNo.Length);
+                        string MaxNum = maxSerialNumber.Substring(DocNo.Length, maxSerialNumber.Length- DocNo.Length);
 
                         int num = 1;
                         int.TryParse(MaxNum, out num);
@@ -101,12 +101,9 @@ namespace PigRunner.Services.MM.PM.Services
                     }
                     request.DocNo = DocNo;
                 }
-
-               
-
                 int linenum = 1;
                 //先把视图中实体字段转为对应ID
-                foreach (var item in request.MOLines)
+                foreach (var item in request.RcvRptLines)
                 {
                     if (string.IsNullOrEmpty(item.ItemCode))
                         throw new Exception("料号不能为空！");
@@ -114,14 +111,30 @@ namespace PigRunner.Services.MM.PM.Services
                     var itemEy = repository.Context.Queryable<Item>().Single(q => q.Code == item.ItemCode);
                     if (itemEy == null)
                         throw new Exception(string.Format("编码为【{0}】的物料不存在，请检查！", item.ItemCode));
-                    item.Item = itemEy.ID;
+                    item.ItemID = itemEy.ID;
 
-                    if (item.MoUom <= 0 && !string.IsNullOrEmpty(item.MoUomCode))
+                    if (item.RcvUomID <= 0 && !string.IsNullOrEmpty(item.RcvUomCode))
                     {
-                        var uom = repository.Context.Queryable<UOM>().Single(q => q.Code == item.MoUomCode);
+                        var uom = repository.Context.Queryable<UOM>().Single(q => q.Code == item.RcvUomCode);
                         if (uom == null)
-                            throw new Exception(string.Format("编码为【{0}】的计量单位不存在，请检查！", item.MoUomCode));
-                        item.MoUom = uom.ID;
+                            throw new Exception(string.Format("编码为【{0}】的计量单位不存在，请检查！", item.RcvUomCode));
+                        item.RcvUomID = uom.ID;
+                    }
+
+                    if (item.RcvWhID <= 0 && !string.IsNullOrEmpty(item.RcvWhCode))
+                    {
+                        var wh = repository.Context.Queryable<Wh>().Single(q => q.Code == item.RcvWhCode);
+                        if (wh == null)
+                            throw new Exception(string.Format("编码为【{0}】的仓库不存在，请检查！", item.RcvWhCode));
+                        item.RcvWhID = wh.ID;
+                    }
+
+                    if (item.WhShID <= 0 && !string.IsNullOrEmpty(item.WhShCode))
+                    {
+                        var wh = repository.Context.Queryable<WhSh>().Single(q => q.Code == item.WhShCode);
+                        if (wh == null)
+                            throw new Exception(string.Format("编码为【{0}】的货位不存在，请检查！", item.WhShCode));
+                        item.WhShID = wh.ID;
                     }
 
                     if (!string.IsNullOrEmpty(item.LotCode))
@@ -130,13 +143,13 @@ namespace PigRunner.Services.MM.PM.Services
                         if (lot == null)
                             throw new Exception(string.Format("编码为【{0}】的批号主档不存在，请检查！", item.LotCode));
 
-                        item.LotMaster = lot.ID;
+                        item.LotMasterID = lot.ID;
                     }
-                    item.LineNum = linenum.ToString();
+                    item.LineNum = linenum;
                     linenum++;
                 }
 
-                head = mapper.Map<MO>(request);
+                head = mapper.Map<RcvRpt>(request);
                 if (request.id > 0)
                     head.SysVersion = SysVersion + 1;
 
@@ -144,7 +157,6 @@ namespace PigRunner.Services.MM.PM.Services
                 if (org == null)
                     throw new Exception(string.Format("编码为【{0}】的组织机构不存在，请检查！", request.OrgCode));
                 head.Org = org.ID;
-                head.DocType = request.DocType;
                 head.DocNo = request.DocNo;
                 head.Status = Status;
 
@@ -152,89 +164,59 @@ namespace PigRunner.Services.MM.PM.Services
 
                 if (!string.IsNullOrEmpty(request.DocNo))
                 {
-                    MO oldhead = repository.GetFirst(q => q.DocNo == request.DocNo && q.Org == org.ID && q.ID != head.ID);
+                    RcvRpt oldhead = repository.GetFirst(q => q.DocNo == request.DocNo && q.Org == org.ID && q.ID != head.ID);
                     if (oldhead != null)
-                        throw new Exception(string.Format("单号为【{0}】的生产订单已存在！", request.DocNo));
+                        throw new Exception(string.Format("单号为【{0}】的完工入库单已存在！", request.DocNo));
                 }
                 DateTime time = DateTime.Now;
                 DateTime.TryParse(request.BusinessDate, out time);
                 head.BusinessDate = time;
 
-                if (!string.IsNullOrEmpty(request.StartDate))
+                if (!string.IsNullOrEmpty(request.ActualRcvTime))
                 {
                     DateTime date = DateTime.Now;
-                    DateTime.TryParse(request.StartDate, out date);
+                    DateTime.TryParse(request.ActualRcvTime, out date);
                     if (date != DateTime.MinValue)
-                        head.StartDate = date;
+                        head.ActualRcvTime = date;
                 }
 
-                if (!string.IsNullOrEmpty(request.CompleteDate))
+                foreach (var item in head.RcvRptLines)
                 {
-                    DateTime date = DateTime.Now;
-                    DateTime.TryParse(request.CompleteDate, out date);
-                    if (date != DateTime.MinValue)
-                        head.CompleteDate = date;
-                }
-
-                if (!string.IsNullOrEmpty(request.MoDeptCode))
-                {
-                    var obj = repository.Context.Queryable<Department>().Where(q => q.Code == request.MoDeptCode).ToList()?.FirstOrDefault();
-                    if (obj == null)
-                        throw new Exception(string.Format("编码为【{0}】的部门不存在，请检查！", request.MoDeptCode));
-                    head.MoDept = obj.ID;
-                }
-
-                if (!string.IsNullOrEmpty(request.BusinessPersonCode))
-                {
-                    var obj = repository.Context.Queryable<Operators>().Where(q => q.Code == request.BusinessPersonCode).ToList()?.FirstOrDefault();
-                    if (obj == null)
-                        throw new Exception(string.Format("编码为【{0}】的业务员不存在，请检查！", request.BusinessPersonCode));
-                    head.BusinessPerson = obj.ID;
-                }
-
-                if (!string.IsNullOrEmpty(request.CompleteWhCode))
-                {
-                    var obj = repository.Context.Queryable<Wh>().Where(q => q.Code == request.CompleteWhCode).ToList()?.FirstOrDefault();
-                    if (obj == null)
-                        throw new Exception(string.Format("编码为【{0}】的仓库不存在，请检查！", request.CompleteWhCode));
-                    head.CompleteWh = obj.ID;
-                }
-                foreach (var item in head.MOLines)
-                {
-                    if (item.MO == 0)
-                        item.MO = head.ID;
+                    if (item.RcvRptID == 0)
+                        item.RcvRptID = head.ID;
                     if (request.id > 0)
                         item.SysVersion += 1;
                 }
                 bool flag = false;
                 if (request.id == 0)
-                    flag = repository.Context.InsertNav(head).Include(item => item.MOLines,
+                    flag = repository.Context.InsertNav(head).Include(item => item.RcvRptLines,
                             new InsertNavOptions() { OneToManyIfExistsNoInsert = true }).ExecuteCommand();
                 else
-                    flag = repository.Context.UpdateNav(head).Include(item => item.MOLines, new UpdateNavOptions() { OneToManyInsertOrUpdate = true }).ExecuteCommand();
+                    flag = repository.Context.UpdateNav(head).Include(item => item.RcvRptLines, new UpdateNavOptions() { OneToManyInsertOrUpdate = true }).ExecuteCommand();
                 if (!flag)
-                    throw new Exception("生产订单新增/修改操作失败！");
+                    throw new Exception("完工入库单新增/修改操作失败！");
 
                 //重新查询单据
-                head = repository.Context.Queryable<MO>()
+                head = repository.Context.Queryable<RcvRpt>()
                     .Includes(item => item.Organization)
-                    .Includes(item => item.MODepartment)
-                      .Includes(item => item.Operators)
-                        .Includes(item => item.WH)
-                    .Includes(item => item.MOLines, line => line.ItemMaster)
-                     .Includes(item => item.MOLines, line => line.Uom)
-                      .Includes(item => item.MOLines, line => line.Lot)
+                    .Includes(item => item.RcvDept)
+                      .Includes(item => item.RcvPerson)
+                       .Includes(item => item.RcvRptLines, line => line.BOMItemMaster)
+                    .Includes(item => item.RcvRptLines, line => line.ItemMaster)
+                     .Includes(item => item.RcvRptLines, line => line.RcvUom)
+                      .Includes(item => item.RcvRptLines, line => line.LotMaster)
+                        .Includes(item => item.RcvRptLines, line => line.RcvWh)
+                          .Includes(item => item.RcvRptLines, line => line.WhSh)
                     .Where(item => item.ID == head.ID).First();
                 //将实体转化成View
-                var vo = mapper.Map<MOView>(head);
+                var vo = mapper.Map<RcvRptView>(head);
                 stopwatch.Stop();
                 response.code = flag ? 200 : 401;
                 response.data = JObject.FromObject(vo);
-                response.msg = $"生产订单保存成功，耗时：{stopwatch.ElapsedMilliseconds}毫秒";
+                response.msg = $"完工入库单保存成功，耗时：{stopwatch.ElapsedMilliseconds}毫秒";
             }
             catch (Exception ex)
             {
-                response.code = 500;
                 response.msg = ex.Message;
             }
             return response;
@@ -253,7 +235,7 @@ namespace PigRunner.Services.MM.PM.Services
                 Stopwatch stopwatch = Stopwatch.StartNew();
                 repository.BeginTran();
                 foreach (long id in ids)
-                    repository.Context.DeleteNav<MO>(item => item.ID == id).Include(item => item.MOLines).ExecuteCommand();
+                    repository.Context.DeleteNav<RcvRpt>(item => item.ID == id).Include(item => item.RcvRptLines).ExecuteCommand();
 
                 repository.CommitTran();
                 stopwatch.Stop();
@@ -271,26 +253,26 @@ namespace PigRunner.Services.MM.PM.Services
 
         }
 
-        public ResponseBusBody Submit(MOView view)
+        public ResponseBusBody Submit(RcvRptView view)
         {
             ResponseBusBody response = new ResponseBusBody();
             try
             {
                 Stopwatch stopwatch = Stopwatch.StartNew();
-                var MO = repository.GetFirst(item => item.ID == view.id);
-                if (MO == null)
-                    throw new Exception($"生产订单【{view.DocNo}】为空，不允许提交");
+                var RcvRpt = repository.GetFirst(item => item.ID == view.id);
+                if (RcvRpt == null)
+                    throw new Exception($"完工入库单【{view.DocNo}】为空，不允许提交");
 
-                if (view.SysVersion != MO.SysVersion)
-                    throw new Exception($"生产订单【{view.DocNo}】数据已被修改，不允许提交");
+                if (view.SysVersion != RcvRpt.SysVersion)
+                    throw new Exception($"完工入库单【{view.DocNo}】数据已被修改，不允许提交");
 
                 repository.BeginTran();
-                repository.Context.Updateable<MO>().SetColumns(it => new MO() { SysVersion = it.SysVersion + 1, Status = 1 }).Where(w => w.ID == view.id).ExecuteCommand();
+                repository.Context.Updateable<RcvRpt>().SetColumns(it => new RcvRpt() { SysVersion = it.SysVersion + 1, Status = 1 }).Where(w => w.ID == view.id).ExecuteCommand();
                 repository.CommitTran();
-                var vo = GetMOViewById(view.id);
+                var vo = GetRcvRptViewById(view.id);
                 stopwatch.Stop();
                 response.code = 200;
-                response.msg = $"生产订单提交完成，耗时:{stopwatch.ElapsedMilliseconds}毫秒";
+                response.msg = $"完工入库单提交完成，耗时:{stopwatch.ElapsedMilliseconds}毫秒";
                 response.data = JObject.FromObject(vo);
             }
             catch (Exception ex)
@@ -303,26 +285,26 @@ namespace PigRunner.Services.MM.PM.Services
             return response;
         }
 
-        public ResponseBusBody Approve(MOView view)
+        public ResponseBusBody Approve(RcvRptView view)
         {
             ResponseBusBody response = new ResponseBusBody();
             try
             {
                 Stopwatch stopwatch = Stopwatch.StartNew();
-                var MO = repository.GetFirst(item => item.ID == view.id);
-                if (MO == null)
-                    throw new Exception($"生产订单【{view.DocNo}】为空，不允许审核");
+                var RcvRpt = repository.GetFirst(item => item.ID == view.id);
+                if (RcvRpt == null)
+                    throw new Exception($"完工入库单【{view.DocNo}】为空，不允许审核");
 
-                if (view.SysVersion != MO.SysVersion)
-                    throw new Exception($"生产订单【{view.DocNo}】数据已被修改，不允许审核");
+                if (view.SysVersion != RcvRpt.SysVersion)
+                    throw new Exception($"完工入库单【{view.DocNo}】数据已被修改，不允许审核");
 
                 repository.BeginTran();
-                repository.Context.Updateable<MO>().SetColumns(it => new MO() { SysVersion = it.SysVersion + 1, Status = 2 }).Where(w => w.ID == view.id).ExecuteCommand();
+                repository.Context.Updateable<RcvRpt>().SetColumns(it => new RcvRpt() { SysVersion = it.SysVersion + 1, Status = 2 }).Where(w => w.ID == view.id).ExecuteCommand();
                 repository.CommitTran();
-                var vo = GetMOViewById(view.id);
+                var vo = GetRcvRptViewById(view.id);
                 stopwatch.Stop();
                 response.code = 200;
-                response.msg = $"生产订单审核完成，耗时:{stopwatch.ElapsedMilliseconds}毫秒";
+                response.msg = $"完工入库单审核完成，耗时:{stopwatch.ElapsedMilliseconds}毫秒";
                 response.data = JObject.FromObject(vo);
             }
             catch (Exception ex)
@@ -335,26 +317,26 @@ namespace PigRunner.Services.MM.PM.Services
             return response;
         }
 
-        public ResponseBusBody UnApprove(MOView view)
+        public ResponseBusBody UnApprove(RcvRptView view)
         {
             ResponseBusBody response = new ResponseBusBody();
             try
             {
                 Stopwatch stopwatch = Stopwatch.StartNew();
-                var MO = repository.GetFirst(item => item.ID == view.id);
-                if (MO == null)
-                    throw new Exception($"生产订单【{view.DocNo}】为空，不允许弃审");
+                var RcvRpt = repository.GetFirst(item => item.ID == view.id);
+                if (RcvRpt == null)
+                    throw new Exception($"完工入库单【{view.DocNo}】为空，不允许弃审");
 
-                if (view.SysVersion != MO.SysVersion)
-                    throw new Exception($"生产订单【{view.DocNo}】数据已被修改，不允许弃审");
+                if (view.SysVersion != RcvRpt.SysVersion)
+                    throw new Exception($"完工入库单【{view.DocNo}】数据已被修改，不允许弃审");
 
                 repository.BeginTran();
-                repository.Context.Updateable<MO>().SetColumns(it => new MO() { SysVersion = it.SysVersion + 1, Status = 0 }).Where(w => w.ID == view.id).ExecuteCommand();
+                repository.Context.Updateable<RcvRpt>().SetColumns(it => new RcvRpt() { SysVersion = it.SysVersion + 1, Status = 0 }).Where(w => w.ID == view.id).ExecuteCommand();
                 repository.CommitTran();
-                var vo = GetMOViewById(view.id);
+                var vo = GetRcvRptViewById(view.id);
                 stopwatch.Stop();
                 response.code = 200;
-                response.msg = $"生产订单弃审完成，耗时:{stopwatch.ElapsedMilliseconds}毫秒";
+                response.msg = $"完工入库单弃审完成，耗时:{stopwatch.ElapsedMilliseconds}毫秒";
                 response.data = JObject.FromObject(vo);
             }
             catch (Exception ex)
@@ -375,11 +357,11 @@ namespace PigRunner.Services.MM.PM.Services
                 var ids = views.Select(item => item.id);
                 Stopwatch stopwatch = Stopwatch.StartNew();
                 repository.BeginTran();
-                repository.Context.Updateable<MO>().SetColumns(it => new MO() { SysVersion = it.SysVersion + 1, Status = 1 }).Where(w => ids.Contains(w.ID)).ExecuteCommand();
+                repository.Context.Updateable<RcvRpt>().SetColumns(it => new RcvRpt() { SysVersion = it.SysVersion + 1, Status = 1 }).Where(w => ids.Contains(w.ID)).ExecuteCommand();
                 repository.CommitTran();
                 stopwatch.Stop();
                 response.code = 200;
-                response.msg = $"生产订单提交完成，耗时:{stopwatch.ElapsedMilliseconds}毫秒";
+                response.msg = $"完工入库单提交完成，耗时:{stopwatch.ElapsedMilliseconds}毫秒";
             }
             catch (Exception ex)
             {
@@ -399,11 +381,11 @@ namespace PigRunner.Services.MM.PM.Services
                 var ids = views.Select(item => item.id);
                 Stopwatch stopwatch = Stopwatch.StartNew();
                 repository.BeginTran();
-                repository.Context.Updateable<MO>().SetColumns(it => new MO() { SysVersion = it.SysVersion + 1, Status = 2 }).Where(w => ids.Contains(w.ID)).ExecuteCommand();
+                repository.Context.Updateable<RcvRpt>().SetColumns(it => new RcvRpt() { SysVersion = it.SysVersion + 1, Status = 2 }).Where(w => ids.Contains(w.ID)).ExecuteCommand();
                 repository.CommitTran();
                 stopwatch.Stop();
                 response.code = 200;
-                response.msg = $"生产订单审核完成，耗时:{stopwatch.ElapsedMilliseconds}毫秒";
+                response.msg = $"完工入库单审核完成，耗时:{stopwatch.ElapsedMilliseconds}毫秒";
             }
             catch (Exception ex)
             {
@@ -423,11 +405,11 @@ namespace PigRunner.Services.MM.PM.Services
                 var ids = views.Select(item => item.id);
                 Stopwatch stopwatch = Stopwatch.StartNew();
                 repository.BeginTran();
-                repository.Context.Updateable<MO>().SetColumns(it => new MO() { SysVersion = it.SysVersion + 1, Status = 0 }).Where(w => ids.Contains(w.ID)).ExecuteCommand();
+                repository.Context.Updateable<RcvRpt>().SetColumns(it => new RcvRpt() { SysVersion = it.SysVersion + 1, Status = 0 }).Where(w => ids.Contains(w.ID)).ExecuteCommand();
                 repository.CommitTran();
                 stopwatch.Stop();
                 response.code = 200;
-                response.msg = $"生产订单弃审完成，耗时:{stopwatch.ElapsedMilliseconds}毫秒";
+                response.msg = $"完工入库单弃审完成，耗时:{stopwatch.ElapsedMilliseconds}毫秒";
             }
             catch (Exception ex)
             {
@@ -454,7 +436,7 @@ namespace PigRunner.Services.MM.PM.Services
                 if (view.Where != null && view.Where.Count > 0)
                 {
                     var queryView = JsonConvert.SerializeObject(view.Where);
-                    List<MOQueryView> queryViewDTO = JsonConvert.DeserializeObject<List<MOQueryView>>(queryView);
+                    List<RcvRptQueryView> queryViewDTO = JsonConvert.DeserializeObject<List<RcvRptQueryView>>(queryView);
                     if (queryViewDTO != null && queryViewDTO.Count > 0)
                     {
                         foreach (var item in queryViewDTO)
@@ -464,8 +446,6 @@ namespace PigRunner.Services.MM.PM.Services
 
                             if (!string.IsNullOrEmpty(item.BusinessDate))
                                 sql += string.Format(@" and BusinessDate = '{0}'", item.BusinessDate);
-                            if (!string.IsNullOrEmpty(item.StartDate))
-                                sql += string.Format(@" and StartDate = '{0}'", item.StartDate);
                             if (!string.IsNullOrEmpty(item.Status))
                                 sql += string.Format(@" and Status ={0}", item.Status);
                         }
@@ -473,19 +453,21 @@ namespace PigRunner.Services.MM.PM.Services
                 }
 
                 int total = 0;
-                var head = repository.Context.Queryable<MO>()
-                     .Includes(item => item.Organization)
-                     .Includes(item => item.MODepartment)
-                       .Includes(item => item.Operators)
-                         .Includes(item => item.WH)
-                     .Includes(item => item.MOLines, line => line.ItemMaster)
-                      .Includes(item => item.MOLines, line => line.Uom)
-                       .Includes(item => item.MOLines, line => line.Lot).Where(sql).ToOffsetPage(view.PageNumber, view.PageSize, ref total);
-                var views = mapper.Map<List<MOView>>(head);
+                var head = repository.Context.Queryable<RcvRpt>()
+                    .Includes(item => item.Organization)
+                    .Includes(item => item.RcvDept)
+                      .Includes(item => item.RcvPerson)
+                       .Includes(item => item.RcvRptLines, line => line.BOMItemMaster)
+                    .Includes(item => item.RcvRptLines, line => line.ItemMaster)
+                     .Includes(item => item.RcvRptLines, line => line.RcvUom)
+                      .Includes(item => item.RcvRptLines, line => line.LotMaster)
+                        .Includes(item => item.RcvRptLines, line => line.RcvWh)
+                          .Includes(item => item.RcvRptLines, line => line.WhSh).Where(sql).ToOffsetPage(view.PageNumber, view.PageSize, ref total);
+                var views = mapper.Map<List<RcvRptView>>(head);
                 stopwatch.Stop();
                 response.code = 200;
                 response.total = total;
-                response.msg = $"生产订单查询完成，共计{total}条记录，耗时:{stopwatch.ElapsedMilliseconds}毫秒";
+                response.msg = $"完工入库单查询完成，共计{total}条记录，耗时:{stopwatch.ElapsedMilliseconds}毫秒";
                 response.data = JArray.FromObject(views);
             }
             catch (Exception ex)
@@ -497,7 +479,7 @@ namespace PigRunner.Services.MM.PM.Services
             return response;
         }
         /// <summary>
-        /// 根据ID查询生产订单
+        /// 根据ID查询完工入库单
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -507,19 +489,21 @@ namespace PigRunner.Services.MM.PM.Services
             Stopwatch stopwatch = Stopwatch.StartNew();
             try
             {
-                var head = repository.Context.Queryable<MO>()
-                  .Includes(item => item.Organization)
-                  .Includes(item => item.MODepartment)
-                    .Includes(item => item.Operators)
-                      .Includes(item => item.WH)
-                  .Includes(item => item.MOLines, line => line.ItemMaster)
-                   .Includes(item => item.MOLines, line => line.Uom)
-                    .Includes(item => item.MOLines, line => line.Lot)
+                var head = repository.Context.Queryable<RcvRpt>()
+                    .Includes(item => item.Organization)
+                    .Includes(item => item.RcvDept)
+                      .Includes(item => item.RcvPerson)
+                       .Includes(item => item.RcvRptLines, line => line.BOMItemMaster)
+                    .Includes(item => item.RcvRptLines, line => line.ItemMaster)
+                     .Includes(item => item.RcvRptLines, line => line.RcvUom)
+                      .Includes(item => item.RcvRptLines, line => line.LotMaster)
+                        .Includes(item => item.RcvRptLines, line => line.RcvWh)
+                          .Includes(item => item.RcvRptLines, line => line.WhSh)
                   .Where(item => item.ID == id);
-                var view = mapper.Map<MOView>(head.First());
+                var view = mapper.Map<RcvRptView>(head.First());
                 response.data = JObject.FromObject(view);
                 response.code = 200;
-                response.msg = $"生产订单查询耗时:{stopwatch.ElapsedMilliseconds} 毫秒";
+                response.msg = $"完工入库单查询耗时:{stopwatch.ElapsedMilliseconds} 毫秒";
             }
             catch (Exception ex)
             {
@@ -531,7 +515,7 @@ namespace PigRunner.Services.MM.PM.Services
         }
 
         /// <summary>
-        /// 根据单号查询生产订单
+        /// 根据单号查询完工入库单
         /// </summary>
         /// <param name="DocNo"></param>
         /// <returns></returns>
@@ -541,19 +525,21 @@ namespace PigRunner.Services.MM.PM.Services
             Stopwatch stopwatch = Stopwatch.StartNew();
             try
             {
-                var head = repository.Context.Queryable<MO>()
-                  .Includes(item => item.Organization)
-                  .Includes(item => item.MODepartment)
-                    .Includes(item => item.Operators)
-                      .Includes(item => item.WH)
-                  .Includes(item => item.MOLines, line => line.ItemMaster)
-                   .Includes(item => item.MOLines, line => line.Uom)
-                    .Includes(item => item.MOLines, line => line.Lot)
+                var head = repository.Context.Queryable<RcvRpt>()
+                    .Includes(item => item.Organization)
+                    .Includes(item => item.RcvDept)
+                      .Includes(item => item.RcvPerson)
+                       .Includes(item => item.RcvRptLines, line => line.BOMItemMaster)
+                    .Includes(item => item.RcvRptLines, line => line.ItemMaster)
+                     .Includes(item => item.RcvRptLines, line => line.RcvUom)
+                      .Includes(item => item.RcvRptLines, line => line.LotMaster)
+                        .Includes(item => item.RcvRptLines, line => line.RcvWh)
+                          .Includes(item => item.RcvRptLines, line => line.WhSh)
                   .Where(item => item.DocNo == DocNo);
-                var view = mapper.Map<MOView>(head.First());
+                var view = mapper.Map<RcvRptView>(head.First());
                 response.data = JObject.FromObject(view);
                 response.code = 200;
-                response.msg = $"生产订单查询耗时:{stopwatch.ElapsedMilliseconds} 毫秒";
+                response.msg = $"完工入库单查询耗时:{stopwatch.ElapsedMilliseconds} 毫秒";
             }
             catch (Exception ex)
             {
@@ -564,18 +550,20 @@ namespace PigRunner.Services.MM.PM.Services
             return response;
         }
 
-        private MOView GetMOViewById(long id)
+        private RcvRptView GetRcvRptViewById(long id)
         {
-            var head = repository.Context.Queryable<MO>()
-                 .Includes(item => item.Organization)
-                 .Includes(item => item.MODepartment)
-                   .Includes(item => item.Operators)
-                     .Includes(item => item.WH)
-                 .Includes(item => item.MOLines, line => line.ItemMaster)
-                  .Includes(item => item.MOLines, line => line.Uom)
-                   .Includes(item => item.MOLines, line => line.Lot)
+            var head = repository.Context.Queryable<RcvRpt>()
+                    .Includes(item => item.Organization)
+                    .Includes(item => item.RcvDept)
+                      .Includes(item => item.RcvPerson)
+                       .Includes(item => item.RcvRptLines, line => line.BOMItemMaster)
+                    .Includes(item => item.RcvRptLines, line => line.ItemMaster)
+                     .Includes(item => item.RcvRptLines, line => line.RcvUom)
+                      .Includes(item => item.RcvRptLines, line => line.LotMaster)
+                        .Includes(item => item.RcvRptLines, line => line.RcvWh)
+                          .Includes(item => item.RcvRptLines, line => line.WhSh)
                  .Where(item => item.ID == id);
-            return mapper.Map<MOView>(head.First());
+            return mapper.Map<RcvRptView>(head.First());
         }
 
         #endregion
