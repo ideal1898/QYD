@@ -15,6 +15,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using PigRunner.Public.Context;
+using PigRunner.Public;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace PigRunner.Services.SCM.PM.Services
 {
@@ -43,6 +46,9 @@ namespace PigRunner.Services.SCM.PM.Services
             Stopwatch stopwatch = Stopwatch.StartNew();
             try
             {
+                ILoginAppContext context = ServiceLocator.Instance?.GetService<ILoginAppContext>();
+                string UserDisplayName = context.LoginToken.DisplayName;
+                long Org = context.LoginToken.Org;
                 PurchaseReceipt doc = null;
                 long SysVersion = 0;
                 if (view.id > 0)
@@ -57,14 +63,16 @@ namespace PigRunner.Services.SCM.PM.Services
                 if (view.id > 0)
                 {
                     doc.SysVersion = SysVersion + 1;
-                    doc.ModifiedBy = session.UserName;
+                    doc.ModifiedBy = UserDisplayName;
                 }
                 else
                 {
                     if (string.IsNullOrEmpty(doc.CreatedBy))
-                        doc.CreatedBy = session.UserName;
+                        doc.CreatedBy = UserDisplayName;
                     if (doc.CreatedTime == DateTime.MinValue)
                         doc.CreatedTime = DateTime.Now;
+                    if (doc.Org == 0)
+                        doc.Org = Org;
                 }
                 if (doc.Supplier == 0 && !string.IsNullOrEmpty(view.SupplierCode))
                 {
@@ -85,6 +93,14 @@ namespace PigRunner.Services.SCM.PM.Services
                         if (mertial != null)
                             item.Material = mertial.ID;
                     }
+                    if (string.IsNullOrEmpty(item.CreatedBy))
+                        item.CreatedBy = UserDisplayName;
+                    if (item.ID > 0)
+                    {
+                        item.ModifiedBy = UserDisplayName;
+                        item.ModifiedTime = DateTime.Now;
+                    }
+
                 }
                 bool flag = false;
                 if (view.id == 0)
@@ -370,9 +386,9 @@ namespace PigRunner.Services.SCM.PM.Services
                 int total = 0;
                 var docs = repository.Context.Queryable<PurchaseReceipt>()
                     .Includes(item => item.Supp)
-                    .Includes(item=>item.Symbol)
-                    .Includes(item=>item.ReqDept)
-                    .Includes(item=>item.ReqMan)
+                    .Includes(item => item.Symbol)
+                    .Includes(item => item.ReqDept)
+                    .Includes(item => item.ReqMan)
                     .Includes(item => item.Operators)
                     .Includes(item => item.Dept)
                     .Includes(item => item.Organization)
@@ -403,7 +419,7 @@ namespace PigRunner.Services.SCM.PM.Services
             ResponseBusBody response = new ResponseBusBody();
             Stopwatch stopwatch = Stopwatch.StartNew();
             try
-            {  
+            {
                 response.data = JObject.FromObject(GetViewById(id));
                 response.code = 200;
                 response.msg = $"采购收货单查询耗时:{stopwatch.ElapsedMilliseconds} 毫秒";

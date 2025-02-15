@@ -54,7 +54,7 @@ namespace PigRunner.Public.Common.Views
         /// </summary>
         public string IsAdmin { get; set; }=string.Empty;
         /// <summary>
-        /// 角色
+        /// 用户姓名
         /// </summary>
         public string DisplayName { get; set; }=string.Empty; 
         /// <summary>
