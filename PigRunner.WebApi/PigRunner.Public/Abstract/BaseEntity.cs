@@ -40,7 +40,6 @@ namespace PigRunner.Public.Abstract
         /// 修改人
         /// </summary>
         public string ModifiedBy { get; set; } = string.Empty;
-
         /// <summary>
         /// 创建实体
         /// </summary>

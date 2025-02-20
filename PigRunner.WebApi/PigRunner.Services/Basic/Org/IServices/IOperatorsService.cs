@@ -27,6 +27,8 @@ namespace PigRunner.Services.Basic.IServices
         /// <param name="file"></param>
         /// <returns></returns>
         PubResponse UploadOperators(MemoryStream file);
+
+        PubResponse QueryOperators();
     }
     
 }

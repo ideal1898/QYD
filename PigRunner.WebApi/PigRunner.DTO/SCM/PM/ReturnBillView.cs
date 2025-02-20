@@ -24,41 +24,29 @@ namespace PigRunner.DTO.SCM.PM
         /// </summary>
         public string SupplierName { get; set; } = string.Empty;
         /// <summary>
-        /// 收货部门
+        /// 退货部门
         /// </summary>
-        public long Department { get; set; }
+        public long RtnDept { get; set; }
         /// <summary>
-        /// 收货部门编码
+        /// 退货部门编码
         /// </summary>
-        public string DepartmentCode { get; set; } = string.Empty;
+        public string RtnDeptCode { get; set; } = string.Empty;
         /// <summary>
-        /// 收货部门名称
+        /// 退货部门名称
         /// </summary>
-        public string DepartmentName { get; set; } = string.Empty;
+        public string RtnDeptName { get; set; } = string.Empty;
         /// <summary>
-        /// 需求部门ID
+        /// 退货人员ID
         /// </summary>
-        public long RequiredDept { get; set; }
+        public long RtnMan { get; set; }
         /// <summary>
-        /// 需求部门编码
+        /// 退货人员编码
         /// </summary>
-        public string RequiredDeptCode { get; set; } = string.Empty;
+        public string RtnManCode { get; set; } = string.Empty;
         /// <summary>
-        /// 需求部门编码
+        /// 退货人员名称
         /// </summary>
-        public string RequiredDeptName { get; set; } = string.Empty;
-        /// <summary>
-        /// 需求人员ID
-        /// </summary>
-        public long RequiredMan { get; set; }
-        /// <summary>
-        /// 需求人员编码
-        /// </summary>
-        public string RequiredManCode { get; set; } = string.Empty;
-        /// <summary>
-        /// 需求人员名称
-        /// </summary>
-        public string RequiredManName { get; set; } = string.Empty;
+        public string RtnManName { get; set; } = string.Empty;
         /// <summary>
         /// 收货人
         /// </summary>
@@ -108,7 +96,7 @@ namespace PigRunner.DTO.SCM.PM
     public class ReturnBillLineView : BaseView
     {
         /// <summary>
-        /// 采购收货单
+        /// 采购退货单
         /// </summary>
         public long ReturnBill { get; set; }
         /// <summary>
@@ -235,14 +223,6 @@ namespace PigRunner.DTO.SCM.PM
         /// //备注
         /// </summary>
         public string Memo { get; set; } = string.Empty;
-        /// <summary>
-        /// //来源单据号
-        /// </summary>
-        public string SrcDocNo { get; set; } = string.Empty;
-        /// <summary>
-        /// //来源单据行
-        /// </summary>
-        public long SrcDocLine { get; set; }
         /// <summary>
         /// //到货日期
         /// </summary>

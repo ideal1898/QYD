@@ -93,7 +93,7 @@ namespace PigRunner.DTO.SCM.PM
     /// <summary>
     /// 采购退货申请单行
     /// </summary>
-    public class ReturnRequisitionLineView : DocBaseView
+    public class ReturnRequisitionLineView : BaseView
     {
         /// <summary>
         /// 采购收货单

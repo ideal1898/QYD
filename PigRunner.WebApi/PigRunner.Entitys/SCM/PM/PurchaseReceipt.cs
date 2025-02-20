@@ -101,7 +101,7 @@ namespace PigRunner.Entitys.SCM.PM
     /// 采购入库单行
     /// </summary>
     [SqlSugar.SugarTable("QYD_PM_PurchaseReceiptsLine")]
-    public class PurchaseReceiptLine : BaseEntity<PurchaseReceiptLine>
+    public class PurchaseReceiptLine : LineBaseEntity
     {
         /// <summary>
         /// 采购收货单
@@ -227,14 +227,6 @@ namespace PigRunner.Entitys.SCM.PM
         /// 备注
         /// </summary>
         public string Memo { get; set; } = string.Empty;
-        /// <summary>
-        /// 来源单据号
-        /// </summary>
-        public string SrcDocNo { get; set; } = string.Empty;
-        /// <summary>
-        /// 来源单据行
-        /// </summary>
-        public long SrcDocLine { get; set; }
         /// <summary>
         /// 到货日期
         /// </summary>

@@ -78,7 +78,7 @@ namespace PigRunner.Entitys.SCM.PM
     /// 采购订单行
     /// </summary>
     [SqlSugar.SugarTable("QYD_PM_POLine")]
-    public class POLine : BaseEntity<POLine>
+    public class POLine : LineBaseEntity
     {
         /// <summary>
         /// 主表ID
@@ -138,6 +138,7 @@ namespace PigRunner.Entitys.SCM.PM
         /// 价税合计
         /// </summary>
         public decimal TotalMoney { get; set; }
+       
 
     }
 }

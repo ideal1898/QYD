@@ -13,9 +13,9 @@ namespace PigRunner.WebApi.Controllers.Basic
     [ApiController]
     public class DepartmentController : ControllerBase
     {
-        
+
         private IDepartmentService services;
-        
+
         /// <summary>
         /// 服务注册
         /// </summary>
@@ -32,10 +32,19 @@ namespace PigRunner.WebApi.Controllers.Basic
         /// <returns></returns>
         [AllowAnonymous]
         [HttpPost]
-        
+
         public PubResponse ActionDepartment([FromBody] DepartmentView request)
         {
             return services.ActionDepartment(request);
+        }
+        /// <summary>
+        /// 查询所有部门ID,Name
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public PubResponse QueryAllDepartments()
+        {
+            return services.QueryAllDepartments();
         }
 
         /// <summary>
@@ -67,6 +76,6 @@ namespace PigRunner.WebApi.Controllers.Basic
     }
 
 
-    
-    
+
+
 }

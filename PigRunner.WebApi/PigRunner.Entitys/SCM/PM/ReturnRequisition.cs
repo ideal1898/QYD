@@ -93,7 +93,7 @@ namespace PigRunner.Entitys.SCM.PM
     /// 采购退货申请单
     /// </summary>
     [SqlSugar.SugarTable("QYD_PM_ReturnRequisitionLine")]
-    public class ReturnRequisitionLine:BaseEntity<ReturnRequisitionLine>
+    public class ReturnRequisitionLine:LineBaseEntity
     {
         /// <summary>
         /// 采购退货申请单
@@ -218,13 +218,5 @@ namespace PigRunner.Entitys.SCM.PM
         /// 备注
         /// </summary>
         public string Memo { get; set; } = string.Empty;
-        /// <summary>
-        /// 来源单据号
-        /// </summary>
-        public string SrcDocNo { get; set; } = string.Empty;
-        /// <summary>
-        /// 来源单据行
-        /// </summary>
-        public long SrcDocLine { get; set; }
     }
 }

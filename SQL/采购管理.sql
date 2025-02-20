@@ -65,6 +65,7 @@ CREATE TABLE QYD_PM_RequisitionLine(
 	TaxMoney DECIMAL(24,9),--税额	
 	RequireDate DATETIME, --要货日期
 	Memo NVARCHAR(350), --备注
+	SrcType INT, --来源类型
 	SrcDocNo NVARCHAR(50), --来源单据号
 	SrcDocLine BIGINT --来源单据行
 )
@@ -134,6 +135,7 @@ CREATE TABLE QYD_PM_POLine(
 	TotalMoney DECIMAL(24,9),
 	TaxMoney DECIMAL(24,9),
 	NoTaxMoney DECIMAL(24,9),
+	SrcType INT, --来源类型
 	SrcDocNo NVARCHAR(50), --来源单据号
 	SrcDocLine BIGINT --来源单据行
 )
@@ -211,6 +213,7 @@ CREATE TABLE QYD_PM_DeliveryOrderLine(
 	EffectiveDate DATETIME,--生效日期
 	ExpirationDate DATETIME, --失效日期 
 	Memo NVARCHAR(350), --备注
+	SrcType INT, --来源类型
 	SrcDocNo NVARCHAR(50), --来源单据号
 	SrcDocLine BIGINT --来源单据行
 )
@@ -296,6 +299,7 @@ CREATE TABLE QYD_PM_PurchaseReceiptsLine(
 	Expiration INT, --保质天数
 	ExpirationDate DATETIME, --失效日期 
 	Memo NVARCHAR(350), --备注
+	SrcType INT, --来源类型
 	SrcDocNo NVARCHAR(50), --来源单据号
 	SrcDocLine BIGINT, --来源单据行
 	ArriveDate DATETIME, --到货日期
@@ -332,6 +336,7 @@ CREATE TABLE QYD_PM_ReturnRequisition(
 	Supplier BIGINT,--供应商
 	RtnDept BIGINT,--退货部门
 	RtnMan BIGINT,--退货人员
+	SalesMan BIGINT,--业务员
 	Consignee BIGINT,--收货人
 	DeliveryAddress NVARCHAR(255), --收货地址
 	Currency BIGINT, --币种
@@ -381,6 +386,7 @@ CREATE TABLE QYD_PM_ReturnRequisitionLine(
 	Expiration INT, --保质天数
 	ExpirationDate DATETIME, --失效日期 
 	Memo NVARCHAR(350), --备注
+	SrcType INT, --来源类型
 	SrcDocNo NVARCHAR(50), --来源单据号
 	SrcDocLine BIGINT --来源单据行
 )
@@ -464,6 +470,7 @@ CREATE TABLE QYD_PM_ReturnBillLine(
 	Expiration INT, --保质天数
 	ExpirationDate DATETIME, --失效日期 
 	Memo NVARCHAR(350), --备注
+	SrcType INT, --来源类型
 	SrcDocNo NVARCHAR(50), --来源单据号
 	SrcDocLine BIGINT, --来源单据行
 	ArriveDate DATETIME, --到货日期
