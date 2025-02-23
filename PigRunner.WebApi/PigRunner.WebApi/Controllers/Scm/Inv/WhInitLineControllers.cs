@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using PigRunner.DTO.Scm.Inv;
 using PigRunner.Public.Common.Views;
 using PigRunner.Services.Scm.Inv.IServices;
-using PigRunner.Services.Sys.IServices;
 using Newtonsoft.Json.Linq;
 
 namespace WebApi.Controllers.Basic

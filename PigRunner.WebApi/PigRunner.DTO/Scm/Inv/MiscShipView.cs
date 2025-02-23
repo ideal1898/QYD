@@ -4,7 +4,7 @@ using System.Linq;
 namespace PigRunner.DTO.Scm.Inv
 {
 
-    public class MiscShipView
+    public class MiscShipView : DocBaseView
     {
         
          

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-namespace PigRunner.DTO.Scm.Inv
+namespace PigRunner.DTO.SCM.INV
 {
 
-    public class CheckDiffBillView
+    public class CheckDiffBillView : DocBaseView
     {
         
          

@@ -4,7 +4,7 @@ using System.Linq;
 namespace PigRunner.DTO.Scm.Inv
 {
 
-    public class WhbinAdjustLineView
+    public class WhbinAdjustLineView : DocBaseView
     {
         
          
