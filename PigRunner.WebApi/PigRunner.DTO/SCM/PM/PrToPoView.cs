@@ -33,6 +33,10 @@ namespace PigRunner.DTO.SCM.PM
         /// 供应商编码
         /// </summary>
         public string SupplierCode { get; set; } = string.Empty;
+        /// <summary>
+        /// 明细数据
+        /// </summary>
+        public List<PrToPoLineView> Lines { get; set; }=new List<PrToPoLineView>();
     }
     /// <summary>
     /// 请购单明细
@@ -42,7 +46,14 @@ namespace PigRunner.DTO.SCM.PM
         /// 请购单ID
         /// </summary>
         public long id { get; set; }
-         
+        /// <summary>
+        /// 本次采购数量
+        /// </summary>
+        public decimal Qty { get; set; }
+        /// <summary>
+        /// 本次要货日期
+        /// </summary>
+        public string RequiredDate { get; set; }=string.Empty;
     
     
     }

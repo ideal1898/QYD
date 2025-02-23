@@ -272,8 +272,7 @@ namespace PigRunner.Services.SCM.PM.Services
                 orderRepository.BeginTran();
                 orderRepository.Context.Updateable<PurchaseOrder>().SetColumns(it => new PurchaseOrder() { SysVersion = it.SysVersion + 1, Status = 2 }).Where(w => ids.Contains(w.ID)).ExecuteCommand();
                 orderRepository.CommitTran();
-                stopwatch.Stop();
-                orderRepository.CommitTran();
+               
                 stopwatch.Stop();
                 response.code = 200;
                 response.msg = $"采购订单审核完成，耗时:{stopwatch.ElapsedMilliseconds}毫秒";
@@ -297,8 +296,6 @@ namespace PigRunner.Services.SCM.PM.Services
                 Stopwatch stopwatch = Stopwatch.StartNew();
                 orderRepository.BeginTran();
                 orderRepository.Context.Updateable<PurchaseOrder>().SetColumns(it => new PurchaseOrder() { SysVersion = it.SysVersion + 1, Status = 0 }).Where(w => ids.Contains(w.ID)).ExecuteCommand();
-                orderRepository.CommitTran();
-                stopwatch.Stop();
                 orderRepository.CommitTran();
                 stopwatch.Stop();
                 response.code = 200;
@@ -449,18 +446,55 @@ namespace PigRunner.Services.SCM.PM.Services
 
             try
             {
-                var PrIds= views.Where(w=>w.id>0)?.Select(item => item.id);
-                var PrDocNos = views.Where(w => !string.IsNullOrEmpty(w.DocNo)).Select(item => item.DocNo);
+                ///获取ID,DocNo
+                HashSet<long> ids = new HashSet<long>();
+                HashSet<string> DocNos = new HashSet<string>();
+                string BusinessDate=string.Empty;
+                long Supplier = 0;
+                foreach (var view in views)
+                {
+                    if (view.id > 0)
+                        ids.Add(view.id);
+                    else if (!string.IsNullOrEmpty(view.DocNo))
+                        DocNos.Add(view.DocNo);
+                    BusinessDate = view.BusinessDate;
+                    Supplier = view.Supplier;
+                }
+
                 List<Requisition> requisitions = new List<Requisition>();
                 //根据ID查询
-                if (PrIds != null && PrIds.Any()) {
-                  List<Requisition> list= orderRepository.Context.Queryable<Requisition>().IncludesAllFirstLayer().Where(w => PrIds.Contains(w.ID)).ToList();
-                
+                if (ids != null && ids.Any())
+                {
+                    List<Requisition> list = orderRepository.Context.Queryable<Requisition>().IncludesAllFirstLayer().Where(w => ids.Contains(w.ID)).ToList();
+                    if (list.Any())
+                        requisitions.AddRange(list);
                 }
                 //根据单据号查询
+                if (DocNos != null && DocNos.Any()) {
+                    List<Requisition> list = orderRepository.Context.Queryable<Requisition>().IncludesAllFirstLayer().Where(w => DocNos.Contains(w.DocNo)).ToList();
+                    if (list.Any())
+                        requisitions.AddRange(list);
+                }
 
-
+                //查询
+                var Lines=views.SelectMany(item=>item.Lines).ToList();
                 orderRepository.BeginTran();
+
+                PurchaseOrder doc= new PurchaseOrder();
+                doc.Lines = new List<POLine>();
+                foreach (var requisition in requisitions)
+                {
+                    foreach (var line in requisition.Lines)
+                        ;
+                    
+
+                }
+
+                
+              bool flag=orderRepository.Context.InsertNav<PurchaseOrder>(doc).Include(item=>item.Lines, new InsertNavOptions() { OneToManyIfExistsNoInsert = true }).ExecuteCommand();
+              //保存成功,回写数据
+                
+                
 
 
                 orderRepository.CommitTran();
