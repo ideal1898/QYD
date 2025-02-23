@@ -420,6 +420,48 @@ namespace PigRunner.Services.MM.PM.Services
             return response;
         }
 
+        public ResponseBody MOToIssue(List<MOToIssueView> views)
+        {
+            ResponseBody response = new ResponseBody();
+
+            try
+            {
+
+                if (views == null || views.Count <= 0)
+                    throw new Exception("创建单据信息不能为空！");
+
+                DateTime businessDate = DateTime.Today;
+
+                //查询
+                var Lines = views.SelectMany(item => item.Lines).ToList();
+                repository.BeginTran();
+
+                Issue doc = new Issue();
+
+                doc.IssueLines = new List<IssueLine>();
+                foreach (var requisition in views)
+                {
+                    foreach (var line in requisition.Lines)
+                        ;
+
+
+                }
+
+
+                bool flag = repository.Context.InsertNav<Issue>(doc).Include(item => item.IssueLines, new InsertNavOptions() { OneToManyIfExistsNoInsert = true }).ExecuteCommand();
+                //保存成功,回写数据
+                repository.CommitTran();
+
+                response.code = 200;
+                response.msg = "生产转领料业务处理完成";
+            }
+            catch (Exception ex)
+            {
+                response.code = 200;
+                response.msg = ex.Message;
+            }
+            return response;
+        }
 
         #endregion
 

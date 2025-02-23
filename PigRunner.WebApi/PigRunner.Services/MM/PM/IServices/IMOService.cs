@@ -58,6 +58,17 @@ namespace PigRunner.Services.MM.PM.IServices
         /// <param name="DocNo"></param>
         /// <returns></returns>
         ResponseBusBody QueryDocByDocNo(string DocNo);
+
+        /// <summary>
+        /// 分页查询明细
+        /// </summary>
+        /// <param name="Where">查询条件</param>
+        /// <param name="PageSize">每页大小</param>
+        /// <param name="Current">当前页面</param>
+        /// <param name="Total">总数量</param>
+        /// <returns></returns>
+        ResponseBody queryLineByPage(PageView view);
+
         #endregion
     }
 }

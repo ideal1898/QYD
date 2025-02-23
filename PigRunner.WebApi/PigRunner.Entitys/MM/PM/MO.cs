@@ -115,6 +115,9 @@ namespace PigRunner.Entitys.MM.PM
         /// </summary>
         public long MO { get; set; }=0;
 
+        [SqlSugar.Navigate(SqlSugar.NavigateType.ManyToOne, nameof(MO))]
+        public MO? MODoc { get; set; }
+
         /// <summary>
         /// 行号
         /// </summary>

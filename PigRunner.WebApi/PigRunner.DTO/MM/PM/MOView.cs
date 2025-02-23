@@ -74,13 +74,9 @@ namespace PigRunner.DTO.MM.PM
     /// <summary>
     /// 生产订单行视图
     /// </summary>
-    public class MOLineView
+    public class MOLineView : BaseView
     {
-        /// <summary>
-        /// 业务主键
-        /// </summary>
-        public long id { get; set; } = 0;
-
+      
         /// <summary>
         /// 生产订单ID
         /// </summary>
@@ -146,10 +142,6 @@ namespace PigRunner.DTO.MM.PM
         /// </summary>
         public string SrcDocType { get; set; } = string.Empty;
 
-        /// <summary>
-        /// 来源单号
-        /// </summary>
-        public string SrcDocNo { get; set; } = string.Empty;
 
         /// <summary>
         /// 业务开始时间
@@ -180,11 +172,6 @@ namespace PigRunner.DTO.MM.PM
         /// 批次
         /// </summary>
         public long LotMaster { get; set; } = 0;
-
-        /// <summary>
-        /// 行动作
-        /// </summary>
-        public string Action { get; set; } = string.Empty;
     }
 
 

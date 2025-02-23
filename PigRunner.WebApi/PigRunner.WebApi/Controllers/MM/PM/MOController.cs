@@ -157,6 +157,18 @@ namespace PigRunner.WebApi.Controllers.MM.PM
             return services.QueryAllByPage(view);
         }
 
+        /// <summary>
+        /// 生产明细数据:未全部转单
+        /// </summary>
+        /// <param name="view"></param>
+        /// <returns></returns>
+        [AllowAnonymous]
+        [HttpPost]
+        public ResponseBody queryLineByPage([FromBody] PageView view)
+        {
+            return services.queryLineByPage(view);
+        }
+
         #endregion
     }
 }
