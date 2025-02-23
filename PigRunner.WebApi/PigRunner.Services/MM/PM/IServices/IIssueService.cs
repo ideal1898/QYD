@@ -34,6 +34,13 @@ namespace PigRunner.Services.MM.PM.IServices
         ResponseBody BatchApprove(List<DoActionView> views);
         ResponseBody BatchUnApprove(List<DoActionView> views);
 
+        /// <summary>
+        /// 生产转领料
+        /// </summary>
+        /// <param name="views"></param>
+        /// <returns></returns>
+        ResponseBody MOToIssue(List<MOToIssueView> views);
+
         #endregion
 
         #region 查询

@@ -39,6 +39,7 @@ namespace PigRunner.Services.Common
                 .ForMember(dest => dest.ModifiedTime, opt => opt.MapFrom(src => DateTime.Now))
                 .ReverseMap()
                 .ForPath(dest => dest.id, opt => opt.MapFrom(src => src.ID))
+                  .ForPath(dest => dest.DocNo, opt => opt.MapFrom(src => src.MODoc != null ? src.MODoc.DocNo : ""))
                 .ForPath(dest => dest.ItemCode, opt => opt.MapFrom(src => src.ItemMaster != null ? src.ItemMaster.Code : ""))
                 .ForPath(dest => dest.ItemName, opt => opt.MapFrom(src => src.ItemMaster != null ? src.ItemMaster.Name : ""))
                 .ForPath(dest => dest.ItemSpecs, opt => opt.MapFrom(src => src.ItemMaster != null ? src.ItemMaster.SPECS : ""))
