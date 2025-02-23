@@ -9,7 +9,7 @@ namespace PigRunner.Entitys.SCM.INV
     /// 
     ///</summary>
     [SugarTable("Qyd_InvDoc_CheckDiffBill")]
-    public class CheckDiffBill : BaseEntity<CheckDiffBill>
+    public class CheckDiffBill : BaseDocEntity<CheckDiffBill>
     {
         
          
