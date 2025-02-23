@@ -347,6 +347,30 @@ namespace PigRunner.Services.Basic.Services
             }
             return response;
         }
+
+        /// <summary>
+        /// 查询部门所有
+        /// </summary>
+        /// <returns></returns>
+        public PubResponse QueryOperators()
+        {
+            PubResponse response = new PubResponse();
+            try
+            {
+                var ress = repository.Context.Queryable<Operators>().Select(item => new { value = item.ID, label = item.Name });
+                response.data = JArray.FromObject(ress.ToArray());
+                response.success = true;
+                response.code = 200;
+                response.msg = "查询完成";
+            }
+            catch (Exception ex)
+            {
+                response.msg = ex.Message;
+                response.code = 400;
+
+            }
+            return response;
+        }
     }
 
 }

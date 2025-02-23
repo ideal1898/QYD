@@ -12,7 +12,7 @@ namespace PigRunner.WebApi.Controllers.SCM.PM
     /// </summary>
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class RequisitionController:ControllerBase
+    public class RequisitionController : ControllerBase
     {
         /// <summary>
         /// 请购单服务
@@ -155,6 +155,16 @@ namespace PigRunner.WebApi.Controllers.SCM.PM
         public ResponseBody queryAllByPage([FromBody] PageView view)
         {
             return orderService.QueryAllByPage(view);
+        }
+        /// <summary>
+        /// 请购明细数据:未全部转单
+        /// </summary>
+        /// <param name="view"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ResponseBody queryLineByPage([FromBody] PageView view)
+        {
+            return orderService.queryLineByPage(view);
         }
 
         #endregion

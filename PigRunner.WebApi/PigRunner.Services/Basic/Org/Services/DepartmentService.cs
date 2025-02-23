@@ -74,7 +74,7 @@ namespace PigRunner.Services.Basic.Services
                     head.Name = request.Name;
                     response.id = head.ID;
                     head.Remark = request.Remark;
-                    head.IsEffective =bool.TryParse( request.IsEffective,out bool IsEffective) ? 1 : 0;
+                    head.IsEffective = bool.TryParse(request.IsEffective, out bool IsEffective) ? 1 : 0;
                     long ParentNode = -1;
 
                     //根据部门编码查找实体
@@ -161,6 +161,32 @@ namespace PigRunner.Services.Basic.Services
             }
             return response;
         }
+        /// <summary>
+        /// 查询部门所有
+        /// </summary>
+        /// <returns></returns>
+        public PubResponse QueryAllDepartments()
+        {
+            PubResponse response = new PubResponse();
+            try
+            {
+                var ress = repository.Context.Queryable<Department>().Select(item => new { value = item.ID, label = item.Name });
+                response.data = JArray.FromObject(ress.ToArray());
+                response.success = true;
+                response.code = 200;
+                response.msg = "查询完成";
+            }
+            catch (Exception ex)
+            {
+                response.msg = ex.Message;
+                response.code = 400;
+
+            }
+
+          
+            return response;
+        }
+
 
         private DepartmentView SetValue(Department item)
         {
@@ -169,7 +195,7 @@ namespace PigRunner.Services.Basic.Services
             dto.Name = item.Name;
             dto.Remark = item.Remark;
             dto.ID = item.ID.ToString();
-            dto.IsEffective =false.ToString();
+            dto.IsEffective = false.ToString();
             if (item.IsEffective == 1)
             { dto.Effective = "生效"; dto.IsEffective = true.ToString(); }
             else
@@ -281,4 +307,4 @@ namespace PigRunner.Services.Basic.Services
     }
 
 }
-    
+

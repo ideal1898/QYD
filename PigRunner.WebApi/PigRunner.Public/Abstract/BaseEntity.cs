@@ -30,13 +30,16 @@ namespace PigRunner.Public.Abstract
         /// <summary>
         /// 版本
         /// </summary>
-<<<<<<<<< Temporary merge branch 1
-        public long SysVersion { get; set; }
-       
-
-=========
         public long SysVersion { get; set; } = 0;
->>>>>>>>> Temporary merge branch 2
+        /// <summary>
+        /// 修改日期
+        /// </summary>
+        public DateTime ModifiedTime { get; set; } = DateTime.Now;
+
+        /// <summary>
+        /// 修改人
+        /// </summary>
+        public string ModifiedBy { get; set; } = string.Empty;
         /// <summary>
         /// 创建实体
         /// </summary>

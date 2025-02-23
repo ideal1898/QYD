@@ -1,3 +1,75 @@
+--请购单
+IF OBJECT_ID('QYD_PM_Requisition') IS NOT NULL
+DROP TABLE QYD_PM_Requisition
+GO
+
+CREATE TABLE QYD_PM_Requisition(
+--统一字段
+	ID BIGINT PRIMARY KEY, --表标识
+	CreatedTime DATETIME NOT NULL DEFAULT GETDATE(),--创建时间
+	CreatedBy NVARCHAR(50),--创建人
+	ModifiedTime DATETIME NOT NULL DEFAULT GETDATE(),--修改时间
+	ModifiedBy NVARCHAR(50),--修改人
+	SysVersion BIGINT,--版本
+	DocNo NVARCHAR(100),--单据编号
+	BusinessDate DATETIME NOT NULL DEFAULT GETDATE(),--业务日期
+	DocType BIGINT,--单据类型
+	Org BIGINT,--组织
+	Status INT, --单据状态
+	SubmitDate DATETIME, --提交日期
+	SubmitBy NVARCHAR(50),--提交人
+	ApprovedOn DATETIME, --审核时间
+	ApprovedBy NVARCHAR(50), --审核人
+	Memo NVARCHAR(350), --备注
+	--业务字段
+	RequriedDept BIGINT,--需求部门
+	RequiredMan BIGINT,--需求人员
+	Currency BIGINT, --币种
+	TaxRate DECIMAL(24,9),--税率
+	SrcDocNo NVARCHAR(100), --来源单据号
+	IsOverPurchase BIT  --允许超额采购
+)
+
+-- 创建唯一索引
+IF (SELECT  COUNT(1) FROM sys.sysindexes WHERE Name='IDX_Requisition_DocNo' )>0
+DROP INDEX IDX_Requisition_DocNo ON QYD_PM_Requisition;
+GO
+CREATE UNIQUE INDEX IDX_Requisition_DocNo ON QYD_PM_Requisition (DocNo);
+GO
+
+IF OBJECT_ID('QYD_PM_RequisitionLine') IS NOT NULL
+DROP TABLE QYD_PM_RequisitionLine
+GO
+
+CREATE TABLE QYD_PM_RequisitionLine(
+    --统一字段
+	ID BIGINT PRIMARY KEY, --表标识
+	CreatedTime DATETIME NOT NULL DEFAULT GETDATE(),--创建时间
+	CreatedBy NVARCHAR(50),--创建人
+	ModifiedTime DATETIME NOT NULL DEFAULT GETDATE(),--修改时间
+	ModifiedBy NVARCHAR(50),--修改人
+	SysVersion BIGINT,--版本
+	--业务字段
+	Requisition BIGINT, --请购单
+	Material BIGINT, --物料
+	ItemCode NVARCHAR(100), --物料编码
+	ItemName NVARCHAR(255) DEFAULT '', --物料名称
+	ItemSpec NVARCHAR(255) DEFAULT '', --物料规格
+	UomName NVARCHAR(100), --计量单位
+	Project BIGINT,--项目
+	Qty DECIMAL(24,9), --到货数量
+	Price DECIMAL(24,9), --单价
+	TaxRate DECIMAL(24,9),--税率
+	TotalMoney DECIMAL(24,9),--价税合计
+	NoTaxMoney DECIMAL(24,9),--未税金额
+	TaxMoney DECIMAL(24,9),--税额	
+	RequireDate DATETIME, --要货日期
+	Memo NVARCHAR(350), --备注
+	SrcType INT, --来源类型
+	SrcDocNo NVARCHAR(50), --来源单据号
+	SrcDocLine BIGINT --来源单据行
+)
+
 
 --采购订单
 IF OBJECT_ID('QYD_PM_PurchaseOrder') IS NOT NULL
@@ -5,24 +77,31 @@ DROP TABLE QYD_PM_PurchaseOrder
 GO
 
 CREATE TABLE QYD_PM_PurchaseOrder(
-	ID BIGINT PRIMARY KEY,
-	CreatedTime DATETIME DEFAULT GETDATE(),
-	CreatedBy NVARCHAR(50),
-	ModifiedTime DATETIME DEFAULT GETDATE(),
-	ModifiedBy NVARCHAR(50),
-	SysVersion BIGINT DEFAULT 0,
-	DocNo NVARCHAR(100) NOT NULL,
-	Org BIGINT,
-	BusinessDate DATETIME DEFAULT GETDATE(),
+	--统一字段
+	ID BIGINT PRIMARY KEY, --表标识
+	CreatedTime DATETIME NOT NULL DEFAULT GETDATE(),--创建时间
+	CreatedBy NVARCHAR(50),--创建人
+	ModifiedTime DATETIME NOT NULL DEFAULT GETDATE(),--修改时间
+	ModifiedBy NVARCHAR(50),--修改人
+	SysVersion BIGINT,--版本
+	DocNo NVARCHAR(100),--单据编号
+	BusinessDate DATETIME NOT NULL DEFAULT GETDATE(),--业务日期
+	DocType BIGINT,--单据类型
+	Org BIGINT,--组织
+	Status INT, --单据状态
+	SubmitDate DATETIME, --提交日期
+	SubmitBy NVARCHAR(50),--提交人
+	ApprovedOn DATETIME, --审核时间
+	ApprovedBy NVARCHAR(50), --审核人
+	Memo NVARCHAR(350), --备注
+	--业务字段
 	Currency BIGINT DEFAULT 0,
 	SrcDocType NVARCHAR(20),
 	Supplier  BIGINT DEFAULT 0,
 	TotalMoney DECIMAL(24,9),
 	TaxMoney DECIMAL(24,9),
 	NoTaxMoney DECIMAL(24,9),
-	TaxRate DECIMAL(24,9),
-	Status INT,
-	Memo NVARCHAR(350)
+	TaxRate DECIMAL(24,9)
 )
 GO
 -- 创建唯一索引
@@ -55,7 +134,10 @@ CREATE TABLE QYD_PM_POLine(
 	Price DECIMAL(24,9),
 	TotalMoney DECIMAL(24,9),
 	TaxMoney DECIMAL(24,9),
-	NoTaxMoney DECIMAL(24,9)
+	NoTaxMoney DECIMAL(24,9),
+	SrcType INT, --来源类型
+	SrcDocNo NVARCHAR(50), --来源单据号
+	SrcDocLine BIGINT --来源单据行
 )
 
 
@@ -131,6 +213,7 @@ CREATE TABLE QYD_PM_DeliveryOrderLine(
 	EffectiveDate DATETIME,--生效日期
 	ExpirationDate DATETIME, --失效日期 
 	Memo NVARCHAR(350), --备注
+	SrcType INT, --来源类型
 	SrcDocNo NVARCHAR(50), --来源单据号
 	SrcDocLine BIGINT --来源单据行
 )
@@ -216,6 +299,7 @@ CREATE TABLE QYD_PM_PurchaseReceiptsLine(
 	Expiration INT, --保质天数
 	ExpirationDate DATETIME, --失效日期 
 	Memo NVARCHAR(350), --备注
+	SrcType INT, --来源类型
 	SrcDocNo NVARCHAR(50), --来源单据号
 	SrcDocLine BIGINT, --来源单据行
 	ArriveDate DATETIME, --到货日期
@@ -252,6 +336,7 @@ CREATE TABLE QYD_PM_ReturnRequisition(
 	Supplier BIGINT,--供应商
 	RtnDept BIGINT,--退货部门
 	RtnMan BIGINT,--退货人员
+	SalesMan BIGINT,--业务员
 	Consignee BIGINT,--收货人
 	DeliveryAddress NVARCHAR(255), --收货地址
 	Currency BIGINT, --币种
@@ -301,6 +386,7 @@ CREATE TABLE QYD_PM_ReturnRequisitionLine(
 	Expiration INT, --保质天数
 	ExpirationDate DATETIME, --失效日期 
 	Memo NVARCHAR(350), --备注
+	SrcType INT, --来源类型
 	SrcDocNo NVARCHAR(50), --来源单据号
 	SrcDocLine BIGINT --来源单据行
 )
@@ -384,6 +470,7 @@ CREATE TABLE QYD_PM_ReturnBillLine(
 	Expiration INT, --保质天数
 	ExpirationDate DATETIME, --失效日期 
 	Memo NVARCHAR(350), --备注
+	SrcType INT, --来源类型
 	SrcDocNo NVARCHAR(50), --来源单据号
 	SrcDocLine BIGINT, --来源单据行
 	ArriveDate DATETIME, --到货日期

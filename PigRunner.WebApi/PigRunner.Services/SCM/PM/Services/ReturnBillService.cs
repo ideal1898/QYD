@@ -371,8 +371,8 @@ namespace PigRunner.Services.SCM.PM.Services
                 var docs = repository.Context.Queryable<ReturnBill>()
                     .Includes(item => item.Supp)
                     .Includes(item => item.Currency)
-                    .Includes(item => item.ReqDept)
-                    .Includes(item => item.ReqMan)
+                    .Includes(item => item.Dept)
+                    .Includes(item => item.RtnOperators)
                     .Includes(item => item.Operators)
                     .Includes(item => item.Dept)
                     .Includes(item => item.Organization)
@@ -453,6 +453,38 @@ namespace PigRunner.Services.SCM.PM.Services
                        .IncludesAllSecondLayer(item => item.Lines)
                        .Where(item => item.ID == id);
             return mapper.Map<ReturnBillView>(doc.First());
+        }
+        /// <summary>
+        /// 采购退货单明细数据
+        /// </summary>
+        /// <param name="view"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+       public ResponseBody queryLineByPage(PageView view)
+        {
+            ResponseBody response = new ResponseBody();
+            Stopwatch stopwatch = Stopwatch.StartNew();
+            try
+            {
+                int total = 0;
+                var docs = repository.Context.Queryable<ReturnBillLine>()
+                     .IncludesAllFirstLayer()
+                    .OrderBy(item => item.CreatedTime, OrderByType.Desc)
+                    .ToOffsetPage(view.PageNumber, view.PageSize, ref total);
+                var views = mapper.Map<List<ReturnBillLineView>>(docs);
+                stopwatch.Stop();
+                response.code = 200;
+                response.total = total;
+                response.msg = $"采购退货单明细查询完成，共计{total}条记录，耗时：{total}";
+                response.data = JArray.FromObject(views);
+            }
+            catch (Exception ex)
+            {
+                response.code = 500;
+                response.msg = ex.Message;
+            }
+
+            return response;
         }
 
         #endregion

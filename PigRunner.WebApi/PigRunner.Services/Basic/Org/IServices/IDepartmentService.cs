@@ -22,6 +22,8 @@ namespace PigRunner.Services.Basic.IServices
         /// <param name="file"></param>
         /// <returns></returns>
         PubResponse UploadDepartment(MemoryStream file);
+
+        PubResponse QueryAllDepartments();
     }
     
 }

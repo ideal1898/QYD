@@ -28,34 +28,24 @@ namespace PigRunner.Entitys.SCM.PM
         public Supplier? Supp { get; set; }
 
         /// <summary>
-        /// 收货部门
+        ///退货部门
         /// </summary>
-        public long Department { get; set; }
+        public long RtnDept { get; set; }
         /// <summary>
-        /// 部门实体
+        /// 退货部门实体
         /// </summary>
         [Navigate(NavigateType.OneToOne, nameof(Department))]
         public Department? Dept { get; set; }
 
         /// <summary>
-        /// 需求部门ID
+        /// 退货人员ID
         /// </summary>
-        public long RequiredDept { get; set; }
+        public long RtnMan { get; set; }
         /// <summary>
-        /// 需求部门实体
+        /// 退货人员实体
         /// </summary>
-        [Navigate(NavigateType.OneToOne, nameof(RequiredDept))]
-        public Department? ReqDept { get; set; }
-
-        /// <summary>
-        /// 需求人员ID
-        /// </summary>
-        public long RequiredMan { get; set; }
-        /// <summary>
-        /// 需求人员实体
-        /// </summary>
-        [Navigate(NavigateType.OneToOne, nameof(RequiredMan))]
-        public Operators? ReqMan { get; set; }
+        [Navigate(NavigateType.OneToOne, nameof(RtnMan))]
+        public Operators? RtnOperators { get; set; }
         /// <summary>
         /// 收货人
         /// </summary>
@@ -101,10 +91,10 @@ namespace PigRunner.Entitys.SCM.PM
     /// 采购退货单行
     /// </summary>
     [SqlSugar.SugarTable("QYD_PM_ReturnBillLine")]
-    public class ReturnBillLine:BaseEntity<ReturnBillLine>
+    public class ReturnBillLine:LineBaseEntity
     {
         /// <summary>
-        /// 采购收货单
+        /// 采购退货单
         /// </summary>
         public long ReturnBill { get; set; }
         /// <summary>
@@ -226,14 +216,6 @@ namespace PigRunner.Entitys.SCM.PM
         /// 备注
         /// </summary>
         public string Memo { get; set; } = string.Empty;
-        /// <summary>
-        /// 来源单据号
-        /// </summary>
-        public string SrcDocNo { get; set; } = string.Empty;
-        /// <summary>
-        /// 来源单据行
-        /// </summary>
-        public long SrcDocLine { get; set; }
         /// <summary>
         /// 到货日期
         /// </summary>

@@ -17,5 +17,8 @@ namespace PigRunner.Services.Basic.IServices
         /// <param name="request"></param>
         /// <returns></returns>
         PubResponse ActionCurrency(EnumView request);
-    }
+
+        PubResponse QueryAllCurrency();
+
+     }
 }

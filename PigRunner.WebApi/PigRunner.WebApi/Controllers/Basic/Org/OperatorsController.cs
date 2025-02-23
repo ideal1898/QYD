@@ -64,9 +64,13 @@ namespace PigRunner.WebApi.Controllers.Basic
             }
             return response;
         }
-    }
-
-
-    
-    
+        /// <summary>
+        /// 查询需求人员
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public PubResponse QueryOperators() {
+            return services.QueryOperators();
+        }
+    }   
 }

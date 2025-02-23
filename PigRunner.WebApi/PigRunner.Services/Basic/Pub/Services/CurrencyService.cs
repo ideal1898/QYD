@@ -1,9 +1,14 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using AutoMapper;
+using Newtonsoft.Json.Linq;
 using PigRunner.DTO.Basic;
+using PigRunner.DTO.SCM.PM;
 using PigRunner.Entitys.Basic;
+using PigRunner.Entitys.SCM.PM;
 using PigRunner.Public.Common.Views;
 using PigRunner.Repository.Basic;
 using PigRunner.Services.Basic.IServices;
+using SqlSugar;
+using System.Diagnostics;
 
 namespace PigRunner.Services.Basic.Services
 {
@@ -70,6 +75,30 @@ namespace PigRunner.Services.Basic.Services
             {
                 response.msg = ex.Message;
             }
+            return response;
+        }
+
+        public PubResponse QueryAllCurrency()
+        {
+            PubResponse response = new PubResponse();
+            Stopwatch stopwatch = Stopwatch.StartNew();
+            try
+            {
+                int total = 0;
+                var docs = repository.Context.Queryable<Currency>()
+                    .OrderBy(item => item.ID, OrderByType.Asc).Select(item => new {value=item.ID,label=item.Name });        
+                stopwatch.Stop();
+                response.code = 200;
+                response.total = total;
+                response.msg = $"请购明细查询完成，共计{total}条记录，耗时：{total}";
+                response.data = JArray.FromObject(docs.ToArray());
+            }
+            catch (Exception ex)
+            {
+                response.code = 500;
+                response.msg = ex.Message;
+            }
+
             return response;
         }
     }

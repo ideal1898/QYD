@@ -158,6 +158,16 @@ namespace PigRunner.WebApi.Controllers.SCM.PM
         {
             return purchaseOrderService.QueryAllByPage(view);
         }
+        /// <summary>
+        /// 采购订单明细
+        /// </summary>
+        /// <param name="view"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ResponseBody queryLineByPage([FromBody] PageView view)
+        {
+            return purchaseOrderService.queryLineByPage(view);
+        }
 
         #endregion
     }

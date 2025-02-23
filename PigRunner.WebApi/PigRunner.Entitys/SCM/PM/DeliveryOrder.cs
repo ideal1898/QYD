@@ -68,7 +68,7 @@ namespace PigRunner.Entitys.SCM.PM
     /// 采购到货单行
     /// </summary>
     [SqlSugar.SugarTable("QYD_PM_DeliveryOrderLine")]
-    public class DeliveryOrderLine:BaseEntity<DeliveryOrderLine>
+    public class DeliveryOrderLine:LineBaseEntity
     {
         /// <summary>
         /// 采购到货单ID
@@ -165,13 +165,6 @@ namespace PigRunner.Entitys.SCM.PM
         /// 备注
         /// </summary>
         public string Memo { get; set; }=string.Empty ;
-        /// <summary>
-        /// 来源单据号
-        /// </summary>
-        public string SrcDocNo { get; set; } = string.Empty;
-        /// <summary>
-        /// 来源单据行
-        /// </summary>
-        public long SrcDocLine { get; set; }
+      
     }
 }

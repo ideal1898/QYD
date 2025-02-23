@@ -454,8 +454,40 @@ namespace PigRunner.Services.SCM.PM.Services
                        .Where(item => item.ID == id);
             return mapper.Map<DeliveryOrderView>(doc.First());
         }
+        /// <summary>
+        /// 查询送货单明细
+        /// </summary>
+        /// <param name="view"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public ResponseBody queryLineByPage(PageView view)
+        {
+            ResponseBody response = new ResponseBody();
+            Stopwatch stopwatch = Stopwatch.StartNew();
+            try
+            {
+                int total = 0;
+                var docs = repository.Context.Queryable<DeliveryOrderLine>()
+                     .IncludesAllFirstLayer()
+                    .OrderBy(item => item.CreatedTime, OrderByType.Desc)
+                    .ToOffsetPage(view.PageNumber, view.PageSize, ref total);
+                var views = mapper.Map<List<DeliveryOrderLineView>>(docs);
+                stopwatch.Stop();
+                response.code = 200;
+                response.total = total;
+                response.msg = $"采购送货单明细查询完成，共计{total}条记录，耗时：{total}";
+                response.data = JArray.FromObject(views);
+            }
+            catch (Exception ex)
+            {
+                response.code = 500;
+                response.msg = ex.Message;
+            }
+
+            return response;
+        }
 
         #endregion
-    
+
     }
 }

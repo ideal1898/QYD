@@ -21,7 +21,7 @@ namespace PigRunner.Services.SCM.PM.Services
     /// <summary>
     /// 采购退货申请单服务
     /// </summary>
-    public class RtnRequestService:IRtnRequestService
+    public class RtnRequestService : IRtnRequestService
     {
         private ReturnRequisitionRepository repository;
         private WebSession session;
@@ -434,6 +434,39 @@ namespace PigRunner.Services.SCM.PM.Services
                 response.data = JObject.FromObject(view);
                 response.code = 200;
                 response.msg = $"采购退货申请单查询耗时:{stopwatch.ElapsedMilliseconds} 毫秒";
+            }
+            catch (Exception ex)
+            {
+                response.code = 500;
+                response.msg = ex.Message;
+            }
+
+            return response;
+        }
+
+
+        /// <summary>
+        /// 采购退货申请单明细数据
+        /// </summary>
+        /// <param name="view"></param>
+        /// <returns></returns>
+        public ResponseBody queryLineByPage(PageView view)
+        {
+            ResponseBody response = new ResponseBody();
+            Stopwatch stopwatch = Stopwatch.StartNew();
+            try
+            {
+                int total = 0;
+                var docs = repository.Context.Queryable<ReturnRequisitionLine>()
+                     .IncludesAllFirstLayer()
+                    .OrderBy(item => item.CreatedTime, OrderByType.Desc)
+                    .ToOffsetPage(view.PageNumber, view.PageSize, ref total);
+                var views = mapper.Map<List<ReturnRequisitionLineView>>(docs);
+                stopwatch.Stop();
+                response.code = 200;
+                response.total = total;
+                response.msg = $"采购退货申请明细查询完成，共计{total}条记录，耗时：{total}";
+                response.data = JArray.FromObject(views);
             }
             catch (Exception ex)
             {

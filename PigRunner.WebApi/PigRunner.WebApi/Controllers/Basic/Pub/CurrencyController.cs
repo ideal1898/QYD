@@ -33,5 +33,13 @@ namespace PigRunner.WebApi.Controllers.Basic
         {
             return services.ActionCurrency(request);
         }
+        /// <summary>
+        /// 查询所有币种
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public PubResponse queryAllCurrency() { 
+        return services.QueryAllCurrency();
+        }
     }
 }

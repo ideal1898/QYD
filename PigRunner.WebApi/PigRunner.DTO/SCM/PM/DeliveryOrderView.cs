@@ -159,13 +159,5 @@ namespace PigRunner.DTO.SCM.PM
         /// 备注
         /// </summary>
         public string Memo { get; set; } = string.Empty;
-        /// <summary>
-        /// 来源单据号
-        /// </summary>
-        public string SrcDocNo { get; set; }=string.Empty;
-        /// <summary>
-        /// 来源单据行
-        /// </summary>
-        public long SrcDocLine { get; set; }
     }
 }
