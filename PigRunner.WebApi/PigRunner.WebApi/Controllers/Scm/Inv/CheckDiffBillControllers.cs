@@ -33,7 +33,7 @@ namespace PigRunner.WebApi.Controllers.SCM.INV
         /// </summary>
         /// <param name="vo"></param>
         /// <returns></returns>
-        [AllowAnonymous]
+        //[AllowAnonymous]
         [HttpPost]
         public ResponseBusBody save([FromBody] CheckDiffBillView vo)
         {
@@ -45,7 +45,7 @@ namespace PigRunner.WebApi.Controllers.SCM.INV
         /// </summary>
         /// <param name="ids"></param>
         /// <returns></returns>
-        [AllowAnonymous]
+        //[AllowAnonymous]
         [HttpPost]
         public ResponseBusBody delete([FromBody] List<long> ids)
         {
@@ -57,7 +57,7 @@ namespace PigRunner.WebApi.Controllers.SCM.INV
         /// </summary>
         /// <param name="vo"></param>
         /// <returns></returns>
-        [AllowAnonymous]
+        //[AllowAnonymous]
         [HttpPost]
         public ResponseBusBody submit([FromBody] CheckDiffBillView vo)
         {
@@ -69,7 +69,7 @@ namespace PigRunner.WebApi.Controllers.SCM.INV
         /// </summary>
         /// <param name="vo"></param>
         /// <returns></returns>
-        [AllowAnonymous]
+        //[AllowAnonymous]
         [HttpPost]
         public ResponseBusBody approve([FromBody] CheckDiffBillView vo)
         {
@@ -93,7 +93,7 @@ namespace PigRunner.WebApi.Controllers.SCM.INV
         /// </summary>
         /// <param name="vos"></param>
         /// <returns></returns>
-        [AllowAnonymous]
+        //[AllowAnonymous]
         [HttpPost]
         public ResponseBody batchSubmit([FromBody] List<DoActionView> vos)
         {
@@ -105,7 +105,7 @@ namespace PigRunner.WebApi.Controllers.SCM.INV
         /// </summary>
         /// <param name="vos"></param>
         /// <returns></returns>
-        [AllowAnonymous]
+        //[AllowAnonymous]
         [HttpPost]
         public ResponseBody batchApprove([FromBody] List<DoActionView> vos)
         {
@@ -117,7 +117,7 @@ namespace PigRunner.WebApi.Controllers.SCM.INV
         /// </summary>
         /// <param name="vos"></param>
         /// <returns></returns>
-        [AllowAnonymous]
+        //[AllowAnonymous]
         [HttpPost]
         public ResponseBody batchUnApprove([FromBody] List<DoActionView> vos)
         {
@@ -131,7 +131,7 @@ namespace PigRunner.WebApi.Controllers.SCM.INV
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [AllowAnonymous]
+        //[AllowAnonymous]
         [HttpGet]
         public ResponseBusBody queryDocById([FromQuery] long id)
         {
@@ -143,7 +143,7 @@ namespace PigRunner.WebApi.Controllers.SCM.INV
         /// </summary>
         /// <param name="DocNo"></param>
         /// <returns></returns>
-        [AllowAnonymous]
+        //[AllowAnonymous]
         [HttpGet]
         public ResponseBusBody queryDocByDocNo([FromQuery] string DocNo)
         {
@@ -155,7 +155,7 @@ namespace PigRunner.WebApi.Controllers.SCM.INV
         /// </summary>
         /// <param name="view"></param>
         /// <returns></returns>
-        [AllowAnonymous]
+        //[AllowAnonymous]
         [HttpPost]
         public ResponseBody queryAllByPage([FromBody] PageView view)
         {
@@ -167,7 +167,6 @@ namespace PigRunner.WebApi.Controllers.SCM.INV
         /// </summary>
         /// <param name="view"></param>
         /// <returns></returns>
-        [AllowAnonymous]
         [HttpPost]
         public ResponseBody queryLineByPage([FromBody] PageView view)
         {
